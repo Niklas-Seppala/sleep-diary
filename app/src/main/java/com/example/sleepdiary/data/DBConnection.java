@@ -10,12 +10,16 @@ import androidx.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-public class DBConnection  extends SQLiteOpenHelper {
+public class DBConnection extends SQLiteOpenHelper {
 
     public DBConnection(@Nullable Context context) {
         super(context, "sleep.db", null, 1);
     }
 
+    /**
+     *
+     * @param sqLiteDatabase
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String SQL_CreateSleepTable =
@@ -30,7 +34,12 @@ public class DBConnection  extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CreateSleepTable);
     }
 
-    // Unused
+    /**
+     *
+     * @param sqLiteDatabase
+     * @param oldV
+     * @param newV
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldV, int newV) { }
 
@@ -64,7 +73,11 @@ public class DBConnection  extends SQLiteOpenHelper {
         return results;
     }
 
-
+    /**
+     * Inserts model object to database.
+     * @param model Model object to be inserted.
+     * @return true if insertion was succesful.
+     */
     public boolean insert(DBModel model) {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
