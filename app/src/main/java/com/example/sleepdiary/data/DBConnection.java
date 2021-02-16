@@ -86,6 +86,7 @@ public class DBConnection extends SQLiteOpenHelper {
                 } catch (Exception ignored)  { }
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return results;
     }
 
