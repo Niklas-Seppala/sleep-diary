@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
-public class DBConnection  extends SQLiteOpenHelper {
+public class DBConnection extends SQLiteOpenHelper {
 
     public DBConnection(@Nullable Context context) {
         super(context, "sleep.db", null, 1);
@@ -18,16 +20,30 @@ public class DBConnection  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String SQL_CreateSleepTable =
-                     "CREATE TABLE "                +
-                     SleepDBModel.TABLE_NAME        + " (" +
-                     SleepDBModel.COLUMN_ID         + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                     SleepDBModel.COLUMN_DURATION   + " REAL NOT NULL," +
-                     SleepDBModel.COLUMN_QUALITY    + " INTEGER NOT NULL, " +
-                     SleepDBModel.COLUMN_START_TIME + " INTEGER NOT NULL, " +
-                     SleepDBModel.COLUMN_END_TIME   + " INTEGER NOT NULL)";
+        StringBuilder sqlBuilder = new StringBuilder();
 
+        sqlBuilder.append("CREATE TABLE ").append(SleepModel.TABLE_NAME).append(" (")
+            .append(SleepModel.COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
+            .append(SleepModel.COLUMN_USER_ID).append(" INTEGER NOT NULL,")
+            .append(SleepModel.COLUMN_QUALITY).append(" INTEGER NOT NULL,")
+            .append(SleepModel.COLUMN_START_TIME).append(" INTEGER NOT NULL,")
+            .append(SleepModel.COLUMN_END_TIME).append(" INTEGER NOT NULL,")
+            .append("FOREIGN KEY (").append(SleepModel.COLUMN_USER_ID).append(") REFERENCES ")
+                .append(UserModel.TABLE_NAME).append("(").append(UserModel.COLUMN_ID).append(")")
+            .append(");");
+        String SQL_CreateSleepTable = sqlBuilder.toString();
+        Log.i("SQL", SQL_CreateSleepTable);
         sqLiteDatabase.execSQL(SQL_CreateSleepTable);
+
+
+        sqlBuilder.delete(0, sqlBuilder.length());
+        sqlBuilder.append("CREATE TABLE ").append(UserModel.TABLE_NAME).append(" (")
+            .append(UserModel.COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
+            .append(UserModel.COLUMN_NAME).append(" TEXT NOT NULL")
+            .append(");");
+        String SQL_CreateUserTable = sqlBuilder.toString();
+        Log.i("SQL", SQL_CreateUserTable);
+        sqLiteDatabase.execSQL(SQL_CreateUserTable);
     }
 
     // Unused
@@ -54,7 +70,7 @@ public class DBConnection  extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                try { // Relax, libraries pull of this shit all the time.
+                try {
                     Constructor<T> ctor = modelType.getConstructor();
                     T model = (T)ctor.newInstance().deserialize(cursor);
                     results.add(model);
