@@ -18,6 +18,10 @@ public class DBConnection extends SQLiteOpenHelper {
         super(context, "sleep.db", null, 1);
     }
 
+    /**
+     *
+     * @param sqLiteDatabase
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         StringBuilder sqlBuilder = new StringBuilder();
@@ -46,7 +50,12 @@ public class DBConnection extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CreateUserTable);
     }
 
-    // Unused
+    /**
+     *
+     * @param sqLiteDatabase
+     * @param oldV
+     * @param newV
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldV, int newV) { }
 
@@ -80,7 +89,11 @@ public class DBConnection extends SQLiteOpenHelper {
         return results;
     }
 
-
+    /**
+     * Inserts model object to database.
+     * @param model Model object to be inserted.
+     * @return true if insertion was succesful.
+     */
     public boolean insert(DBModel model) {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
