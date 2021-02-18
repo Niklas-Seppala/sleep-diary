@@ -3,14 +3,15 @@
 
 
     <item
-        android:id="@+id/menu_item_home"
-        android:title="Home"
-        android:icon="@drawable/ic_home"/>
-
-    <item
         android:id="@+id/menu_item_settings"
         android:title="Settings"
         android:icon="@drawable/ic_settings"/>
+
+    <item
+        android:id="@+id/menu_item_home"
+        android:title="Home"
+
+        android:icon="@drawable/ic_home"/>
 
     <item
         android:id="@+id/menu_item_info"

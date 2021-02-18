@@ -3,78 +3,94 @@ package com.example.sleepdiary.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public class SleepModel implements DBModel {
-    public static final String TABLE_NAME = "sleep";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_USER_ID = "user_id";
-    public static final String COLUMN_END_TIME = "end_timestamp";
-    public static final String COLUMN_START_TIME = "start_timestamp";
-    public static final String COLUMN_QUALITY = "quality";
-
+/**
+ * Sleep instance database model class.
+ */
+public class SleepModel extends DbModel {
     private int id;
     private int user_id;
-    private SleepRating qualityRating;
+    private Rating quality;
     private int startTimestamp;
     private int endTimestamp;
 
-    public SleepModel() { };
-    public SleepModel(int user_id, int duration, SleepRating qualityRating,
-                      int startTimestamp, int endTimestamp) {
+    public SleepModel() { }
+    public SleepModel(int user_id, Rating quality, int startTimestamp, int endTimestamp) {
         this.id = -1;
         this.user_id = user_id;
-        this.qualityRating = qualityRating;
+        this.quality = quality;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
     }
 
+    /**
+     * @return Sleep instance starting time as unix timestamp.
+     */
+    public int getStartTimestamp() {
+        return this.startTimestamp;
+    }
+
+    /**
+     * @return Sleep instance end time as unix timestamp.
+     */
+    public int getEndTimestamp() {
+        return this.endTimestamp;
+    }
+
+    /**
+     * @return Sleep instance user id.
+     */
+    public int getUserId() {
+        return this.user_id;
+    }
+
+    /**
+     * @return Sleep instance quality rating.
+     */
+    public Rating getQuality() {
+        return this.quality;
+    }
+
+    /**
+     * @return Sleep instance id.
+     */
+    public long getId() {
+        return this.id;
+    }
+
+    @Override
     public SleepModel serialize(ContentValues toRow) {
-        toRow.put(COLUMN_USER_ID, this.user_id);
-        toRow.put(COLUMN_START_TIME, this.startTimestamp);
-        toRow.put(COLUMN_END_TIME, this.endTimestamp);
-        toRow.put(COLUMN_QUALITY, this.qualityRating.toInt());
+        toRow.put(Db.sleep.COLUMN_USER_ID, this.user_id);
+        toRow.put(Db.sleep.COLUMN_START_TIME, this.startTimestamp);
+        toRow.put(Db.sleep.COLUMN_END_TIME, this.endTimestamp);
+        toRow.put(Db.sleep.COLUMN_QUALITY, this.quality.toInt());
         return this;
     }
 
+    @Override
     public SleepModel deserialize(Cursor fromRow) {
         for (int i = 0; i < fromRow.getColumnCount(); i++) {
-
             switch (fromRow.getColumnName(i)) {
-                case COLUMN_ID:
+                case Db.sleep.COLUMN_ID:
                     this.id = fromRow.getInt(i);
                     break;
-                case COLUMN_USER_ID:
+                case Db.sleep.COLUMN_USER_ID:
                     this.user_id = fromRow.getInt(i);
                     break;
-                case COLUMN_END_TIME:
+                case Db.sleep.COLUMN_END_TIME:
                     this.endTimestamp = fromRow.getInt(i);
                     break;
-                case COLUMN_START_TIME:
+                case Db.sleep.COLUMN_START_TIME:
                     this.startTimestamp = fromRow.getInt(i);
                     break;
-                case COLUMN_QUALITY:
-                    this.qualityRating = SleepRating.fromInt(fromRow.getInt(i));
+                case Db.sleep.COLUMN_QUALITY:
+                    this.quality = Rating.fromInt(fromRow.getInt(i));
             }
         }
         return this;
     }
 
+    @Override
     public String getTableName() {
-        return TABLE_NAME;
-    }
-
-    public int getStartTimestamp() {
-        return this.startTimestamp;
-    }
-    public int getEndTimestamp() {
-        return this.endTimestamp;
-    }
-    public int getUserId() {
-        return this.user_id;
-    }
-    public SleepRating getQualityRating() {
-        return this.qualityRating;
-    }
-    public long getId() {
-        return this.id;
+        return Db.sleep.TABLE_NAME;
     }
 }

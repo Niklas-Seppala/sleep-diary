@@ -1,12 +1,10 @@
 package com.example.sleepdiary;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +26,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void setHomeViewButtonEvents() {
-        // Currently dummies
 
         // STATS BUTTON
         getActivity().findViewById(R.id.btnStats).setOnClickListener(view -> {

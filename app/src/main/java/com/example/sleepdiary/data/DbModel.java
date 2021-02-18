@@ -3,26 +3,28 @@ package com.example.sleepdiary.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public interface DBModel {
-
+/**
+ * Database model that can serialize it's fields to
+ * ContentValues object, and deserialize from Cursor object.
+ */
+public abstract class DbModel {
     /**
      * Loads model's state to content values object.
      * @param dbValues Database content values.
      * @return Model instance.
      */
-    DBModel serialize(ContentValues dbValues);
+    public abstract DbModel serialize(ContentValues dbValues);
 
     /**
      * Deserializes database cursor values to this model object.
      * @param dbValues Cursor values.
      * @return Model instance.
      */
-    DBModel deserialize(Cursor dbValues);
+    public abstract DbModel deserialize(Cursor dbValues);
 
     /**
      * Get the model's corresponding table name.
      * @return model's table name.
      */
-
-    String getTableName();
+    public abstract String getTableName();
 }
