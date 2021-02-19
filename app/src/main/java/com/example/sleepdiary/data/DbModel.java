@@ -3,6 +3,8 @@ package com.example.sleepdiary.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import androidx.annotation.NonNull;
+
 /**
  * Database model that can serialize it's fields to
  * ContentValues object, and deserialize from Cursor object.
@@ -27,4 +29,16 @@ public abstract class DbModel {
      * @return model's table name.
      */
     public abstract String getTableName();
+
+    /**
+     * Get the models "header string" for list views
+     * @return model header
+     */
+    public abstract String getViewString();
+
+    @NonNull
+    @Override
+    public String toString() {
+        return  this.getViewString();
+    }
 }

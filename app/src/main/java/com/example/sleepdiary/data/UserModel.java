@@ -55,4 +55,9 @@ public class UserModel extends DbModel {
     public String getTableName() {
         return Db.user.TABLE_NAME;
     }
+
+    @Override
+    public String getViewString() {
+        return "Id: " + this.id;
+    }
 }

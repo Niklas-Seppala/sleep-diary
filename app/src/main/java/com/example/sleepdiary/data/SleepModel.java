@@ -14,7 +14,8 @@ public class SleepModel extends DbModel {
     private int endTimestamp;
 
     public SleepModel() { }
-    public SleepModel(int user_id, Rating quality, int startTimestamp, int endTimestamp) {
+    public SleepModel(int user_id, Rating quality, int startTimestamp,
+                      int endTimestamp) {
         this.id = -1;
         this.user_id = user_id;
         this.quality = quality;
@@ -22,40 +23,6 @@ public class SleepModel extends DbModel {
         this.endTimestamp = endTimestamp;
     }
 
-    /**
-     * @return Sleep instance starting time as unix timestamp.
-     */
-    public int getStartTimestamp() {
-        return this.startTimestamp;
-    }
-
-    /**
-     * @return Sleep instance end time as unix timestamp.
-     */
-    public int getEndTimestamp() {
-        return this.endTimestamp;
-    }
-
-    /**
-     * @return Sleep instance user id.
-     */
-    public int getUserId() {
-        return this.user_id;
-    }
-
-    /**
-     * @return Sleep instance quality rating.
-     */
-    public Rating getQuality() {
-        return this.quality;
-    }
-
-    /**
-     * @return Sleep instance id.
-     */
-    public long getId() {
-        return this.id;
-    }
 
     @Override
     public SleepModel serialize(ContentValues toRow) {
@@ -92,5 +59,45 @@ public class SleepModel extends DbModel {
     @Override
     public String getTableName() {
         return Db.sleep.TABLE_NAME;
+    }
+
+    @Override
+    public String getViewString() {
+        return "Id: " + this.id;
+    }
+
+    /**
+     * @return Sleep instance starting time as unix timestamp.
+     */
+    public int getStartTimestamp() {
+        return this.startTimestamp;
+    }
+
+    /**
+     * @return Sleep instance end time as unix timestamp.
+     */
+    public int getEndTimestamp() {
+        return this.endTimestamp;
+    }
+
+    /**
+     * @return Sleep instance user id.
+     */
+    public int getUserId() {
+        return this.user_id;
+    }
+
+    /**
+     * @return Sleep instance quality rating.
+     */
+    public Rating getQuality() {
+        return this.quality;
+    }
+
+    /**
+     * @return Sleep instance id.
+     */
+    public int getId() {
+        return this.id;
     }
 }
