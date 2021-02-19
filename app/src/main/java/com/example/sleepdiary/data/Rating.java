@@ -11,7 +11,6 @@ public enum Rating {
 
     // Internal value
     private final int value;
-
     // Store rating to internal field.
     private Rating(int val){
         this.value = val;

@@ -1,11 +1,15 @@
 package com.example.sleepdiary.data;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Process;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -53,8 +57,11 @@ public class DbConnection extends SQLiteOpenHelper {
      * @param <T> Must implement DBModel
      * @return query result list.
      */
-    public <T extends DbModel> ArrayList<T> select(String tableName, Class<T> modelType,
-                                                   String sql, String[] sArgs)  {
+    @SuppressLint("Assert")
+    public <T extends DbModel> ArrayList<T> select(@NonNull String tableName,
+                                                   @NonNull Class<T> modelType,
+                                                   @Nullable String sql,
+                                                   @Nullable String[] sArgs)  {
         // If SQL string was provided use that
         String SQL_Statement = sql != null ? sql : "SELECT * FROM " + tableName;
         ArrayList<T> results = new ArrayList<>();
@@ -67,7 +74,10 @@ public class DbConnection extends SQLiteOpenHelper {
                     // Instantiate object from Model Class, and deserialize
                     // values from current Cursor position.
                     results.add((T)modelType.getConstructor().newInstance().deserialize(cursor));
-                } catch (Exception ignored)  { }
+                } catch (Exception ex)  {
+                    Log.e("MODEL", "select():" + ex.getMessage());
+                    assert false;
+                }
             } while (cursor.moveToNext()); // Move to new Cursor position
         }
         // Free Cursor resources
@@ -80,12 +90,54 @@ public class DbConnection extends SQLiteOpenHelper {
      * @param model Model object to be inserted.
      * @return true if insertion was succesful.
      */
-    public boolean insert(DbModel model) {
+    public boolean insert(@NonNull DbModel model) {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        model.serialize(cv);
+        ContentValues contentValues = new ContentValues();
+        model.serialize(contentValues);
 
-        long affectedRows = SQLiteDB.insert(model.getTableName(), null, cv);
+        long affectedRows = SQLiteDB.insert(model.getTableName(), null,
+                contentValues);
+
+        GlobalData.setDirty();
         return affectedRows > 0;
     }
+
+    /**
+     * Executes DELETE SQL statement, with provided SQL WHERE clause.
+     * @param tableName Name of the table where delete should be executed.
+     * @param where SQL WHERE clause.
+     * @param args Arguments for WHERE caluse.
+     * @return true if deletion was succesful.
+     */
+    public boolean delete(@NonNull String tableName, // TODO: test this method
+                          @NonNull String where,
+                          @NonNull String[] args) {
+        SQLiteDatabase SQLiteDB = this.getWritableDatabase();
+        long affectedRows = SQLiteDB.delete(tableName, where, args);
+
+        GlobalData.setDirty();
+        return affectedRows > 0;
+    }
+
+    /**
+     * Executes UPDATE SQL statement, with provided SQL WHERE clause.
+     * @param tableName Name of the table where update should be executed.
+     * @param model Updated model.
+     * @param where SQL where clause.
+     * @param args Arguments for WHERE clause.
+     * @return true if update was successful.
+     */
+    public boolean update(@NonNull String tableName, //TODO: test this method
+                          @NonNull DbModel model,
+                          @NonNull String where,
+                          @NonNull String[] args) {
+        SQLiteDatabase SQLiteDB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        model.serialize(contentValues);
+        long affectedRows = SQLiteDB.update(tableName, contentValues, where, args);
+
+        GlobalData.setDirty();
+        return affectedRows > 0;
+    }
+
 }
