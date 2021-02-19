@@ -23,7 +23,6 @@ public class SleepModel extends DbModel {
         this.endTimestamp = endTimestamp;
     }
 
-
     @Override
     public SleepModel serialize(ContentValues toRow) {
         toRow.put(Db.sleep.COLUMN_USER_ID, this.user_id);

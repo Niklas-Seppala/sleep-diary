@@ -1,10 +1,13 @@
 package com.example.sleepdiary.data;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Process;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +57,7 @@ public class DbConnection extends SQLiteOpenHelper {
      * @param <T> Must implement DBModel
      * @return query result list.
      */
+    @SuppressLint("Assert")
     public <T extends DbModel> ArrayList<T> select(@NonNull String tableName,
                                                    @NonNull Class<T> modelType,
                                                    @Nullable String sql,
@@ -70,7 +74,10 @@ public class DbConnection extends SQLiteOpenHelper {
                     // Instantiate object from Model Class, and deserialize
                     // values from current Cursor position.
                     results.add((T)modelType.getConstructor().newInstance().deserialize(cursor));
-                } catch (Exception ignored)  { }
+                } catch (Exception ex)  {
+                    Log.e("MODEL", "select():" + ex.getMessage());
+                    assert false;
+                }
             } while (cursor.moveToNext()); // Move to new Cursor position
         }
         // Free Cursor resources

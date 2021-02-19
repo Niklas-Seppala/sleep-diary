@@ -16,20 +16,6 @@ public class UserModel extends DbModel {
         this.name = name;
     }
 
-    /**
-     * @return User id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @return Username
-     */
-    public String getName() {
-        return this.name;
-    }
-
     @Override
     public DbModel serialize(ContentValues toRow) {
         toRow.put(Db.user.COLUMN_NAME, this.name);
@@ -59,5 +45,19 @@ public class UserModel extends DbModel {
     @Override
     public String getViewString() {
         return "Id: " + this.id;
+    }
+
+    /**
+     * @return User id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @return Username
+     */
+    public String getName() {
+        return this.name;
     }
 }

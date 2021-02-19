@@ -27,24 +27,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void setHomeViewButtonEvents(View view) {
-        // STATS BUTTON
+        // Statistics Button Click
         view.findViewById(R.id.btnStats).setOnClickListener(v -> {
-            Log.d("BTN", "Stats button clicked");
             Intent stats = new Intent(v.getContext(), StatsActivity.class);
             startActivity(stats);
         });
-
-        // SLEEP BUTTON
+        // Sleep Button Click
         view.findViewById(R.id.btnSleep).setOnClickListener(v -> {
             Log.d("BTN", "Sleep button clicked");
         });
-
-        // GOAL BUTTON
+        // Goal Button Click
         view.findViewById(R.id.btnGoal).setOnClickListener(v -> {
             Log.d("BTN", "Goal button clicked");
         });
-
-        // ALARM BUTTOn
+        // Alarm Buttom Click
         view.findViewById(R.id.btnAlarm).setOnClickListener(v -> {
             Log.d("BTN", "Alarm button clicked");
         });

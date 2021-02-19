@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * GlobalData.update(DbConnection db).
  */
 public class GlobalData {
-    private static GlobalData instance;
+    private static final GlobalData instance = new GlobalData();
     private static boolean isDirty = true;
     private ArrayList<UserModel> userModels;
     private ArrayList<SleepModel> sleepModels;
@@ -58,10 +58,6 @@ public class GlobalData {
      * @param db Open SQLite connection
      */
     public static void update(DbConnection db) {
-        if (instance == null) {
-            instance = new GlobalData();
-        }
-
         instance.userModels = db.select(Db.user.TABLE_NAME, UserModel.class,
                 null, null);
         instance.sleepModels = db.select(Db.sleep.TABLE_NAME, SleepModel.class,
@@ -70,7 +66,7 @@ public class GlobalData {
     }
 
 
-    // TODO: Development method
+    // TODO: Dev func
     private static void populateMockData(DbConnection db) {
 //        UserModel mockUser = new UserModel("Niklas");
 //        db.insert(mockUser);
