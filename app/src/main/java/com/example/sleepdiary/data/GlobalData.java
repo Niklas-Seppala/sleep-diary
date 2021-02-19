@@ -67,10 +67,10 @@ public class GlobalData {
 
 
     // TODO: Dev func
-    private static void populateMockData(DbConnection db) {
-//        UserModel mockUser = new UserModel("Niklas");
-//        db.insert(mockUser);
-        UserModel mockUser =  db.select(Db.user.TABLE_NAME, UserModel.class, null, null).get(0);
+    public static void populateMockData(DbConnection db) {
+        UserModel mockUser = new UserModel("Niklas");
+        db.insert(mockUser);
+        mockUser =  db.select(Db.user.TABLE_NAME, UserModel.class, null, null).get(0);
         SleepModel model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613659403, 1613689403);
         db.insert(model);
         model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613659403, 1613689403);

@@ -30,6 +30,10 @@ public class StatsActivity extends AppCompatActivity {
         if (GlobalData.isDirty()) {
             DbConnection db = new DbConnection(this);
             GlobalData.update(db);
+            // TODO: DEV
+            if (GlobalData.getInstance().getUserModels().size() == 0) {
+                GlobalData.populateMockData(db);
+            }
             db.close();
         }
         // Set click handlers
