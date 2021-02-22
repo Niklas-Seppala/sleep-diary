@@ -71,17 +71,17 @@ public class GlobalData {
         UserModel mockUser = new UserModel("Niklas");
         db.insert(mockUser);
         mockUser =  db.select(Db.user.TABLE_NAME, UserModel.class, null, null).get(0);
-        SleepModel model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613659403, 1613689403);
+        SleepModel model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613684635, 1613712235);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613659403, 1613689403);
+        model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613757955, 1613793955);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613659403, 1613689403);
+        model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613847955, 1613894755);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1613659403, 1613689403);
+        model = new SleepModel(mockUser.getId(), Rating.OK, 1613941555, 1613973955);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.BAD, 1613659403, 1615689403);
+        model = new SleepModel(mockUser.getId(), Rating.BAD, 1614027955, 1614056755);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1613659403, 1613639403);
+        model = new SleepModel(mockUser.getId(), Rating.OK, 1614113755, 1614141235);
         db.insert(model);
     }
 

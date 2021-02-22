@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Set default fragment
         setFragment(this.homeFrag);
+
+//        deleteDatabase("sleep.db"); // TODO: DEV
     }
 
     private void initBottomNavBar() {

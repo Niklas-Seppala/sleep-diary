@@ -26,14 +26,16 @@ public class StatsActivity extends AppCompatActivity {
         // Set list as a default fragment
         setFragment(this.listFrag);
 
-        // Set global data if neccessary
+        // Set global data if necessary
         if (GlobalData.isDirty()) {
             DbConnection db = new DbConnection(this);
             GlobalData.update(db);
+
             // TODO: DEV
             if (GlobalData.getInstance().getUserModels().size() == 0) {
                 GlobalData.populateMockData(db);
             }
+
             db.close();
         }
         // Set click handlers
