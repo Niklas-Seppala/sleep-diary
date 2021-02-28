@@ -1,14 +1,13 @@
 package com.example.sleepdiary;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +15,11 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.sleepdiary.data.GlobalData;
+import com.example.sleepdiary.data.SleepHabits;
 import com.example.sleepdiary.data.SleepModel;
+import com.example.sleepdiary.data.WeeklySleepHabit;
+import com.example.sleepdiary.time.DateTime;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -27,183 +30,186 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class ChartFragment extends Fragment {
-    private static final Calendar calendar = Calendar.getInstance();
+    private static int savedIndex = 0;
 
-    private enum WeekDay {
-        MON(0),
-        TUE(1),
-        WED(2),
-        THU(3),
-        FRI(4),
-        SAT(5),
-        SUN(6);
+    private static final float CHART_X_MAX = 6.5f;
+    private static final float CHART_X_MIN = -0.5f;
+    private static final float CHART_Y_MIN = 0f;
+    private static final int ANIM_DUR_MILLIS = 600;
 
-        private final int value;
-        WeekDay(int val){
-            this.value = val;
-        }
+    private static int successColor = -1;
+    private static int failColor = -1;
+    private static final int HIGHLIGHT_ALPHA = 0x2e;
+    private static final float DISABLED_BTN_ALPHA = 0.5f;
 
-        public static WeekDay fromUnixTime(int unix) {
-            calendar.setTimeInMillis((long)unix * 1000);
-            switch (calendar.get(Calendar.DAY_OF_WEEK)) {
-                case Calendar.MONDAY:    return MON;
-                case Calendar.TUESDAY:   return TUE;
-                case Calendar.WEDNESDAY: return WED;
-                case Calendar.THURSDAY:  return THU;
-                case Calendar.FRIDAY:    return FRI;
-                case Calendar.SATURDAY:  return SAT;
-                case Calendar.SUNDAY:    return SUN;
-                default: return SUN; // Never runs
-            }
-        }
+    private float userGoal;
+    private SleepHabits sleepHabits;
 
-        public int getInt() {
-            return value;
-        }
-    }
+    private CombinedChart chartView;
+    private TextView weekHeader;
+    private ImageButton nextBtn;
+    private ImageButton prevBtn;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ArrayList<SleepModel> models = GlobalData.getInstance().getSleepModels();
-        SleepModel last = models.get(models.size()-1);
-
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(last.getStartTimestamp() * 1000);
-        int thisYear = c.get(Calendar.YEAR);
-        int thisWeek = c.get(Calendar.WEEK_OF_YEAR);
-
-        SleepModel[] weekAsArr = new SleepModel[7];
-        models.stream()
-                .filter(m -> {
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTimeInMillis(m.getStartTimestamp() * 1000);
-                    return cal.get(Calendar.WEEK_OF_YEAR) == thisWeek  &&
-                           cal.get(Calendar.YEAR) == thisYear; })
-                .forEach(m -> weekAsArr[WeekDay.fromUnixTime(m.getStartTimestamp()).getInt()] = m);
-        List<SleepModel> week = Arrays.stream(weekAsArr)
-                .map(m -> m == null ? new SleepModel() : m)
-                .collect(Collectors.toList());
-
-        CombinedChart chart = view.findViewById(R.id.sleep_chart_item_combo_chart);
-
-        initChart(chart, week);
-        chart.setData(createChartData(week));
-
-        final int HOUR_IN_SECONDS = 3600;
-        final int yMax = (int)Math.ceil(chart.getYMax() / HOUR_IN_SECONDS) +1;
-
-        chart.getAxisLeft().setAxisMinimum(0);
-        chart.getAxisLeft().setAxisMaximum(yMax * HOUR_IN_SECONDS);
-        chart.getAxisLeft().setEnabled(false);
+        initColors();
+        getData();
+        initHeaderViews(view);
+        initChart(view);
+        displayWeek(sleepHabits.getWeek());
     }
 
-    private CombinedData createChartData(List<SleepModel> models) {
-        CombinedData data = new CombinedData();
-        BarData bars = createBarData(models);
-        data.setData(createBarData(models));
+    private void initColors() {
+        // Only run once per app lifetime
+        if (successColor > 0) return;
 
-        final int HOUR_IN_SECONDS = 3600;
-        data.setData(createLineData(7 * HOUR_IN_SECONDS, bars.getXMax()));
+        successColor = getResources().getColor(R.color.teal_200);
+        failColor = getResources().getColor(R.color.teal_700);
+    }
+
+    private void getData() {
+        sleepHabits = new SleepHabits(GlobalData.getInstance().getSleepModelsByWeeks(), savedIndex);
+        userGoal = GlobalData.getInstance().getCurrentUser().getGoal();
+    }
+
+    private void initHeaderViews(View view) {
+        weekHeader = view.findViewById(R.id.sleep_chart_item_week_header_tv);
+        weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeekNum()));
+
+        prevBtn = view.findViewById(R.id.sleep_chart_item_btn_prev_week);
+        prevBtn.setOnClickListener(this::changeWeek);
+
+        nextBtn = view.findViewById(R.id.sleep_chart_item_btn_next_week);
+        nextBtn.setOnClickListener(this::changeWeek);
+    }
+
+    private void changeWeek(View view) {
+        int currentWeek = sleepHabits.getIndex();
+        if (view.getId() == R.id.sleep_chart_item_btn_next_week)
+            sleepHabits.nextWeek();
+        else
+            sleepHabits.previousWeek();
+
+        if (currentWeek != sleepHabits.getIndex())
+            displayWeek(sleepHabits.getWeek());
+    }
+
+    private void displayWeek(WeeklySleepHabit week) {
+        if (week != null) {
+            chartView.setData(createChartData(week));
+            weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeekNum()));
+
+            chartView.notifyDataSetChanged();
+            chartView.animateY(ANIM_DUR_MILLIS, Easing.EaseOutCubic);
+            nextBtn.setAlpha(sleepHabits.hasNextWeek() ? 1f : DISABLED_BTN_ALPHA);
+            prevBtn.setAlpha(sleepHabits.hasPrevWeek() ? 1f : DISABLED_BTN_ALPHA);
+        }
+    }
+
+    private CombinedData createChartData(WeeklySleepHabit week) {
+        CombinedData data = new CombinedData();
+        data.setData(createBarData(week));
+        data.setData(createLineData());
         return data;
     }
 
-    private BarData createBarData(List<SleepModel> models) {
-        ArrayList<BarEntry> defaultSet = new ArrayList<>();
+    private BarData createBarData(WeeklySleepHabit week) {
+        ArrayList<BarEntry> successSet = new ArrayList<>();
         ArrayList<BarEntry> failSet = new ArrayList<>();
 
-        final int HOUR_IN_SECONDS = 3600;
-
-        for (int x = 0; x < models.size(); x++) {
-            // Y-axis is time difference between start and end
-            int y = models.get(x).getEndTimestamp() - models.get(x).getStartTimestamp();
-
-            BarEntry entry = new BarEntry(x, y);
-            if (y < 7 * HOUR_IN_SECONDS) {
-                failSet.add(entry);
-            } else {
-                defaultSet.add(entry);
-            }
+        SleepModel[] weekDays = week.getDays();
+        for (int x = 0; x < weekDays.length; x++) {
+            float y = weekDays[x].getEndTimestamp() - weekDays[x].getStartTimestamp();
+            BarEntry entry = new BarEntry((float)x, y);
+            List<BarEntry> set = y < userGoal ? failSet : successSet;
+            set.add(entry);
         }
-        BarDataSet successSet = new BarDataSet(defaultSet, "unused");
-        BarDataSet failSet2 = new BarDataSet(failSet, "unused");
 
-        successSet.setDrawValues(false);
-        successSet.setColor(0x85E168, 0xff); // FIXME: this is not the way
-        successSet.setHighLightAlpha(0x2e);
+        BarDataSet successEntries = new BarDataSet(successSet, "");
+        BarDataSet failedEntries = new BarDataSet(failSet, "");
 
-        failSet2.setDrawValues(false);
-        failSet2.setColor(0xE44646, 0xff); // FIXME: this is not the way
-        failSet2.setHighLightAlpha(0x2e);
+        styleBars(successEntries, successColor);
+        styleBars(failedEntries, failColor);
 
         BarData resultData = new BarData();
-
-        resultData.addDataSet(successSet);
-        resultData.addDataSet(failSet2);
-
+        resultData.addDataSet(successEntries);
+        resultData.addDataSet(failedEntries);
         return resultData;
     }
 
-    private LineData createLineData(float y, float x) {
-        ArrayList<Entry> lineSet = new ArrayList<>();
+    private void styleBars(BarDataSet set, int color) {
+        set.setDrawValues(true);
+        set.setValueTextSize(16f);
+        set.setColor(color);
+        set.setHighLightAlpha(HIGHLIGHT_ALPHA);
 
-        lineSet.add(new Entry(-0.5f, y));
-        lineSet.add(new Entry(x + 0.5f, y));
+        set.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return ((int)value <= 0) ? "" : DateTime.secondsToTimeString("%dh %dm", (int)value);
+            }
+        });
+    }
 
-        LineDataSet set = new LineDataSet(lineSet, "asd");
-        set.setColor(0xba1c1c, 0xff);
-        set.setLineWidth(3.5f);
-        set.setDrawValues(false);
-        set.setDrawCircles(false);
-
+    private LineData createLineData() {
+        LineDataSet set = new LineDataSet(null, "");
+        set.addEntry(new Entry(CHART_X_MIN, userGoal));
+        set.addEntry(new Entry(CHART_X_MAX, userGoal));
+        styleLineData(set);
         LineData data = new LineData(set);
-        data.setValueTextSize(16f);
         data.setHighlightEnabled(false);
         return data;
     }
 
+    private void styleLineData(LineDataSet set) {
+        set.setColor(Color.BLACK, 0x80);
+        set.setCircleColor(Color.BLACK);
+        set.setLineWidth(3f);
+        set.setDrawValues(false);
+        set.setDrawCircleHole(false);
+        set.setCircleRadius(4f);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void initChart(CombinedChart chart, List<SleepModel> models) {
+    private void initChart(View view) {
+        chartView = view.findViewById(R.id.sleep_chart_item_combo_chart);
+        chartView.setDoubleTapToZoomEnabled(false);
+        chartView.getAxisRight().setEnabled(false);
+        chartView.getDescription().setEnabled(false);
+        chartView.getLegend().setEnabled(false);
+        chartView.getXAxis().setDrawGridLines(false);
+        chartView.getAxisLeft().setEnabled(false);
 
-        // Styling, who knows
-        chart.setDoubleTapToZoomEnabled(false);
-        chart.getAxisRight().setEnabled(false);
-        chart.getDescription().setEnabled(false);
-        chart.getLegend().setEnabled(false);
-        chart.getXAxis().setDrawGridLines(false);
-        chart.getXAxis().setAxisMaximum(models.size() - 0.5f);
-        chart.getXAxis().setAxisMinimum(-0.5f);
-        chart.getXAxis().setTextSize(14f);
+        // Chart axis range
+        chartView.getXAxis().setAxisMaximum(CHART_X_MAX);
+        chartView.getXAxis().setAxisMinimum(CHART_X_MIN);
+        chartView.getAxisLeft().setAxisMinimum(CHART_Y_MIN);
 
-        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        chart.getXAxis().setTextColor(Color.BLACK);
-        chart.getXAxis().setTextSize(16f);
+        // Text styling on bar entries
+        chartView.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
+        chartView.getXAxis().setTextColor(Color.BLACK);
+        chartView.getXAxis().setTextSize(16f);
+        chartView.getXAxis().setValueFormatter(new IndexAxisValueFormatter(
+                getResources().getStringArray(R.array.week_days_en)));
 
-        String[] days = {"Mon","Tue","Wed","Thu","Fri","Sat","Sun",};
-
-        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(days));
-
-        chart.setDrawOrder(new CombinedChart.DrawOrder[] {
+        chartView.setDrawOrder(new CombinedChart.DrawOrder[] {
             CombinedChart.DrawOrder.BAR,
             CombinedChart.DrawOrder.LINE
         });
+    }
+
+    @Override
+    public void onStop() {
+        savedIndex = sleepHabits.getIndex();
+        super.onStop();
     }
 
     @Override

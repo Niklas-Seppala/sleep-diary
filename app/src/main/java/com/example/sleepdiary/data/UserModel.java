@@ -8,17 +8,22 @@ import android.database.Cursor;
  */
 public class UserModel extends DbModel {
     private String name;
+    private int goal;
     private int id;
 
-    public UserModel() {}
-    public UserModel(String name) {
+    public UserModel() {
+//        this.goal = 6 * TimeUtility.SECONDS_IN_HOUR; // FIXME: TEMPORARY
+    }
+    public UserModel(String name, int goal) {
         this.id = -1;
         this.name = name;
+        this.goal = goal;
     }
 
     @Override
     public DbModel serialize(ContentValues toRow) {
         toRow.put(Db.user.COLUMN_NAME, this.name);
+        toRow.put(Db.user.COLUMN_GOAL, this.goal);
         return this;
     }
 
@@ -31,6 +36,9 @@ public class UserModel extends DbModel {
                     break;
                 case Db.user.COLUMN_NAME:
                     this.name = fromRow.getString(i);
+                    break;
+                case Db.user.COLUMN_GOAL:
+                    this.goal = fromRow.getInt(i);
                     break;
             }
         }
@@ -48,6 +56,13 @@ public class UserModel extends DbModel {
     }
 
     /**
+     * @return User's set sleep duration goal in seconds.
+     */
+    public int getGoal() {
+        return goal;
+    }
+
+    /**
      * @return User id
      */
     public int getId() {
@@ -60,4 +75,5 @@ public class UserModel extends DbModel {
     public String getName() {
         return this.name;
     }
+
 }

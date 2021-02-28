@@ -1,9 +1,25 @@
 package com.example.sleepdiary.data;
 
+import android.os.Build;
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+import com.example.sleepdiary.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Singleton class for accessing data loaded from database
@@ -19,6 +35,7 @@ public class GlobalData {
     private static boolean isDirty = true;
     private ArrayList<UserModel> userModels;
     private ArrayList<SleepModel> sleepModels;
+    private List<WeeklySleepHabit> sleepModelsByWeeks;
 
     /**
      * @return Gets the global sleep models
@@ -57,18 +74,66 @@ public class GlobalData {
      * Loads user and sleep models from database
      * @param db Open SQLite connection
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void update(DbConnection db) {
         instance.userModels = db.select(Db.user.TABLE_NAME, UserModel.class,
                 null, null);
         instance.sleepModels = db.select(Db.sleep.TABLE_NAME, SleepModel.class,
                 null, null);
+        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.sleepModels);
+
         setClean();
+    }
+
+    @SafeVarargs
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... extractors) {
+        final Map<List<?>, Boolean> saved = new HashMap<>();
+        return t -> {
+            final List<?> keys = Arrays.stream(extractors)
+                    .map(ke -> ke.apply(t))
+                    .collect(Collectors.toList());
+            return saved.putIfAbsent(keys, true) == null;
+        };
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepModel> models) {
+        Collections.reverse(models);
+        List<WeeklySleepHabit> results = models.stream()
+                .map(sleep -> {
+                    Calendar c = Calendar.getInstance(Locale.GERMAN);
+                    c.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
+                    return new Pair<>(c.get(Calendar.WEEK_OF_YEAR), c.get(Calendar.YEAR));
+                })
+                .filter(distinctByKeys(pair -> pair.first,
+                        pair -> pair.second))
+                .map(pair -> new WeeklySleepHabit(pair.first, pair.second, new SleepModel[7]))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        models.forEach(sleep -> {
+            Calendar c = Calendar.getInstance(Locale.GERMAN);
+            c.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
+            results.forEach(week -> {
+                if (week.getYear() == c.get(Calendar.YEAR) &&
+                        week.getWeekNum() == c.get(Calendar.WEEK_OF_YEAR)) {
+                    week.getDays()[DateTime.Unix.getWeekDay(sleep.getStartTimestamp()).getIndex()] = sleep;
+                }
+            });
+        });
+
+        for (int i = 0; i < results.size(); i++)
+            for (int j = 0; j < results.get(i).getDays().length; j++)
+                if (results.get(i).getDays()[j] == null)
+                    results.get(i).getDays()[j] = new SleepModel();
+
+        return results;
     }
 
 
     // TODO: Dev func
     public static void populateMockData(DbConnection db) {
-        UserModel mockUser = new UserModel("Niklas");
+        UserModel mockUser = new UserModel("Niklas", (int)(6.5f * DateTime.SECONDS_IN_HOUR));
         db.insert(mockUser);
         mockUser =  db.select(Db.user.TABLE_NAME, UserModel.class, null, null).get(0);
         SleepModel model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613684635, 1613712235);
@@ -82,6 +147,15 @@ public class GlobalData {
         model = new SleepModel(mockUser.getId(), Rating.BAD, 1614027955, 1614056755);
         db.insert(model);
         model = new SleepModel(mockUser.getId(), Rating.OK, 1614113755, 1614141235);
+        db.insert(model);
+
+        model = new SleepModel(mockUser.getId(), Rating.OK, 1614543465, 1614562465);
+        db.insert(model);
+        model = new SleepModel(mockUser.getId(), Rating.OK, 1614631485, 1614653485);
+        db.insert(model);
+        model = new SleepModel(mockUser.getId(), Rating.OK, 1614710685, 1614726735);
+        db.insert(model);
+        model = new SleepModel(mockUser.getId(), Rating.OK, 1614797085, 1614832545);
         db.insert(model);
     }
 
@@ -97,5 +171,9 @@ public class GlobalData {
 
     protected static void setDirty() {
         isDirty = true;
+    }
+
+    public List<WeeklySleepHabit> getSleepModelsByWeeks() {
+        return sleepModelsByWeeks;
     }
 }

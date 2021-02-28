@@ -12,6 +12,7 @@ public abstract class Db {
         public static final String TABLE_NAME  = "user";
         public static final String COLUMN_ID   = "id";
         public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_GOAL = "goal";
 
         /**
          * Creates SQL string for table creation, resets
@@ -22,7 +23,8 @@ public abstract class Db {
         public static String createTableSQL(StringBuilder sb) {
             sb.append("CREATE TABLE ").append(TABLE_NAME).append(" (")
                     .append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
-                    .append(COLUMN_NAME).append(" TEXT NOT NULL")
+                    .append(COLUMN_NAME).append(" TEXT NOT NULL,")
+                    .append(COLUMN_GOAL).append(" INTEGER")
                     .append(");");
             String SQL_Statement = sb.toString();
             sb.delete(0, sb.length());

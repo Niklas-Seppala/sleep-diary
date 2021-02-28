@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">SleepDiary</string>
+
+<!--    Chart-->
+    <string name="week_header">Week %1$d</string>
+    <string-array name="week_days_en">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+
 </resources>

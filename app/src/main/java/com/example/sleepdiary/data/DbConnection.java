@@ -62,7 +62,6 @@ public class DbConnection extends SQLiteOpenHelper {
                                                    @NonNull Class<T> modelType,
                                                    @Nullable String sql,
                                                    @Nullable String[] sArgs)  {
-        // If SQL string was provided use that
         String SQL_Statement = sql != null ? sql : "SELECT * FROM " + tableName;
         ArrayList<T> results = new ArrayList<>();
 
@@ -78,9 +77,8 @@ public class DbConnection extends SQLiteOpenHelper {
                     Log.e("MODEL", "select():" + ex.getMessage());
                     assert false;
                 }
-            } while (cursor.moveToNext()); // Move to new Cursor position
+            } while (cursor.moveToNext());
         }
-        // Free Cursor resources
         cursor.close();
         return results;
     }
