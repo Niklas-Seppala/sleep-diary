@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.SleepHabits;
-import com.example.sleepdiary.data.SleepModel;
+import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.WeeklySleepHabit;
 import com.example.sleepdiary.time.DateTime;
 import com.github.mikephil.charting.animation.Easing;
@@ -121,7 +121,7 @@ public class ChartFragment extends Fragment {
         ArrayList<BarEntry> successSet = new ArrayList<>();
         ArrayList<BarEntry> failSet = new ArrayList<>();
 
-        SleepModel[] weekDays = week.getDays();
+        SleepEntry[] weekDays = week.getDays();
         for (int x = 0; x < weekDays.length; x++) {
             float y = weekDays[x].getEndTimestamp() - weekDays[x].getStartTimestamp();
             BarEntry entry = new BarEntry((float) x, y);

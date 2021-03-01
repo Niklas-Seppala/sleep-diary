@@ -1,5 +1,7 @@
 package com.example.sleepdiary.data;
 
+import com.example.sleepdiary.data.models.SleepEntry;
+
 /**
  * This class wraps week's sleep entries to
  * a week.
@@ -7,9 +9,9 @@ package com.example.sleepdiary.data;
 public class WeeklySleepHabit {
     private final int weekNum;
     private final int year;
-    private final SleepModel[] days;
+    private final SleepEntry[] days;
 
-    public WeeklySleepHabit(int weekNum, int year, SleepModel[] days) {
+    public WeeklySleepHabit(int weekNum, int year, SleepEntry[] days) {
         this.weekNum = weekNum;
         this.year = year;
         this.days = days;
@@ -18,7 +20,7 @@ public class WeeklySleepHabit {
     /**
      * @return Get the sleep entries of this week.
      */
-    public SleepModel[] getDays() {
+    public SleepEntry[] getDays() {
         return days;
     }
 

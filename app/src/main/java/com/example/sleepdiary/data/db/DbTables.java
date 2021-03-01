@@ -1,9 +1,9 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary.data.db;
 
 /**
  * Application database tables
  */
-public abstract class Db {
+public abstract class DbTables {
 
     /**
      * User table
@@ -56,7 +56,7 @@ public abstract class Db {
                     .append(COLUMN_START_TIME).append(" INTEGER NOT NULL,")
                     .append(COLUMN_END_TIME).append(" INTEGER NOT NULL,")
                     .append("FOREIGN KEY (").append(COLUMN_USER_ID).append(") REFERENCES ")
-                    .append(Db.user.TABLE_NAME).append("(").append(Db.user.COLUMN_ID).append(")")
+                    .append(DbTables.user.TABLE_NAME).append("(").append(DbTables.user.COLUMN_ID).append(")")
                     .append(");");
             String SQL_Statement = sb.toString();
             sb.delete(0, sb.length());

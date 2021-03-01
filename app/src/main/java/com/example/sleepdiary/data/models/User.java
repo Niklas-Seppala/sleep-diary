@@ -1,43 +1,45 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary.data.models;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.sleepdiary.data.db.DbTables;
+
 /**
  * Database model for user table
  */
-public class UserModel extends DbModel {
+public class User extends Model {
     private String name;
     private int goal;
     private int id;
 
-    public UserModel() {
+    public User() {
 //        this.goal = 6 * TimeUtility.SECONDS_IN_HOUR; // FIXME: TEMPORARY
     }
-    public UserModel(String name, int goal) {
+    public User(String name, int goal) {
         this.id = -1;
         this.name = name;
         this.goal = goal;
     }
 
     @Override
-    public DbModel serialize(ContentValues toRow) {
-        toRow.put(Db.user.COLUMN_NAME, this.name);
-        toRow.put(Db.user.COLUMN_GOAL, this.goal);
+    public Model serialize(ContentValues toRow) {
+        toRow.put(DbTables.user.COLUMN_NAME, this.name);
+        toRow.put(DbTables.user.COLUMN_GOAL, this.goal);
         return this;
     }
 
     @Override
-    public DbModel deserialize(Cursor fromRow) {
+    public Model deserialize(Cursor fromRow) {
         for (int i = 0; i < fromRow.getColumnCount(); i++) {
             switch (fromRow.getColumnName(i)) {
-                case Db.user.COLUMN_ID:
+                case DbTables.user.COLUMN_ID:
                     this.id = fromRow.getInt(i);
                     break;
-                case Db.user.COLUMN_NAME:
+                case DbTables.user.COLUMN_NAME:
                     this.name = fromRow.getString(i);
                     break;
-                case Db.user.COLUMN_GOAL:
+                case DbTables.user.COLUMN_GOAL:
                     this.goal = fromRow.getInt(i);
                     break;
             }
@@ -47,7 +49,7 @@ public class UserModel extends DbModel {
 
     @Override
     public String getTableName() {
-        return Db.user.TABLE_NAME;
+        return DbTables.user.TABLE_NAME;
     }
 
     @Override

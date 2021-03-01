@@ -7,6 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.example.sleepdiary.data.db.DbTables;
+import com.example.sleepdiary.data.db.DbConnection;
+import com.example.sleepdiary.data.models.Rating;
+import com.example.sleepdiary.data.models.SleepEntry;
+import com.example.sleepdiary.data.models.User;
 import com.example.sleepdiary.time.DateTime;
 
 import java.util.ArrayList;
@@ -33,23 +38,23 @@ import java.util.stream.Collectors;
 public class GlobalData {
     private static final GlobalData instance = new GlobalData();
     private static boolean isDirty = true;
-    private ArrayList<UserModel> userModels;
-    private ArrayList<SleepModel> sleepModels;
+    private ArrayList<User> userModels;
+    private ArrayList<SleepEntry> sleepEntries;
     private List<WeeklySleepHabit> sleepModelsByWeeks;
 
     /**
      * @return Gets the global sleep models
      */
     @NonNull
-    public ArrayList<SleepModel> getSleepModels() {
-        return this.sleepModels;
+    public ArrayList<SleepEntry> getSleepEntries() {
+        return this.sleepEntries;
     }
 
     /**
      * @return Get the global user models
      */
     @NonNull
-    public ArrayList<UserModel> getUserModels() {
+    public ArrayList<User> getUserModels() {
         return this.userModels;
     }
 
@@ -57,7 +62,7 @@ public class GlobalData {
      * @return Get the global current user
      */
     @Nullable
-    public UserModel getCurrentUser() {
+    public User getCurrentUser() {
         return this.userModels.get(0);
     } // FIXME ????
 
@@ -76,11 +81,11 @@ public class GlobalData {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void update(DbConnection db) {
-        instance.userModels = db.select(Db.user.TABLE_NAME, UserModel.class,
+        instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class,
                 null, null);
-        instance.sleepModels = db.select(Db.sleep.TABLE_NAME, SleepModel.class,
+        instance.sleepEntries = db.select(DbTables.sleep.TABLE_NAME, SleepEntry.class,
                 null, null);
-        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.sleepModels);
+        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.sleepEntries);
 
         setClean();
     }
@@ -98,7 +103,7 @@ public class GlobalData {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepModel> models) {
+    private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepEntry> models) {
         Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         Collections.reverse(models);
         List<WeeklySleepHabit> results = models.stream()
@@ -108,7 +113,7 @@ public class GlobalData {
                 })
                 .filter(distinctByKeys(pair -> pair.first,
                         pair -> pair.second))
-                .map(pair -> new WeeklySleepHabit(pair.first, pair.second, new SleepModel[7]))
+                .map(pair -> new WeeklySleepHabit(pair.first, pair.second, new SleepEntry[7]))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         models.forEach(sleep -> {
@@ -124,7 +129,7 @@ public class GlobalData {
         for (int i = 0; i < results.size(); i++)
             for (int j = 0; j < results.get(i).getDays().length; j++)
                 if (results.get(i).getDays()[j] == null)
-                    results.get(i).getDays()[j] = new SleepModel();
+                    results.get(i).getDays()[j] = new SleepEntry();
 
         return results;
     }
@@ -132,29 +137,29 @@ public class GlobalData {
 
     // TODO: Dev func
     public static void populateMockData(DbConnection db) {
-        UserModel mockUser = new UserModel("Niklas", (int)(6.5f * DateTime.SECONDS_IN_HOUR));
+        User mockUser = new User("Niklas", (int)(6.5f * DateTime.SECONDS_IN_HOUR));
         db.insert(mockUser);
-        mockUser =  db.select(Db.user.TABLE_NAME, UserModel.class, null, null).get(0);
-        SleepModel model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613684635, 1613712235);
+        mockUser =  db.select(DbTables.user.TABLE_NAME, User.class, null, null).get(0);
+        SleepEntry model = new SleepEntry(mockUser.getId(), Rating.GOOD, 1613684635, 1613712235);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613757955, 1613793955);
+        model = new SleepEntry(mockUser.getId(), Rating.GOOD, 1613757955, 1613793955);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.GOOD, 1613847955, 1613894755);
+        model = new SleepEntry(mockUser.getId(), Rating.GOOD, 1613847955, 1613894755);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1613941555, 1613973955);
+        model = new SleepEntry(mockUser.getId(), Rating.OK, 1613941555, 1613973955);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.BAD, 1614027955, 1614056755);
+        model = new SleepEntry(mockUser.getId(), Rating.BAD, 1614027955, 1614056755);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1614113755, 1614141235);
+        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614113755, 1614141235);
         db.insert(model);
 
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1614543465, 1614562465);
+        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614543465, 1614562465);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1614631485, 1614653485);
+        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614631485, 1614653485);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1614710685, 1614726735);
+        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614710685, 1614726735);
         db.insert(model);
-        model = new SleepModel(mockUser.getId(), Rating.OK, 1614797085, 1614832545);
+        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614797085, 1614832545);
         db.insert(model);
     }
 
@@ -164,11 +169,11 @@ public class GlobalData {
         return isDirty;
     }
 
-    protected static void setClean() {
+    private static void setClean() {
         isDirty = false;
     }
 
-    protected static void setDirty() {
+    public static void setDirty() {
         isDirty = true;
     }
 

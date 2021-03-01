@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.sleepdiary.data.DbConnection;
+import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.GlobalData;
 
 public class StatsActivity extends AppCompatActivity {

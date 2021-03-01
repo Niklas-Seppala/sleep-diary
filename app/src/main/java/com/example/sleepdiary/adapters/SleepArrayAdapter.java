@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.sleepdiary.R;
-import com.example.sleepdiary.data.SleepModel;
+import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.time.DateTime;
 
 import java.text.DateFormat;
@@ -24,11 +24,11 @@ import java.util.List;
 /**
  * Custom ArrayAdapter for SleepModels.
  */
-public class SleepArrayAdapter extends ArrayAdapter<SleepModel> {
+public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
     @SuppressLint("SimpleDateFormat")
     private static final DateFormat dateFormat = new SimpleDateFormat("EEE, dd.MM.yy");
 
-    public SleepArrayAdapter(@NonNull Context context, @NonNull List<SleepModel> models) {
+    public SleepArrayAdapter(@NonNull Context context, @NonNull List<SleepEntry> models) {
         super(context, 0, models);
     }
 
@@ -43,7 +43,7 @@ public class SleepArrayAdapter extends ArrayAdapter<SleepModel> {
                 .inflate(R.layout.sleep_list_item_layout, parent, false);
         }
         // Model data
-        SleepModel model = getItem(position);
+        SleepEntry model = getItem(position);
         Date startTime = DateTime.Unix.createDate(model.getStartTimestamp());
         Date endTime = DateTime.Unix.createDate(model.getEndTimestamp());
 
@@ -63,7 +63,7 @@ public class SleepArrayAdapter extends ArrayAdapter<SleepModel> {
         return itemView;
     }
 
-    private void setSuccessIcon(ImageView view, SleepModel model) {
+    private void setSuccessIcon(ImageView view, SleepEntry model) {
         view.setImageResource(model.getEndTimestamp() - model.getStartTimestamp() < 28000
                 ? R.drawable.ic_fail_48
                 : R.drawable.ic_check_48);

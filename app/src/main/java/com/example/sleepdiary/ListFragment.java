@@ -21,7 +21,7 @@ public class ListFragment extends Fragment {
         ListView listView = view.findViewById(R.id.sleepListView);
         assert getContext() != null;
         listView.setAdapter(new SleepArrayAdapter(getContext(),
-                GlobalData.getInstance().getSleepModels()
+                GlobalData.getInstance().getSleepEntries()
         ));
     }
 
