@@ -1,4 +1,4 @@
-package com.example.sleepdiary;
+package com.example.sleepdiary.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.sleepdiary.R;
 import com.example.sleepdiary.data.SleepModel;
 import com.example.sleepdiary.time.DateTime;
 

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.sleepdiary.adapters.SleepArrayAdapter;
 import com.example.sleepdiary.data.GlobalData;
 
 public class ListFragment extends Fragment {

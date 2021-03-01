@@ -99,12 +99,12 @@ public class GlobalData {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepModel> models) {
+        Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         Collections.reverse(models);
         List<WeeklySleepHabit> results = models.stream()
                 .map(sleep -> {
-                    Calendar c = Calendar.getInstance(Locale.GERMAN);
-                    c.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
-                    return new Pair<>(c.get(Calendar.WEEK_OF_YEAR), c.get(Calendar.YEAR));
+                    calendar.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
+                    return new Pair<>(calendar.get(Calendar.WEEK_OF_YEAR), calendar.get(Calendar.YEAR));
                 })
                 .filter(distinctByKeys(pair -> pair.first,
                         pair -> pair.second))
@@ -112,11 +112,10 @@ public class GlobalData {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         models.forEach(sleep -> {
-            Calendar c = Calendar.getInstance(Locale.GERMAN);
-            c.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
+            calendar.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
             results.forEach(week -> {
-                if (week.getYear() == c.get(Calendar.YEAR) &&
-                        week.getWeekNum() == c.get(Calendar.WEEK_OF_YEAR)) {
+                if (week.getYear() == calendar.get(Calendar.YEAR) &&
+                        week.getWeek() == calendar.get(Calendar.WEEK_OF_YEAR)) {
                     week.getDays()[DateTime.Unix.getWeekDay(sleep.getStartTimestamp()).getIndex()] = sleep;
                 }
             });

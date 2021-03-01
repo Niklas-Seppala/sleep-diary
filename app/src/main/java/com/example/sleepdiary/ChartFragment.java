@@ -36,18 +36,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChartFragment extends Fragment {
-    private static int savedIndex = 0;
-
     private static final float CHART_X_MAX = 6.5f;
     private static final float CHART_X_MIN = -0.5f;
     private static final float CHART_Y_MIN = 0f;
     private static final int ANIM_DUR_MILLIS = 600;
-
-    private static int successColor = -1;
-    private static int failColor = -1;
     private static final int HIGHLIGHT_ALPHA = 0x2e;
     private static final float DISABLED_BTN_ALPHA = 0.5f;
-
+    private static int savedIndex = 0;
+    private static int successColor = -1;
+    private static int failColor = -1;
     private float userGoal;
     private SleepHabits sleepHabits;
 
@@ -70,7 +67,6 @@ public class ChartFragment extends Fragment {
     private void initColors() {
         // Only run once per app lifetime
         if (successColor > 0) return;
-
         successColor = getResources().getColor(R.color.teal_200);
         failColor = getResources().getColor(R.color.teal_700);
     }
@@ -82,7 +78,7 @@ public class ChartFragment extends Fragment {
 
     private void initHeaderViews(View view) {
         weekHeader = view.findViewById(R.id.sleep_chart_item_week_header_tv);
-        weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeekNum()));
+        weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeek()));
 
         prevBtn = view.findViewById(R.id.sleep_chart_item_btn_prev_week);
         prevBtn.setOnClickListener(this::changeWeek);
@@ -105,7 +101,7 @@ public class ChartFragment extends Fragment {
     private void displayWeek(WeeklySleepHabit week) {
         if (week != null) {
             chartView.setData(createChartData(week));
-            weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeekNum()));
+            weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeek()));
 
             chartView.notifyDataSetChanged();
             chartView.animateY(ANIM_DUR_MILLIS, Easing.EaseOutCubic);
@@ -128,7 +124,7 @@ public class ChartFragment extends Fragment {
         SleepModel[] weekDays = week.getDays();
         for (int x = 0; x < weekDays.length; x++) {
             float y = weekDays[x].getEndTimestamp() - weekDays[x].getStartTimestamp();
-            BarEntry entry = new BarEntry((float)x, y);
+            BarEntry entry = new BarEntry((float) x, y);
             List<BarEntry> set = y < userGoal ? failSet : successSet;
             set.add(entry);
         }
@@ -154,7 +150,7 @@ public class ChartFragment extends Fragment {
         set.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return ((int)value <= 0) ? "" : DateTime.secondsToTimeString("%dh %dm", (int)value);
+                return ((int) value <= 0) ? "" : DateTime.secondsToTimeString("%dh %dm", (int) value);
             }
         });
     }
@@ -200,9 +196,9 @@ public class ChartFragment extends Fragment {
         chartView.getXAxis().setValueFormatter(new IndexAxisValueFormatter(
                 getResources().getStringArray(R.array.week_days_en)));
 
-        chartView.setDrawOrder(new CombinedChart.DrawOrder[] {
-            CombinedChart.DrawOrder.BAR,
-            CombinedChart.DrawOrder.LINE
+        chartView.setDrawOrder(new CombinedChart.DrawOrder[]{
+                CombinedChart.DrawOrder.BAR,
+                CombinedChart.DrawOrder.LINE
         });
     }
 
