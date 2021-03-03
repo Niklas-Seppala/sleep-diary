@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">SleepDiary</string>
 
-<!--    Chart-->
-    <string name="week_header">Week %1$d</string>
+<!--    Time-->
+    <string name="clock_24h">R</string>
+    <string name="date_time_cal">%1$ta, %1$td.%1$tm.%1$tY</string>
+    <string name="h_min_dur_long">%1$d hours, %2$d minutes</string>
+    <string name="h_min_dur_short">%1$dh, %2$dmin</string>
     <string-array name="week_days_en">
         <item>Mon</item>
         <item>Tue</item>
@@ -12,6 +15,13 @@
         <item>Sat</item>
         <item>Sun</item>
     </string-array>
+    <string name="year">%1$d</string>
+
+<!--    Chart-->
+    <string name="week_header">Week %1$d</string>
+
+<!--    Sleep Entry Inspection-->
+    <string name="dur_text">Duration:</string>
 
 
 </resources>

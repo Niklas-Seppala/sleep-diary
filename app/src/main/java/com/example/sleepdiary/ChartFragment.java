@@ -1,5 +1,6 @@
 package com.example.sleepdiary;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class ChartFragment extends Fragment {
 
     private CombinedChart chartView;
     private TextView weekHeader;
+    private TextView dateHeader;
     private ImageButton nextBtn;
     private ImageButton prevBtn;
 
@@ -65,20 +67,20 @@ public class ChartFragment extends Fragment {
     }
 
     private void initColors() {
-        // Only run once per app lifetime
         if (successColor > 0) return;
         successColor = getResources().getColor(R.color.teal_200);
         failColor = getResources().getColor(R.color.teal_700);
     }
 
     private void getData() {
-        sleepHabits = new SleepHabits(GlobalData.getInstance().getSleepModelsByWeeks(), savedIndex);
+        sleepHabits = new SleepHabits(GlobalData.getInstance().getWeeklySleepHabits(), savedIndex);
         userGoal = GlobalData.getInstance().getCurrentUser().getGoal();
     }
 
     private void initHeaderViews(View view) {
         weekHeader = view.findViewById(R.id.sleep_chart_item_week_header_tv);
-        weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeek()));
+        dateHeader = view.findViewById(R.id.sleep_chart_item_date_tv);
+        updateHeaderText();
 
         prevBtn = view.findViewById(R.id.sleep_chart_item_btn_prev_week);
         prevBtn.setOnClickListener(this::changeWeek);
@@ -100,14 +102,20 @@ public class ChartFragment extends Fragment {
 
     private void displayWeek(WeeklySleepHabit week) {
         if (week != null) {
+            updateHeaderText();
             chartView.setData(createChartData(week));
-            weekHeader.setText(getString(R.string.week_header, sleepHabits.getWeek().getWeek()));
-
             chartView.notifyDataSetChanged();
             chartView.animateY(ANIM_DUR_MILLIS, Easing.EaseOutCubic);
             nextBtn.setAlpha(sleepHabits.hasNextWeek() ? 1f : DISABLED_BTN_ALPHA);
             prevBtn.setAlpha(sleepHabits.hasPrevWeek() ? 1f : DISABLED_BTN_ALPHA);
         }
+    }
+
+    private void updateHeaderText() {
+        int weekNum = sleepHabits.getWeek().getDate().getWeek();
+        int year = sleepHabits.getWeek().getDate().getYear();
+        weekHeader.setText(getString(R.string.week_header, weekNum));
+        dateHeader.setText(getString(R.string.year, year));
     }
 
     private CombinedData createChartData(WeeklySleepHabit week) {
@@ -117,6 +125,7 @@ public class ChartFragment extends Fragment {
         return data;
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private BarData createBarData(WeeklySleepHabit week) {
         ArrayList<BarEntry> successSet = new ArrayList<>();
         ArrayList<BarEntry> failSet = new ArrayList<>();
@@ -150,7 +159,9 @@ public class ChartFragment extends Fragment {
         set.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return ((int) value <= 0) ? "" : DateTime.secondsToTimeString("%dh %dm", (int) value);
+                return ((int) value <= 0)
+                        ? ""
+                        : DateTime.secondsToTimeString("%dh %dm", (int) value);
             }
         });
     }
@@ -204,8 +215,12 @@ public class ChartFragment extends Fragment {
 
     @Override
     public void onStop() {
-        savedIndex = sleepHabits.getIndex();
         super.onStop();
+        saveWeek();
+    }
+
+    private void saveWeek() {
+        savedIndex = sleepHabits.getIndex();
     }
 
     @Override

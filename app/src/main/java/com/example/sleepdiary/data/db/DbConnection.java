@@ -77,6 +77,7 @@ public class DbConnection extends SQLiteOpenHelper {
                     results.add((T)modelType.getConstructor().newInstance().deserialize(cursor));
                 } catch (Exception ex)  {
                     Log.e("MODEL", "select():" + ex.getMessage());
+
                     assert false;
                 }
             } while (cursor.moveToNext());

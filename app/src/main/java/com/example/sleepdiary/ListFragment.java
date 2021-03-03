@@ -1,5 +1,6 @@
 package com.example.sleepdiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,12 @@ public class ListFragment extends Fragment {
         listView.setAdapter(new SleepArrayAdapter(getContext(),
                 GlobalData.getInstance().getSleepEntries()
         ));
+
+        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Intent inspection = new Intent(view.getContext(), SleepEntryInspectionActivity.class);
+            inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);
+            startActivity(inspection);
+        });
     }
 
     @Override

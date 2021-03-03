@@ -10,13 +10,11 @@ import com.example.sleepdiary.data.db.DbTables;
  */
 public class User extends Model {
     private String name;
-    private int goal;
+    private float goal;
     private int id;
 
-    public User() {
-//        this.goal = 6 * TimeUtility.SECONDS_IN_HOUR; // FIXME: TEMPORARY
-    }
-    public User(String name, int goal) {
+    public User() {}
+    public User(String name, float goal) {
         this.id = -1;
         this.name = name;
         this.goal = goal;
@@ -40,7 +38,7 @@ public class User extends Model {
                     this.name = fromRow.getString(i);
                     break;
                 case DbTables.user.COLUMN_GOAL:
-                    this.goal = fromRow.getInt(i);
+                    this.goal = fromRow.getFloat(i);
                     break;
             }
         }
@@ -60,7 +58,7 @@ public class User extends Model {
     /**
      * @return User's set sleep duration goal in seconds.
      */
-    public int getGoal() {
+    public float getGoal() {
         return goal;
     }
 

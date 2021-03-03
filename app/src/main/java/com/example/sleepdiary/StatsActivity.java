@@ -32,7 +32,8 @@ public class StatsActivity extends AppCompatActivity {
 
             // TODO: DEV
             if (GlobalData.getInstance().getUserModels().size() == 0) {
-                GlobalData.populateMockData(db);
+//                GlobalData.populateMockData(db);
+                GlobalData.__DEV__populateDb(db, "nikke", 7.5, 1613757955, 60);
             }
 
             db.close();

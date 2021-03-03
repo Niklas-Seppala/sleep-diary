@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Static utility class for dealing with time and dates
+ * Static utility class for dealing with time and dates.
  */
 public abstract class DateTime {
     @SuppressLint("SimpleDateFormat")
@@ -62,11 +62,19 @@ public abstract class DateTime {
      * @return Time string containing hours and minutes
      */
     public static String secondsToTimeString(@Nullable String format, int seconds) {
-        int h = seconds / 3600;
-        int min = (seconds % 3600) / 60;
+        int h = getHoursFromSeconds(seconds);
+        int min = getMinutesFromSeconds(seconds);
 
         format = format == null ? "%dh, %dmin" : format;
         return String.format(format, h, min);
+    }
+
+    public static int getMinutesFromSeconds(int seconds) {
+        return (seconds % SECONDS_IN_HOUR) / 60;
+    }
+
+    public static int getHoursFromSeconds(int seconds) {
+        return seconds / SECONDS_IN_HOUR;
     }
 
     /**

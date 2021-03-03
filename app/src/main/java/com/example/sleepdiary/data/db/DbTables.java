@@ -24,7 +24,7 @@ public abstract class DbTables {
             sb.append("CREATE TABLE ").append(TABLE_NAME).append(" (")
                     .append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
                     .append(COLUMN_NAME).append(" TEXT NOT NULL,")
-                    .append(COLUMN_GOAL).append(" INTEGER")
+                    .append(COLUMN_GOAL).append(" REAL")
                     .append(");");
             String SQL_Statement = sb.toString();
             sb.delete(0, sb.length());

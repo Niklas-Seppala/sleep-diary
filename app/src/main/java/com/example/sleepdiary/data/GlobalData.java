@@ -13,6 +13,7 @@ import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.models.User;
 import com.example.sleepdiary.time.DateTime;
+import com.example.sleepdiary.time.SimpleDate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -47,7 +49,7 @@ public class GlobalData {
      */
     @NonNull
     public ArrayList<SleepEntry> getSleepEntries() {
-        return this.sleepEntries;
+        return sleepEntries;
     }
 
     /**
@@ -55,7 +57,15 @@ public class GlobalData {
      */
     @NonNull
     public ArrayList<User> getUserModels() {
-        return this.userModels;
+        return userModels;
+    }
+
+
+    /**
+     * @return Get a list of WeeklySleepHabit objects.
+     */
+    public List<WeeklySleepHabit> getWeeklySleepHabits() {
+        return sleepModelsByWeeks;
     }
 
     /**
@@ -63,7 +73,7 @@ public class GlobalData {
      */
     @Nullable
     public User getCurrentUser() {
-        return this.userModels.get(0);
+        return userModels.get(0);
     } // FIXME ????
 
     /**
@@ -107,21 +117,28 @@ public class GlobalData {
         Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         Collections.reverse(models);
         List<WeeklySleepHabit> results = models.stream()
-                .map(sleep -> {
-                    calendar.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
-                    return new Pair<>(calendar.get(Calendar.WEEK_OF_YEAR), calendar.get(Calendar.YEAR));
+                .map(entry -> {
+                    calendar.setTimeInMillis(DateTime.Unix.getMillis(entry.getStartTimestamp()));
+                    int week = calendar.get(Calendar.WEEK_OF_YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int year = calendar.get(Calendar.YEAR);
+                    return new SimpleDate(week, month, year);
                 })
-                .filter(distinctByKeys(pair -> pair.first,
-                        pair -> pair.second))
-                .map(pair -> new WeeklySleepHabit(pair.first, pair.second, new SleepEntry[7]))
+                .filter(distinctByKeys(SimpleDate::getWeek, SimpleDate::getYear))
+                .map(date -> new WeeklySleepHabit(date, new SleepEntry[7]))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         models.forEach(sleep -> {
             calendar.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
-            results.forEach(week -> {
-                if (week.getYear() == calendar.get(Calendar.YEAR) &&
-                        week.getWeek() == calendar.get(Calendar.WEEK_OF_YEAR)) {
-                    week.getDays()[DateTime.Unix.getWeekDay(sleep.getStartTimestamp()).getIndex()] = sleep;
+            results.forEach(weeklyEntries -> {
+                int year = weeklyEntries.getDate().getYear();
+                int week = weeklyEntries.getDate().getWeek();
+                boolean yearMatches = year == calendar.get(Calendar.YEAR);
+                boolean monthMatch = week == calendar.get(Calendar.WEEK_OF_YEAR);
+
+                if (yearMatches && monthMatch) {
+                    DateTime.IndexedWeekDay day = DateTime.Unix.getWeekDay(sleep.getStartTimestamp());
+                    weeklyEntries.getDays()[day.getIndex()] = sleep;
                 }
             });
         });
@@ -134,50 +151,52 @@ public class GlobalData {
         return results;
     }
 
-
-    // TODO: Dev func
-    public static void populateMockData(DbConnection db) {
-        User mockUser = new User("Niklas", (int)(6.5f * DateTime.SECONDS_IN_HOUR));
-        db.insert(mockUser);
-        mockUser =  db.select(DbTables.user.TABLE_NAME, User.class, null, null).get(0);
-        SleepEntry model = new SleepEntry(mockUser.getId(), Rating.GOOD, 1613684635, 1613712235);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.GOOD, 1613757955, 1613793955);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.GOOD, 1613847955, 1613894755);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.OK, 1613941555, 1613973955);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.BAD, 1614027955, 1614056755);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614113755, 1614141235);
-        db.insert(model);
-
-        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614543465, 1614562465);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614631485, 1614653485);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614710685, 1614726735);
-        db.insert(model);
-        model = new SleepEntry(mockUser.getId(), Rating.OK, 1614797085, 1614832545);
-        db.insert(model);
-    }
-
     private GlobalData() { }
 
+    /**
+     * @return Is the GlobalData Singleton behind the database.
+     */
     public static boolean isDirty() {
         return isDirty;
     }
 
+    /**
+     * Set GlobalData status clean.
+     */
     private static void setClean() {
         isDirty = false;
     }
 
+    /**
+     * Set GlobalData satus dirty.
+     */
     public static void setDirty() {
         isDirty = true;
     }
 
-    public List<WeeklySleepHabit> getSleepModelsByWeeks() {
-        return sleepModelsByWeeks;
+    public static void __DEV__populateDb(DbConnection db, String username,
+                                         double goal, int startTime, int sleepEntryCount) {
+        Random rand = new Random();
+        final int MIN_SLEEP = 25000;
+        final int MAX_SLEEP = 33000;
+        final int MAX_DAYTIME = 65000;
+        final int MIN_DAYTIME = 55000;
+
+        User mockUser = new User(username, (int)(goal * DateTime.SECONDS_IN_HOUR));
+        db.insert(mockUser);
+        mockUser = db.select(DbTables.user.TABLE_NAME, User.class, null, null).get(0);
+
+        int nextTime = startTime;
+        for (int i = 0; i < sleepEntryCount; i++) {
+            int sleepTime = nextTime;
+            int nightTime = (int)((Math.random() * (MAX_SLEEP - MIN_SLEEP)) + MIN_SLEEP);
+            nextTime += nightTime;
+            int wakeTime = nextTime;
+            int dayTime = (int)((Math.random() * (MAX_DAYTIME - MIN_DAYTIME)) + MIN_DAYTIME);
+            nextTime += dayTime;
+            SleepEntry entry = new SleepEntry(mockUser.getId(),
+                    Rating.fromInt(rand.nextInt(4)), sleepTime, wakeTime);
+            db.insert(entry);
+        }
     }
 }
