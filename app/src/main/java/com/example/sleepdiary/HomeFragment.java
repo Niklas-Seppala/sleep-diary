@@ -42,7 +42,8 @@ public class HomeFragment extends Fragment {
         });
         // Alarm Buttom Click
         view.findViewById(R.id.btnAlarm).setOnClickListener(v -> {
-            Log.d("BTN", "Alarm button clicked");
+            Intent alarm = new Intent(getView().getContext(), AlarmActivity.class);
+            startActivity(alarm);
         });
     }
 }
