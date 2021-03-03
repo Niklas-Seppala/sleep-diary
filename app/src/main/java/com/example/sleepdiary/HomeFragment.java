@@ -12,12 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
-
     // Use this :)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHomeViewButtonEvents();
+        setHomeViewButtonEvents(view);
     }
 
     // Dont touch!
@@ -27,27 +26,23 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-    private void setHomeViewButtonEvents() {
-
-        // STATS BUTTON
-        getActivity().findViewById(R.id.btnStats).setOnClickListener(view -> {
-            Log.d("BTN", "Stats button clicked");
+    private void setHomeViewButtonEvents(View view) {
+        // Statistics Button Click
+        view.findViewById(R.id.btnStats).setOnClickListener(v -> {
+            Intent stats = new Intent(v.getContext(), StatsActivity.class);
+            startActivity(stats);
         });
-
-        // SLEEP BUTTON
-        getActivity().findViewById(R.id.btnSleep).setOnClickListener(view -> {
+        // Sleep Button Click
+        view.findViewById(R.id.btnSleep).setOnClickListener(v -> {
             Log.d("BTN", "Sleep button clicked");
         });
-
-        // GOAL BUTTON
-        getActivity().findViewById(R.id.btnGoal).setOnClickListener(view -> {
+        // Goal Button Click
+        view.findViewById(R.id.btnGoal).setOnClickListener(v -> {
             Log.d("BTN", "Goal button clicked");
         });
-
-        // ALARM BUTTOn
-        getView().findViewById(R.id.btnAlarm).setOnClickListener(view -> {
-            Intent alarm = new Intent(getView().getContext(), AlarmActivity.class);
-            startActivity(alarm);
+        // Alarm Buttom Click
+        view.findViewById(R.id.btnAlarm).setOnClickListener(v -> {
+            Log.d("BTN", "Alarm button clicked");
         });
     }
 }

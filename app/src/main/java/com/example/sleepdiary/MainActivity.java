@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         initBottomNavBar();
 
         // Set default fragment
-        setFragment(homeFrag);
+        setFragment(this.homeFrag);
     }
 
     private void initBottomNavBar() {
