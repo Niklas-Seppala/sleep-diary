@@ -68,8 +68,8 @@ public class ChartFragment extends Fragment {
 
     private void initColors() {
         if (successColor > 0) return;
-        successColor = getResources().getColor(R.color.teal_200);
-        failColor = getResources().getColor(R.color.teal_700);
+        successColor = getResources().getColor(R.color.accent_dark);
+        failColor = getResources().getColor(R.color.accent_red);
     }
 
     private void getData() {
@@ -114,8 +114,8 @@ public class ChartFragment extends Fragment {
     private void updateHeaderText() {
         int weekNum = sleepHabits.getWeek().getDate().getWeek();
         int year = sleepHabits.getWeek().getDate().getYear();
-        weekHeader.setText(getString(R.string.week_header, weekNum));
-        dateHeader.setText(getString(R.string.year, year));
+        weekHeader.setText(getString(R.string.time_week_number, weekNum));
+        dateHeader.setText(getString(R.string.time_year, year));
     }
 
     private CombinedData createChartData(WeeklySleepHabit week) {
@@ -159,9 +159,11 @@ public class ChartFragment extends Fragment {
         set.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return ((int) value <= 0)
-                        ? ""
-                        : DateTime.secondsToTimeString("%dh %dm", (int) value);
+                int intVal = (int)value;
+                if (intVal <= 0) return "";
+                return getString(R.string.time_h_min_dur_extra_short,
+                        DateTime.getHoursFromSeconds(intVal),
+                        DateTime.getMinutesFromSeconds(intVal));
             }
         });
     }
@@ -177,7 +179,7 @@ public class ChartFragment extends Fragment {
     }
 
     private void styleLineData(LineDataSet set) {
-        set.setColor(Color.BLACK, 0x80);
+        set.setColor(Color.BLACK);
         set.setCircleColor(Color.BLACK);
         set.setLineWidth(3f);
         set.setDrawValues(false);
@@ -205,7 +207,7 @@ public class ChartFragment extends Fragment {
         chartView.getXAxis().setTextColor(Color.BLACK);
         chartView.getXAxis().setTextSize(16f);
         chartView.getXAxis().setValueFormatter(new IndexAxisValueFormatter(
-                getResources().getStringArray(R.array.week_days_en)));
+                getResources().getStringArray(R.array.time_week_days_en)));
 
         chartView.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.BAR,

@@ -13,11 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.sleepdiary.R;
+import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.models.SleepEntry;
+import com.example.sleepdiary.data.models.User;
 import com.example.sleepdiary.time.DateTime;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,13 +26,10 @@ import java.util.List;
  */
 public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
     @SuppressLint("SimpleDateFormat")
-    private static final DateFormat dateFormat = new SimpleDateFormat("EEE, dd.MM.yy");
-
     public SleepArrayAdapter(@NonNull Context context, @NonNull List<SleepEntry> models) {
         super(context, 0, models);
     }
 
-    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -42,10 +39,10 @@ public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
             itemView = LayoutInflater.from(getContext())
                 .inflate(R.layout.sleep_list_item_layout, parent, false);
         }
-        // Model data
-        SleepEntry model = getItem(position);
-        Date startTime = DateTime.Unix.createDate(model.getStartTimestamp());
-        Date endTime = DateTime.Unix.createDate(model.getEndTimestamp());
+
+        SleepEntry entry = getItem(position);
+        Date startTime = DateTime.Unix.createDate(entry.getStartTimestamp());
+        Date endTime = DateTime.Unix.createDate(entry.getEndTimestamp());
 
         // Views
         ImageView successIcon = itemView.findViewById(R.id.sleep_list_item_success_icon);
@@ -53,19 +50,30 @@ public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
         TextView timeText = itemView.findViewById(R.id.sleep_list_item_clocktime_textview);
         TextView durText = itemView.findViewById(R.id.sleep_list_item_duration_textview);
 
+        int duration = entry.getEndTimestamp() - entry.getStartTimestamp();
+
         // Set data to views
-        dateText.setText(dateFormat.format(startTime));
-        durText.setText(DateTime.secondsToTimeString(null,
-                model.getEndTimestamp() - model.getStartTimestamp()));
-        timeText.setText(DateTime.timeOfDayRangeToString(startTime, endTime));
-        setSuccessIcon(successIcon, model);
+        dateText.setText(getContext().getString(R.string.time_date_time_cal, startTime));
+        durText.setText(getContext().getString(R.string.time_h_min_dur_short,
+                DateTime.getHoursFromSeconds(duration),
+                DateTime.getMinutesFromSeconds(duration)));
+        timeText.setText(getContext().getString(R.string.time_timerange, startTime, endTime));
+        setSuccessIcon(successIcon, entry);
 
         return itemView;
     }
 
-    private void setSuccessIcon(ImageView view, SleepEntry model) {
-        view.setImageResource(model.getEndTimestamp() - model.getStartTimestamp() < 28000
-                ? R.drawable.ic_fail_48
-                : R.drawable.ic_check_48);
+    private void setSuccessIcon(ImageView imageView, SleepEntry entry) {
+        int duration = entry.getEndTimestamp() - entry.getStartTimestamp();
+        User user = GlobalData.getInstance().getCurrentUser();
+        if (user != null) {
+            int iconId;
+            if (duration >= user.getGoal()) {
+                iconId = R.drawable.ic_check_48;
+            } else {
+                iconId = R.drawable.ic_fail_48;
+            }
+            imageView.setImageResource(iconId);
+        }
     }
 }

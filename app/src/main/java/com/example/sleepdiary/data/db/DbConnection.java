@@ -95,10 +95,8 @@ public class DbConnection extends SQLiteOpenHelper {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         model.serialize(contentValues);
-
         long affectedRows = SQLiteDB.insert(model.getTableName(), null,
                 contentValues);
-
         GlobalData.setDirty();
         return affectedRows > 0;
     }

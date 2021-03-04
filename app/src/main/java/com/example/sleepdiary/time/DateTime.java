@@ -15,7 +15,6 @@ import java.util.Locale;
  */
 public abstract class DateTime {
     @SuppressLint("SimpleDateFormat")
-    private static final DateFormat timeFormat = new SimpleDateFormat("kk:mm");
     private static final Calendar calendar = Calendar.getInstance(Locale.GERMANY);
 
     public static final int SECONDS_IN_HOUR = 3600;
@@ -39,34 +38,6 @@ public abstract class DateTime {
         public int getIndex() {
             return value;
         }
-    }
-
-    /**
-     * Creates a clock time range string from two dates.
-     *      example: "16:42 - 17:25"
-     *
-     * @param start start Date object
-     * @param end end Date object
-     * @return Time of day range as a string.
-     */
-    public static String timeOfDayRangeToString(Date start, Date end) {
-        return String.format("%s - %s", timeFormat.format(start), timeFormat.format(end));
-    }
-
-    /**
-     * Creates a time string from seconds. Only hours and minutes
-     * can be used.
-     *      Example: "13h, 32min"
-     * @param format Optional format
-     * @param seconds seconds
-     * @return Time string containing hours and minutes
-     */
-    public static String secondsToTimeString(@Nullable String format, int seconds) {
-        int h = getHoursFromSeconds(seconds);
-        int min = getMinutesFromSeconds(seconds);
-
-        format = format == null ? "%dh, %dmin" : format;
-        return String.format(format, h, min);
     }
 
     public static int getMinutesFromSeconds(int seconds) {

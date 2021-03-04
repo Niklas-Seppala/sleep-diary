@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -176,11 +177,10 @@ public class GlobalData {
 
     public static void __DEV__populateDb(DbConnection db, String username,
                                          double goal, int startTime, int sleepEntryCount) {
-        Random rand = new Random();
         final int MIN_SLEEP = 25000;
         final int MAX_SLEEP = 33000;
-        final int MAX_DAYTIME = 65000;
-        final int MIN_DAYTIME = 55000;
+        final int MAX_DAYTIME = 70000;
+        final int MIN_DAYTIME = 50000;
 
         User mockUser = new User(username, (int)(goal * DateTime.SECONDS_IN_HOUR));
         db.insert(mockUser);
@@ -195,7 +195,9 @@ public class GlobalData {
             int dayTime = (int)((Math.random() * (MAX_DAYTIME - MIN_DAYTIME)) + MIN_DAYTIME);
             nextTime += dayTime;
             SleepEntry entry = new SleepEntry(mockUser.getId(),
-                    Rating.fromInt(rand.nextInt(4)), sleepTime, wakeTime);
+                    Rating.fromInt((int)(Math.random() * 4) + 1),
+                    sleepTime,
+                    wakeTime);
             db.insert(entry);
         }
     }
