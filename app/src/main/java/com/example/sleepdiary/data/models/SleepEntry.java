@@ -1,20 +1,22 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary.data.models;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.example.sleepdiary.data.db.DbTables;
+
 /**
  * Sleep instance database model class.
  */
-public class SleepModel extends DbModel {
+public class SleepEntry extends Model {
     private int id;
     private int user_id;
     private Rating quality;
     private int startTimestamp;
     private int endTimestamp;
 
-    public SleepModel() { }
-    public SleepModel(int user_id, Rating quality, int startTimestamp,
+    public SleepEntry() { }
+    public SleepEntry(int user_id, Rating quality, int startTimestamp,
                       int endTimestamp) {
         this.id = -1;
         this.user_id = user_id;
@@ -24,31 +26,31 @@ public class SleepModel extends DbModel {
     }
 
     @Override
-    public SleepModel serialize(ContentValues toRow) {
-        toRow.put(Db.sleep.COLUMN_USER_ID, this.user_id);
-        toRow.put(Db.sleep.COLUMN_START_TIME, this.startTimestamp);
-        toRow.put(Db.sleep.COLUMN_END_TIME, this.endTimestamp);
-        toRow.put(Db.sleep.COLUMN_QUALITY, this.quality.toInt());
+    public SleepEntry serialize(ContentValues toRow) {
+        toRow.put(DbTables.sleep.COLUMN_USER_ID, this.user_id);
+        toRow.put(DbTables.sleep.COLUMN_START_TIME, this.startTimestamp);
+        toRow.put(DbTables.sleep.COLUMN_END_TIME, this.endTimestamp);
+        toRow.put(DbTables.sleep.COLUMN_QUALITY, this.quality.toInt());
         return this;
     }
 
     @Override
-    public SleepModel deserialize(Cursor fromRow) {
+    public SleepEntry deserialize(Cursor fromRow) {
         for (int i = 0; i < fromRow.getColumnCount(); i++) {
             switch (fromRow.getColumnName(i)) {
-                case Db.sleep.COLUMN_ID:
+                case DbTables.sleep.COLUMN_ID:
                     this.id = fromRow.getInt(i);
                     break;
-                case Db.sleep.COLUMN_USER_ID:
+                case DbTables.sleep.COLUMN_USER_ID:
                     this.user_id = fromRow.getInt(i);
                     break;
-                case Db.sleep.COLUMN_END_TIME:
+                case DbTables.sleep.COLUMN_END_TIME:
                     this.endTimestamp = fromRow.getInt(i);
                     break;
-                case Db.sleep.COLUMN_START_TIME:
+                case DbTables.sleep.COLUMN_START_TIME:
                     this.startTimestamp = fromRow.getInt(i);
                     break;
-                case Db.sleep.COLUMN_QUALITY:
+                case DbTables.sleep.COLUMN_QUALITY:
                     this.quality = Rating.fromInt(fromRow.getInt(i));
             }
         }
@@ -57,7 +59,7 @@ public class SleepModel extends DbModel {
 
     @Override
     public String getTableName() {
-        return Db.sleep.TABLE_NAME;
+        return DbTables.sleep.TABLE_NAME;
     }
 
     @Override

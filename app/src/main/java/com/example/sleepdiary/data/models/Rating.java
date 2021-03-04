@@ -1,17 +1,17 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary.data.models;
 
 /**
  * User ratings
  */
 public enum Rating {
-    BAD(1),
-    OK(2),
-    GOOD(3),
-    UNDEFINED(0);
+    UNDEFINED(0),
+    VERY_BAD(1),
+    BAD(2),
+    OK(3),
+    GOOD(4),
+    VERY_GOOD(5);
 
-    // Internal value
     private final int value;
-    // Store rating to internal field.
     private Rating(int val){
         this.value = val;
     }
@@ -23,9 +23,11 @@ public enum Rating {
      */
     public static Rating fromInt(int integer) {
         switch (integer) {
-            case 1: return Rating.BAD;
-            case 2: return Rating.OK;
-            case 3: return Rating.GOOD;
+            case 1: return Rating.VERY_BAD;
+            case 2: return Rating.BAD;
+            case 3: return Rating.OK;
+            case 4: return Rating.GOOD;
+            case 5: return Rating.VERY_GOOD;
             case 0: return Rating.UNDEFINED;
             default: return null;
         }

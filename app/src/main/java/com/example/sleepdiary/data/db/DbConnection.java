@@ -1,4 +1,4 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary.data.db;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -6,11 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Process;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.sleepdiary.data.GlobalData;
+import com.example.sleepdiary.data.models.Model;
 
 import java.util.ArrayList;
 
@@ -34,8 +36,8 @@ public class DbConnection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         StringBuilder sb = new StringBuilder();
-        sqLiteDatabase.execSQL(Db.sleep.createTableSQL(sb));
-        sqLiteDatabase.execSQL(Db.user.createTableSQL(sb));
+        sqLiteDatabase.execSQL(DbTables.sleep.createTableSQL(sb));
+        sqLiteDatabase.execSQL(DbTables.user.createTableSQL(sb));
     }
 
     /**
@@ -58,11 +60,10 @@ public class DbConnection extends SQLiteOpenHelper {
      * @return query result list.
      */
     @SuppressLint("Assert")
-    public <T extends DbModel> ArrayList<T> select(@NonNull String tableName,
-                                                   @NonNull Class<T> modelType,
-                                                   @Nullable String sql,
-                                                   @Nullable String[] sArgs)  {
-        // If SQL string was provided use that
+    public <T extends Model> ArrayList<T> select(@NonNull String tableName,
+                                                 @NonNull Class<T> modelType,
+                                                 @Nullable String sql,
+                                                 @Nullable String[] sArgs)  {
         String SQL_Statement = sql != null ? sql : "SELECT * FROM " + tableName;
         ArrayList<T> results = new ArrayList<>();
 
@@ -78,9 +79,8 @@ public class DbConnection extends SQLiteOpenHelper {
                     Log.e("MODEL", "select():" + ex.getMessage());
                     assert false;
                 }
-            } while (cursor.moveToNext()); // Move to new Cursor position
+            } while (cursor.moveToNext());
         }
-        // Free Cursor resources
         cursor.close();
         return results;
     }
@@ -90,14 +90,12 @@ public class DbConnection extends SQLiteOpenHelper {
      * @param model Model object to be inserted.
      * @return true if insertion was succesful.
      */
-    public boolean insert(@NonNull DbModel model) {
+    public boolean insert(@NonNull Model model) {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         model.serialize(contentValues);
-
         long affectedRows = SQLiteDB.insert(model.getTableName(), null,
                 contentValues);
-
         GlobalData.setDirty();
         return affectedRows > 0;
     }
@@ -128,7 +126,7 @@ public class DbConnection extends SQLiteOpenHelper {
      * @return true if update was successful.
      */
     public boolean update(@NonNull String tableName, //TODO: test this method
-                          @NonNull DbModel model,
+                          @NonNull Model model,
                           @NonNull String where,
                           @NonNull String[] args) {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
@@ -139,5 +137,4 @@ public class DbConnection extends SQLiteOpenHelper {
         GlobalData.setDirty();
         return affectedRows > 0;
     }
-
 }

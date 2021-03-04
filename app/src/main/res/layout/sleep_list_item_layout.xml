@@ -26,13 +26,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="8h 32min"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/sleep_list_item_clocktime_textview"
         app:layout_constraintEnd_toStartOf="@+id/sleep_list_item_success_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="8h 32min"/>
 
     <ImageView
         android:id="@+id/sleep_list_item_success_icon"
@@ -40,10 +40,11 @@
         android:layout_height="35dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:src="@drawable/ic_check_48"
-        app:layout_constraintBottom_toBottomOf="@+id/sleep_list_item_duration_textview"
+        app:layout_constraintBottom_toBottomOf="@+id/sleep_list_item_clocktime_textview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sleep_list_item_duration_textview" />
+        app:layout_constraintTop_toTopOf="@+id/sleep_list_item_duration_textview"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_check_48"/>
 
     <TextView
         android:id="@+id/sleep_list_item_date_textview"
@@ -51,12 +52,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:text="Tue 12.06"
-        android:textSize="30sp"
-        android:textStyle="normal"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Tue 12.06"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
