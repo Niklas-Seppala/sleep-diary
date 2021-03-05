@@ -1,5 +1,41 @@
 <resources>
     <string name="app_name">SleepDiary</string>
+<!--    Time-->
+    <string name="time_clock_24h">%tR</string>
+    <string name="time_date_time_cal">%1$ta, %1$td.%1$tm.%1$tY</string>
+    <string name="time_h_min_dur_long">%1$d hours, %2$d minutes</string>
+    <string name="time_h_min_dur_short">%1$dh, %2$dmin</string>
+    <string name="time_h_min_dur_extra_short">%1$dh, %2$dm</string>
+    <string name="time_year">%1$d</string>
+    <string name="time_timerange">%1$tR - %2$tR</string>
+    <string name="time_week_number">Week %1$d</string>
+    <string-array name="time_week_days_en">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
+<!--    Buttons-->
+    <string name="buttons_edit">Edit</string>
+
+<!--    Image descriptions-->
+    <string name="img_desc_trending_up">Increased</string>
+    <string name="img_desc_trending_down">Decreased</string>
+    <string name="img_desc_user_rating_very_bad">Very bad</string>
+    <string name="img_desc_user_rating_bad">Bad</string>
+    <string name="img_desc_user_rating_ok">OK</string>
+    <string name="img_desc_user_rating_good">Good</string>
+    <string name="img_desc_user_rating_very_good">Very Good</string>
+
+<!--    Sleep Entry Inspection-->
+    <string name="sleep_inspection_caffeine_intake_label">Caffeine intake</string>
+    <string name="sleep_inspection_quality_label">Sleep Quality</string>
+    <string name="sleep_inspection_caffeine_amount">$d Cups</string>
+
     <string name="title_activity_quetionnaire">Quetionnaire</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

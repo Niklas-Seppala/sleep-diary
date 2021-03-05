@@ -11,28 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SleepDiary">
 
-
-        <activity
-            android:name=".Quetionnaire"
-            android:label="@string/title_activity_quetionnaire"
-            android:parentActivityName=".HomeFragment"
-            android:theme="@style/Theme.SleepDiary.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeFragment" />
-        </activity>
-
-        <activity
-            android:name=".Sleep"
-            android:exported="true"
-            android:label="@string/title_activity_sleep"
-            android:parentActivityName=".HomeFragment"
-            android:theme="@style/Theme.SleepDiary.NoActionBar"
-            tools:ignore="DuplicateActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeFragment" />
-        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".StatsActivity" />
+        <activity android:name=".SleepEntryInspectionActivity" />
+        <activity android:name=".AlarmActivity" />
+
     </application>
 
 </manifest>
