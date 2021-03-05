@@ -1,5 +1,6 @@
 package com.example.sleepdiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 
 public class HomeFragment extends Fragment {
     // Use this :)
@@ -25,6 +27,7 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+
     private void setHomeViewButtonEvents() {
 
         // STATS BUTTON
@@ -35,6 +38,7 @@ public class HomeFragment extends Fragment {
         // SLEEP BUTTON
         getActivity().findViewById(R.id.btnSleep).setOnClickListener(view -> {
             Log.d("BTN", "Sleep button clicked");
+
         });
 
         // GOAL BUTTON

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sleepdiary">
 
     <application
@@ -9,6 +10,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SleepDiary">
+
+
+        <activity
+            android:name=".Quetionnaire"
+            android:label="@string/title_activity_quetionnaire"
+            android:parentActivityName=".HomeFragment"
+            android:theme="@style/Theme.SleepDiary.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeFragment" />
+        </activity>
+
+        <activity
+            android:name=".Sleep"
+            android:exported="true"
+            android:label="@string/title_activity_sleep"
+            android:parentActivityName=".HomeFragment"
+            android:theme="@style/Theme.SleepDiary.NoActionBar"
+            tools:ignore="DuplicateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeFragment" />
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
