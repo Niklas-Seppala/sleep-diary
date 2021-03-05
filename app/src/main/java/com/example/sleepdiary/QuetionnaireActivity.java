@@ -2,6 +2,9 @@ package com.example.sleepdiary;
 
 import android.os.Bundle;
 
+import com.example.sleepdiary.data.db.DbConnection;
+import com.example.sleepdiary.data.models.Rating;
+import com.example.sleepdiary.data.models.SleepEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -20,11 +23,10 @@ import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Quetionnaire extends AppCompatActivity {
+public class QuetionnaireActivity extends AppCompatActivity {
 
     Date startTime = new Date();
     Date endTime = new Date();
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,15 @@ public class Quetionnaire extends AppCompatActivity {
             case R.id.emoDead_q1:
                 break;
         }
+    }
+
+    public void saveEntry() {
+        DbConnection db = new DbConnection(this);
+
+        SleepEntry entry = new SleepEntry(1, Rating.UNDEFINED, 123135, -1);
+        db.insert(entry);
+
+        db.close();
     }
 
     public void onEmoSelected2(View view){

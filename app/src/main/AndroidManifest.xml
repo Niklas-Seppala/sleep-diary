@@ -22,6 +22,7 @@
         <activity android:name=".StatsActivity" />
         <activity android:name=".SleepEntryInspectionActivity" />
         <activity android:name=".AlarmActivity" />
+        <activity android:name=".QuetionnaireActivity" />
 
     </application>
 
