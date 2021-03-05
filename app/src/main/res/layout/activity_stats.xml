@@ -10,9 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="ToggleButton"
-        android:textOff="List"
-        android:textOn="Graph"
+        android:textOff="@string/buttons_stats_toggle_off"
+        android:textOn="@string/buttons_stats_toggle_on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

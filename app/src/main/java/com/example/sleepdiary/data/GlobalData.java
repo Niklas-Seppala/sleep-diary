@@ -197,7 +197,8 @@ public class GlobalData {
             SleepEntry entry = new SleepEntry(mockUser.getId(),
                     Rating.fromInt((int)(Math.random() * 4) + 1),
                     sleepTime,
-                    wakeTime);
+                    wakeTime,
+                    (int) (Math.random() * 6));
             db.insert(entry);
         }
     }

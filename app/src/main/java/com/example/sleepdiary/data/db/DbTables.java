@@ -42,6 +42,7 @@ public abstract class DbTables {
         public static final String COLUMN_END_TIME   = "end_timestamp";
         public static final String COLUMN_START_TIME = "start_timestamp";
         public static final String COLUMN_QUALITY    = "quality";
+        public static final String COLUMN_CAFFEINE   = "caffeine";
 
         /**
          * Creates SQL string for table creation, resets StringBuidler
@@ -55,6 +56,7 @@ public abstract class DbTables {
                     .append(COLUMN_QUALITY).append(" INTEGER NOT NULL,")
                     .append(COLUMN_START_TIME).append(" INTEGER NOT NULL,")
                     .append(COLUMN_END_TIME).append(" INTEGER NOT NULL,")
+                    .append(COLUMN_CAFFEINE).append(" INTEGER NOT NULL,")
                     .append("FOREIGN KEY (").append(COLUMN_USER_ID).append(") REFERENCES ")
                     .append(DbTables.user.TABLE_NAME).append("(").append(DbTables.user.COLUMN_ID).append(")")
                     .append(");");
