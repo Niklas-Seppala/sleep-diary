@@ -1,6 +1,7 @@
 package com.example.sleepdiary;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,6 +215,29 @@ public class ChartFragment extends Fragment {
         chartView.setDrawOrder(new CombinedChart.DrawOrder[]{
                 CombinedChart.DrawOrder.BAR,
                 CombinedChart.DrawOrder.LINE
+        });
+        setBarEntryClicks(view);
+    }
+
+    private void setBarEntryClicks(View view) {
+        chartView.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                SleepEntry[] week = sleepHabits.getWeek().getDays();
+                int id = week[(int)e.getX()].getId();
+                List<SleepEntry> allEntries = GlobalData.getInstance().getSleepEntries();
+                for (int i = 0; i < allEntries.size(); i++) {
+                    if (allEntries.get(i).getId() == id) {
+                        Intent inspection = new Intent(view.getContext(),
+                                SleepEntryInspectionActivity.class);
+                        inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);
+                        startActivity(inspection);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected() { }
         });
     }
 
