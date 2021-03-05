@@ -22,23 +22,15 @@ import java.util.Date;
 
 public class Quetionnaire extends AppCompatActivity {
 
-
-
     Date startTime = new Date();
     Date endTime = new Date();
 
 
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_questionnaire02);
+        setContentView(R.layout.activity_quetionnaire);
 
-getDifference();
-
-
-
-
+        getDifference();
     }
 
     public void getDifference(){
@@ -70,9 +62,6 @@ getDifference();
     }
 
 
-
-
-
     public void onEmoSelected(View view){
         RadioGroup radioGroup = findViewById(R.id.radioGroupQ1);
         switch (radioGroup.getCheckedRadioButtonId()){
@@ -87,12 +76,7 @@ getDifference();
             case R.id.emoDead_q1:
                 break;
         }
-
-
-
     }
-
-
 
     public void onEmoSelected2(View view){
         RadioGroup radioGroup = findViewById(R.id.radioGroupQ2);
@@ -108,9 +92,6 @@ getDifference();
             case R.id.emoDead_q2:
                 break;
         }
-
-
-
     }
 
     public void q3(View view) {
