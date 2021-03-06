@@ -92,12 +92,10 @@ public class GlobalData {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void update(DbConnection db) {
-        instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class,
-                null, null);
+        instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class, null, null);
         instance.sleepEntries = db.select(DbTables.sleep.TABLE_NAME, SleepEntry.class,
                 null, null);
         instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.sleepEntries);
-
         setClean();
     }
 

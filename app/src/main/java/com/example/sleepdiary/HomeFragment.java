@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+
 public class HomeFragment extends Fragment {
     // Use this :)
     @Override
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
         // Sleep Button Click
         view.findViewById(R.id.btnSleep).setOnClickListener(v -> {
             Log.d("BTN", "Sleep button clicked");
+
         });
         // Goal Button Click
         view.findViewById(R.id.btnGoal).setOnClickListener(v -> {
