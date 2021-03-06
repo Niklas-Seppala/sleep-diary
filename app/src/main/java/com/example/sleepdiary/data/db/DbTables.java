@@ -1,9 +1,9 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary.data.db;
 
 /**
  * Application database tables
  */
-public abstract class Db {
+public abstract class DbTables {
 
     /**
      * User table
@@ -12,6 +12,7 @@ public abstract class Db {
         public static final String TABLE_NAME  = "user";
         public static final String COLUMN_ID   = "id";
         public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_GOAL = "goal";
 
         /**
          * Creates SQL string for table creation, resets
@@ -22,7 +23,8 @@ public abstract class Db {
         public static String createTableSQL(StringBuilder sb) {
             sb.append("CREATE TABLE ").append(TABLE_NAME).append(" (")
                     .append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
-                    .append(COLUMN_NAME).append(" TEXT NOT NULL")
+                    .append(COLUMN_NAME).append(" TEXT NOT NULL,")
+                    .append(COLUMN_GOAL).append(" REAL")
                     .append(");");
             String SQL_Statement = sb.toString();
             sb.delete(0, sb.length());
@@ -40,6 +42,7 @@ public abstract class Db {
         public static final String COLUMN_END_TIME   = "end_timestamp";
         public static final String COLUMN_START_TIME = "start_timestamp";
         public static final String COLUMN_QUALITY    = "quality";
+        public static final String COLUMN_CAFFEINE   = "caffeine";
 
         /**
          * Creates SQL string for table creation, resets StringBuidler
@@ -53,8 +56,9 @@ public abstract class Db {
                     .append(COLUMN_QUALITY).append(" INTEGER NOT NULL,")
                     .append(COLUMN_START_TIME).append(" INTEGER NOT NULL,")
                     .append(COLUMN_END_TIME).append(" INTEGER NOT NULL,")
+                    .append(COLUMN_CAFFEINE).append(" INTEGER NOT NULL,")
                     .append("FOREIGN KEY (").append(COLUMN_USER_ID).append(") REFERENCES ")
-                    .append(Db.user.TABLE_NAME).append("(").append(Db.user.COLUMN_ID).append(")")
+                    .append(DbTables.user.TABLE_NAME).append("(").append(DbTables.user.COLUMN_ID).append(")")
                     .append(");");
             String SQL_Statement = sb.toString();
             sb.delete(0, sb.length());
