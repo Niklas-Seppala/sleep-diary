@@ -28,6 +28,8 @@
     <string name="button_no">No</string>
     <string name="button_cancel">Cancel</string>
     <string name="button_yes">Yes</string>
+    <string name="button_aply">Apply</string>
+    <string name="button_reset">Reset</string>
 
 <!--    Image descriptions-->
     <string name="img_desc_trending_up">Increased</string>
@@ -62,9 +64,19 @@
 <!--    Start sleep dialog -->
     <string name="start_sleep_event_header">Go to sleep?</string>
 
+<!--    Settings-->
+    <string name="settings_statistics">Chart</string>
+    <string name="settings_track_caffeine">Track caffeine</string>
+    <string name="settings_track_overall_fealing">Track overall fealing</string>
+    <string name="settings_user_header">User</string>
+    <string name="settings_alarm_clock_header">Alarm Clock</string>
+    <string name="settings_clock_format">Use 24 hour format</string>
+    <string name="settings_use_native_alarm_clock">Launch native app</string>
+
 
 <!--    menu bar -->
     <string name="menu_settings">Settings</string>
     <string name="menu_home">Home</string>
     <string name="menu_tips">Info</string>
+    <string name="settings_username">Username</string>
 </resources>
