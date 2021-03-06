@@ -18,9 +18,11 @@
         <item>Sat</item>
         <item>Sun</item>
     </string-array>
-
+    
 <!--    Buttons-->
     <string name="buttons_edit">Edit</string>
+    <string name="buttons_stats_toggle_on">Chart</string>
+    <string name="buttons_stats_toggle_off">List</string>
 
 <!--    Image descriptions-->
     <string name="img_desc_trending_up">Increased</string>
@@ -34,7 +36,7 @@
 <!--    Sleep Entry Inspection-->
     <string name="sleep_inspection_caffeine_intake_label">Caffeine intake</string>
     <string name="sleep_inspection_quality_label">Sleep Quality</string>
-    <string name="sleep_inspection_caffeine_amount">$d Cups</string>
+    <string name="sleep_inspection_caffeine_amount">%d Cups</string>
 
     <string name="title_activity_quetionnaire">Quetionnaire</string>
     <!-- Strings used for fragments for navigation -->

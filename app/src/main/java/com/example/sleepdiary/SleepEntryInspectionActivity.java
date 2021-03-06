@@ -1,6 +1,7 @@
 package com.example.sleepdiary;
 
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,10 +28,12 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
     TextView dateTextView;
     TextView durTextView;
     TextView timeRangeTextView;
+    TextView caffeineTextView;
     ImageView successIconImageView;
     ImageView ratingImageView;
     ImageView ratingGrowthImageView;
     ImageView durationIncreaseImageView;
+    ImageView caffeineGrowthImageView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -68,10 +71,13 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.sleep_entry_inspect_date_tv);
         durTextView = findViewById(R.id.sleep_entry_inspect_dur_tv);
         timeRangeTextView = findViewById(R.id.sleep_entry_inspection_timerange_tv);
+        caffeineTextView = findViewById(R.id.sleep_entry_inspection_caffeine_tv);
+
         ratingImageView = findViewById(R.id.sleep_entry_inspection_rating_iv);
         ratingGrowthImageView = findViewById(R.id.sleep_entry_inspection_rating_growth_iv);
         successIconImageView = findViewById(R.id.sleep_entry_inspection_success_icon_iv);
         durationIncreaseImageView = findViewById(R.id.sleep_etnry_inspection_duration_increase_icon_iv);
+        caffeineGrowthImageView = findViewById(R.id.sleep_entry_inspection_caffeine_growth_iv);
     }
 
     private void setRating(SleepEntry entry, int entryIndex) {
@@ -99,7 +105,16 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
     }
 
     private void setCaffeineIntake(SleepEntry entry, int entryIndex) {
-
+        caffeineTextView.setText(getString(R.string.sleep_inspection_caffeine_amount,
+                entry.getCaffeineIntake()));
+        SleepEntry prevEntry = getPreviousEntry(entryIndex);
+        int iconId;
+        if (entry.getCaffeineIntake() >= prevEntry.getCaffeineIntake()) {
+            iconId = R.drawable.ic_baseline_expand_less_48;
+        } else {
+            iconId = R.drawable.ic_baseline_expand_more_48;
+        }
+        caffeineGrowthImageView.setImageResource(iconId);
     }
 
     private void setTimeRange(SleepEntry entry) {

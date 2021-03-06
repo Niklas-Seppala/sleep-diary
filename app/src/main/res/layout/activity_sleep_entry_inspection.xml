@@ -96,12 +96,12 @@
         android:contentDescription="@string/img_desc_trending_down" />
 
     <ImageView
-        android:id="@+id/imageView11"
+        android:id="@+id/sleep_entry_inspection_caffeine_growth_iv"
         android:layout_width="71dp"
         android:layout_height="63dp"
         android:src="@drawable/ic_baseline_expand_less_48"
         app:layout_constraintBottom_toBottomOf="@+id/sleep_entry_inspection_rating_iv"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/sleep_entry_inspection_caffeine_tv"
         app:layout_constraintTop_toTopOf="@+id/sleep_entry_inspection_rating_growth_iv"
         app:layout_constraintVertical_bias="1.0"
         android:contentDescription="@string/img_desc_trending_down" />
@@ -116,7 +116,7 @@
         android:contentDescription="@string/img_desc_trending_down" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/sleep_entry_inspection_caffeine_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
