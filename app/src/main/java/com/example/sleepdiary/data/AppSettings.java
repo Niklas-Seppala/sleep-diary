@@ -4,10 +4,11 @@ import android.content.SharedPreferences;
 
 public class AppSettings {
     public static final String NAME = "SETTINGS";
-    public static final String CLOCK_FORMAT = "CLOCK_FORMAT";
-    public static final String OPEN_NATIVE_CLOCK = "OPEN_NATIVE_CLOCK";
-    public static final String CHART_TRACK_CAFFEINE = "CHART_TRACK_CAFFEINE";
-    public static final String USERNAME = "USERNAME";
+    public static final String CLOCK_FORMAT = "clockTimeFormat";
+    public static final String OPEN_NATIVE_CLOCK = "openNativeClock";
+    public static final String CHART_TRACK_CAFFEINE = "trackCaffeine";
+    public static final String CHART_TRACK_OVEREALL_FEELING = "trackFeeleing";
+    public static final String USERNAME = "username";
 
     private static AppSettings stagedInstance = null;
     private static AppSettings instance = new AppSettings();
@@ -18,12 +19,14 @@ public class AppSettings {
     private boolean use24HourClockFormat;
     private boolean openNativeAlarmClockUI;
     private boolean chartTrackCaffeine;
+    private boolean chartTrackOverallFeeling;
     private String username;
 
     private AppSettings() {
         this.use24HourClockFormat = true;
         this.openNativeAlarmClockUI = false;
         this.chartTrackCaffeine = true;
+        this.chartTrackOverallFeeling = true;
     }
 
     public static AppSettings modify() {
@@ -32,6 +35,7 @@ public class AppSettings {
             stagedInstance.openNativeAlarmClockUI = instance.openNativeAlarmClockUI;
             stagedInstance.use24HourClockFormat = instance.use24HourClockFormat;
             stagedInstance.chartTrackCaffeine = instance.chartTrackCaffeine;
+            stagedInstance.chartTrackOverallFeeling = instance.chartTrackOverallFeeling;
         }
         return stagedInstance;
     }
@@ -58,6 +62,9 @@ public class AppSettings {
             case CHART_TRACK_CAFFEINE:
                 chartTrackCaffeine = val;
                 break;
+            case CHART_TRACK_OVEREALL_FEELING:
+                chartTrackOverallFeeling = val;
+                break;
             default:
                 throw new IllegalArgumentException("Unknown flag");
         }
@@ -68,6 +75,7 @@ public class AppSettings {
         instance.use24HourClockFormat = prefs.getBoolean(CLOCK_FORMAT, true);
         instance.openNativeAlarmClockUI = prefs.getBoolean(OPEN_NATIVE_CLOCK, false);
         instance.chartTrackCaffeine = prefs.getBoolean(CHART_TRACK_CAFFEINE, true);
+        instance.chartTrackOverallFeeling = prefs.getBoolean(CHART_TRACK_OVEREALL_FEELING, true);
         instance.username = prefs.getString(USERNAME, "");
     }
 
@@ -75,6 +83,7 @@ public class AppSettings {
         editor.putBoolean(CLOCK_FORMAT, use24HourClockFormat);
         editor.putBoolean(OPEN_NATIVE_CLOCK, openNativeAlarmClockUI);
         editor.putBoolean(CHART_TRACK_CAFFEINE, chartTrackCaffeine);
+        editor.putBoolean(CHART_TRACK_OVEREALL_FEELING, chartTrackOverallFeeling);
         editor.putString(USERNAME, username);
         return editor;
     }
@@ -99,6 +108,10 @@ public class AppSettings {
 
     public boolean getUse24HourClockFormat() {
         return use24HourClockFormat;
+    }
+
+    public boolean getChartTrackOverallFeeling() {
+        return chartTrackOverallFeeling;
     }
 
     public String getUsername() {

@@ -65,12 +65,13 @@
     <string name="start_sleep_event_header">Go to sleep?</string>
 
 <!--    Settings-->
-    <string name="settings_statistics">Statistics</string>
-    <string name="settings_track_caffeine">Track caffeine in chart</string>
+    <string name="settings_statistics">Chart</string>
+    <string name="settings_track_caffeine">Track caffeine</string>
+    <string name="settings_track_overall_fealing">Track overall fealing</string>
     <string name="settings_user_header">User</string>
     <string name="settings_alarm_clock_header">Alarm Clock</string>
     <string name="settings_clock_format">Use 24 hour format</string>
-    <string name="settings_use_native_alarm_clock">Launch native alarm clock</string>
+    <string name="settings_use_native_alarm_clock">Launch native app</string>
 
 
 <!--    menu bar -->

@@ -25,6 +25,7 @@ public class SettingsFragment extends Fragment {
     private Switch clockFormatSwitch;
     private Switch nativeAlarmSwitch;
     private Switch trackCaffeineSwitch;
+    private Switch trackOverallFealingSwitch;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class SettingsFragment extends Fragment {
         clockFormatSwitch = view.findViewById(R.id.settings_24h_format_switch);
         nativeAlarmSwitch = view.findViewById(R.id.settings_native_alarm_switch);
         trackCaffeineSwitch = view.findViewById(R.id.settings_track_caffeine_switch);
+        trackOverallFealingSwitch = view.findViewById(R.id.settings_track_overall_fealing_switch);
     }
 
     private void setCurrentValues() {
@@ -52,6 +54,7 @@ public class SettingsFragment extends Fragment {
         clockFormatSwitch.setChecked(settings.getUse24HourClockFormat());
         nativeAlarmSwitch.setChecked(settings.getOpenNativeClock());
         trackCaffeineSwitch.setChecked(settings.getChartTrackCaffeine());
+        trackOverallFealingSwitch.setChecked(settings.getChartTrackOverallFeeling());
     }
 
     private void setButtonClickHandlers(View view) {
@@ -93,6 +96,9 @@ public class SettingsFragment extends Fragment {
 
         trackCaffeineSwitch.setOnCheckedChangeListener((v, checked) ->
                 AppSettings.modify().setValue(AppSettings.CHART_TRACK_CAFFEINE, checked));
+
+        trackOverallFealingSwitch.setOnCheckedChangeListener((v, checked) ->
+                AppSettings.modify().setValue(AppSettings.CHART_TRACK_OVEREALL_FEELING, checked));
     }
 
     @Override
