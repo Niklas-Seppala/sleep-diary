@@ -6,17 +6,112 @@
     android:layout_height="match_parent"
     tools:context=".SettingsFragment">
 
-    <TextView
-        android:id="@+id/textView4"
+    <Switch
+        android:id="@+id/settings_native_alarm_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SETTINGS"
-        android:textSize="30sp"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_use_native_alarm_clock"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/settings_edit_text_username"
+        app:layout_constraintTop_toBottomOf="@+id/settings_clock_header_tv"
+        tools:checked="false"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <Switch
+        android:id="@+id/settings_24h_format_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_clock_format"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/settings_native_alarm_switch"
+        app:layout_constraintTop_toBottomOf="@+id/settings_native_alarm_switch"
+        tools:checked="false"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <TextView
+        android:id="@+id/settings_clock_header_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/settings_alarm_clock_header"
+        android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/settings_clock_header_tv2"
+        app:layout_constraintTop_toBottomOf="@+id/settings_edit_text_username" />
+
+    <TextView
+        android:id="@+id/settings_clock_header_tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
+        android:text="@string/settings_user_header"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/settings_apply_button"
+        android:layout_width="110dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/button_aply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/settings_reset_button" />
+
+    <Button
+        android:id="@+id/settings_reset_button"
+        android:layout_width="110dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:text="@string/button_reset"
+        app:layout_constraintBaseline_toBaselineOf="@+id/settings_apply_button"
+        app:layout_constraintEnd_toStartOf="@+id/settings_apply_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/settings_stats_header_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/settings_statistics"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/settings_clock_header_tv"
+        app:layout_constraintTop_toBottomOf="@+id/settings_24h_format_switch" />
+
+    <Switch
+        android:id="@+id/settings_track_caffeine_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/settings_track_caffeine"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/settings_24h_format_switch"
+        app:layout_constraintTop_toBottomOf="@+id/settings_stats_header_tv"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+    <EditText
+        android:id="@+id/settings_edit_text_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:ems="10"
+        android:hint="@string/settings_username"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/settings_clock_header_tv2"
+        app:layout_constraintTop_toBottomOf="@+id/settings_clock_header_tv2"
+        tools:ignore="LabelFor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

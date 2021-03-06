@@ -4,22 +4,22 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.sleepdiary.data.AppSettings;
 import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.db.DbConnection;
-import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.Instant;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private final SettingsFragment settingsFrag = new SettingsFragment();
-    private final HomeFragment homeFrag = new HomeFragment();
-    private final InfoFragment infoFrag = new InfoFragment();
+    public final SettingsFragment settingsFrag = new SettingsFragment();
+    public final HomeFragment homeFrag = new HomeFragment();
+    public final InfoFragment infoFrag = new InfoFragment();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadDataFromDB();
+        AppSettings.deserialize(getSharedPreferences(AppSettings.NAME, Context.MODE_PRIVATE));
 
         // Set bottom navigation bar click events
         initBottomNavBar();
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setFragment(Fragment fragment) {
+    public void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
             .replace(R.id.fl_fragment, fragment)
             .commit();
