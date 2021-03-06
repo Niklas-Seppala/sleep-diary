@@ -24,6 +24,15 @@ public class SleepEntry extends Model {
         this.startTimestamp = partialEntry.getStartTimestamp();
     }
 
+    public SleepEntry(int user_id, int startTimestamp) {
+        this.user_id = user_id;
+        this.startTimestamp = startTimestamp;
+
+        this.endTimestamp = -1;
+        this.caffeineIntake = -1;
+        this.quality = Rating.UNDEFINED;
+    }
+
     public SleepEntry(int user_id, Rating quality, int startTimestamp,
                       int endTimestamp, int caffeineIntake) {
         this.id = -1;

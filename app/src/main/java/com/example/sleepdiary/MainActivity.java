@@ -37,14 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        deleteDatabase("sleep.db"); // TODO: DEV
 
-        // TODO: DEV
-        // Set the latest sleep entry as partial.
-        List<SleepEntry> entries = GlobalData.getInstance().getSleepEntries();
-        SleepEntry latest = entries.get(0);
-        entries.set(0, new SleepEntry(latest.getId(), 1, Rating.BAD,
-                (int) Instant.now().getEpochSecond() - 25612,
-                -1, 6));
-
         handlePartialEntry();
     }
 
@@ -79,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void handlePartialEntry() {
-
         List<SleepEntry> entries = GlobalData.getInstance().getSleepEntries();
         if (entries.isEmpty())
             return;

@@ -23,6 +23,11 @@
     <string name="buttons_edit">Edit</string>
     <string name="buttons_stats_toggle_on">Chart</string>
     <string name="buttons_stats_toggle_off">List</string>
+    <string name="button_OK">OK</string>
+    <string name="button_not_now">Not Now</string>
+    <string name="button_no">No</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_yes">Yes</string>
 
 <!--    Image descriptions-->
     <string name="img_desc_trending_up">Increased</string>
@@ -49,10 +54,14 @@
     <string name="editNumber">Enter a number</string>
     <string name="submitButton">Submit</string>
     <string name="title_activity_sleep">Sleep</string>
+
+<!--    Wake up event dialog -->
     <string name="wake_up_event_greeting">Good morning!</string>
-    <string name="wake_up_event_request">Answer a quick survey</string>
-    <string name="button_OK">OK</string>
-    <string name="button_cancel">Not Now</string>
+    <string name="wake_up_event_request">Fill the details</string>
+
+<!--    Start sleep dialog -->
+    <string name="start_sleep_event_header">Go to sleep?</string>
+
 
 <!--    menu bar -->
     <string name="menu_settings">Settings</string>
