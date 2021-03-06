@@ -39,15 +39,23 @@
     <string name="sleep_inspection_caffeine_amount">%d Cups</string>
 
     <string name="title_activity_quetionnaire">Quetionnaire</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="editNumber">Enter a number</string>
     <string name="submitButton">Submit</string>
     <string name="title_activity_sleep">Sleep</string>
+    <string name="wake_up_event_greeting">Good morning!</string>
+    <string name="wake_up_event_request">Answer a quick survey</string>
+    <string name="button_OK">OK</string>
+    <string name="button_cancel">Not Now</string>
+
+<!--    menu bar -->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_tips">Info</string>
 </resources>

@@ -17,6 +17,13 @@ public class SleepEntry extends Model {
     private int caffeineIntake;
 
     public SleepEntry() { }
+
+    public SleepEntry(SleepEntry partialEntry) {
+        this.id = partialEntry.getId();
+        this.user_id = partialEntry.getUserId();
+        this.startTimestamp = partialEntry.getStartTimestamp();
+    }
+
     public SleepEntry(int user_id, Rating quality, int startTimestamp,
                       int endTimestamp, int caffeineIntake) {
         this.id = -1;
@@ -25,6 +32,14 @@ public class SleepEntry extends Model {
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
         this.caffeineIntake = caffeineIntake;
+    }
+
+    public SleepEntry(int id, int user_id, Rating quality, int startTimestamp, // FIXME: DEV
+                      int endTimestamp, int caffeineIntake) {
+        this(user_id, quality, startTimestamp,
+                endTimestamp, caffeineIntake);
+
+        this.id = id;
     }
 
     @Override
@@ -107,6 +122,10 @@ public class SleepEntry extends Model {
      */
     public Rating getQuality() {
         return this.quality;
+    }
+
+    public boolean isIncomplete() {
+        return this.endTimestamp < 0;
     }
 
     /**
