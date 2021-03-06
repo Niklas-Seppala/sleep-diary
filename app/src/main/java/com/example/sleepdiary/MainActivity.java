@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.example.sleepdiary.data.AppSettings;
 import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.models.SleepEntry;

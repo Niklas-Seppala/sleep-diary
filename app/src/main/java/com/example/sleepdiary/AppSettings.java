@@ -1,4 +1,4 @@
-package com.example.sleepdiary.data;
+package com.example.sleepdiary;
 
 import android.content.SharedPreferences;
 
