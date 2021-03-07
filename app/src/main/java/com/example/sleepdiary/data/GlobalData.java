@@ -178,7 +178,7 @@ public class GlobalData {
         final int MAX_DAYTIME = 70000;
         final int MIN_DAYTIME = 50000;
 
-        User mockUser = new User(username, (int)(goal * DateTime.SECONDS_IN_HOUR));
+        User mockUser = new User(-1, username, (int)(goal * DateTime.SECONDS_IN_HOUR), 2);
         db.insert(mockUser);
         mockUser = db.select(DbTables.user.TABLE_NAME, User.class, null, null).get(0);
 

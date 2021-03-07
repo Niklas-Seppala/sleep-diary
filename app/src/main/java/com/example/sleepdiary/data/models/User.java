@@ -10,26 +10,27 @@ import com.example.sleepdiary.data.db.DbTables;
  */
 public class User extends Model {
     private String name;
-    private int goal;
-    private int caffeine;
+    private int sleepGoal;
+    private int caffeineGoal;
     private int id;
 
     public User() {} // NEEDED!
-    public User(String name, int goal) {
+    public User(String name, int sleepGoal) {
         this.id = -1;
         this.name = name;
-        this.goal = goal;
+        this.sleepGoal = sleepGoal;
     }
-    public User(int id, String name, int goal, int caffeine) {
-        this(name, goal);
+    public User(int id, String name, int sleepGoal, int caffeineGoal) {
+        this(name, sleepGoal);
         this.id = id;
-        this.caffeine = caffeine;
+        this.caffeineGoal = caffeineGoal;
     }
 
     @Override
     public Model serialize(ContentValues toRow) {
-        toRow.put(DbTables.user.COLUMN_NAME, this.name);
-        toRow.put(DbTables.user.COLUMN_GOAL, this.goal);
+        toRow.put(DbTables.user.COLUMN_NAME, name);
+        toRow.put(DbTables.user.COLUMN_GOAL, sleepGoal);
+        toRow.put(DbTables.user.COLUMN_CAFFEINE_GOAL, caffeineGoal);
         return this;
     }
 
@@ -38,13 +39,16 @@ public class User extends Model {
         for (int i = 0; i < fromRow.getColumnCount(); i++) {
             switch (fromRow.getColumnName(i)) {
                 case DbTables.user.COLUMN_ID:
-                    this.id = fromRow.getInt(i);
+                    id = fromRow.getInt(i);
                     break;
                 case DbTables.user.COLUMN_NAME:
-                    this.name = fromRow.getString(i);
+                    name = fromRow.getString(i);
                     break;
                 case DbTables.user.COLUMN_GOAL:
-                    this.goal = fromRow.getInt(i);
+                    sleepGoal = fromRow.getInt(i);
+                    break;
+                case DbTables.user.COLUMN_CAFFEINE_GOAL:
+                    caffeineGoal = fromRow.getInt(i);
                     break;
             }
         }
@@ -64,8 +68,8 @@ public class User extends Model {
     /**
      * @return User's set sleep duration goal in seconds.
      */
-    public int getGoal() {
-        return goal;
+    public int getSleepGoal() {
+        return sleepGoal;
     }
 
     /**
@@ -82,4 +86,10 @@ public class User extends Model {
         return this.name;
     }
 
+    /**
+     * @return User's caffeine intake goal
+     */
+    public int getCaffeineGoal() {
+        return caffeineGoal;
+    }
 }
