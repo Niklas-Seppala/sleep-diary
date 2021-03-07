@@ -11,6 +11,7 @@ import com.example.sleepdiary.data.db.DbTables;
 public class User extends Model {
     private String name;
     private int goal;
+    private int caffeine;
     private int id;
 
     public User() {}
@@ -18,6 +19,11 @@ public class User extends Model {
         this.id = -1;
         this.name = name;
         this.goal = goal;
+    }
+    public User(int id, String name, int goal, int caffeine) {
+        this(name, goal);
+        this.id = id;
+        this.caffeine = caffeine;
     }
 
     @Override
