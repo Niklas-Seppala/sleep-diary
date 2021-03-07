@@ -14,7 +14,7 @@ public class User extends Model {
     private int caffeine;
     private int id;
 
-    public User() {}
+    public User() {} // NEEDED!
     public User(String name, int goal) {
         this.id = -1;
         this.name = name;

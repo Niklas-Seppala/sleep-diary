@@ -11,6 +11,11 @@ public class WeeklySleepHabit {
     private final SimpleDate date;
     private final SleepEntry[] days;
 
+    /**
+     * Creates an instance of WeeklySleepHabit-class.
+     * @param date SimpleDate object that contains week and year
+     * @param days SleepEntries array of the week
+     */
     public WeeklySleepHabit(SimpleDate date, SleepEntry[] days) {
         this.date = date;
         this.days = days;

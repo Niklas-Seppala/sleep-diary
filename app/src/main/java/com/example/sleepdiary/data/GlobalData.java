@@ -1,7 +1,6 @@
 package com.example.sleepdiary.data;
 
 import android.os.Build;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -172,6 +169,7 @@ public class GlobalData {
     public static void setDirty() {
         isDirty = true;
     }
+
 
     public static void __DEV__populateDb(DbConnection db, String username,
                                          double goal, int startTime, int sleepEntryCount) {
