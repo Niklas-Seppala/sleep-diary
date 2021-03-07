@@ -15,12 +15,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
+/**
+ *
+ */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity {
     public final SettingsFragment settingsFrag = new SettingsFragment();
     public final HomeFragment homeFrag = new HomeFragment();
     public final InfoFragment infoFrag = new InfoFragment();
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,18 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
         loadDataFromDB();
         AppSettings.read(getSharedPreferences(AppSettings.NAME, Context.MODE_PRIVATE));
-
-        // Set bottom navigation bar click events
         initBottomNavBar();
-
-        // Set default fragment
         setFragment(this.homeFrag);
-
 //        deleteDatabase("sleep.db"); // TODO: DEV
-
         handlePartialEntry();
     }
 
+    /**
+     * Initialize bottom navigation bar.
+     */
     private void initBottomNavBar() {
         final BottomNavigationView btmNav = findViewById(R.id.bottomNavigationView);
 
@@ -49,31 +49,38 @@ public class MainActivity extends AppCompatActivity {
         // Set naviagtion bar button clicks
         btmNav.setOnNavigationItemSelectedListener(item -> {
             final int itemId = item.getItemId();
-
             // Find corresponding fragment to pressed button
             if (item.getItemId() == R.id.menu_item_home)  setFragment(this.homeFrag);
             else if (itemId == R.id.menu_item_info)  setFragment(this.infoFrag);
             else if (itemId == R.id.menu_item_settings) setFragment(this.settingsFrag);
-
             // Set selected visuals
             return true;
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    /**
+     * Load data from database to Global data.
+     */
     private void loadDataFromDB() {
         if (GlobalData.isDirty()) {
             DbConnection db = new DbConnection(this);
             GlobalData.update(db);
-            // TODO: DEV
-            if (GlobalData.getInstance().getUserModels().size() == 0) {
+
+            // TODO: DEV ---------------------------------------------//
+            if (GlobalData.getInstance().getUserModels().size() == 0)
                 GlobalData.__DEV__populateDb(db, "nikke",
                         7.5, 1613757955, 60);
-            }
+            // TODO: DEV ---------------------------------------------//
+
             db.close();
         }
     }
 
+    /**
+     * Check if the SleepEntry "stack" has partial entry on top.
+     * If so, launch WakeUpEventFragment dialog, that requests user
+     * to finish the entry.
+     */
     private void handlePartialEntry() {
         List<SleepEntry> entries = GlobalData.getInstance().getSleepEntries();
         if (entries.isEmpty())
@@ -86,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Switch between home/settings/tips fragments.
+     * @param fragment Fragment you want to set.
+     */
     public void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
             .replace(R.id.fl_fragment, fragment)

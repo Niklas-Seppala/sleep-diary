@@ -1,5 +1,6 @@
 package com.example.sleepdiary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,20 +14,35 @@ import androidx.fragment.app.Fragment;
 
 import com.example.sleepdiary.adapters.SleepArrayAdapter;
 import com.example.sleepdiary.data.GlobalData;
+import com.example.sleepdiary.data.models.SleepEntry;
 
+import java.util.List;
+
+/**
+ * This fragment displays all the entries in a listview.
+ */
 public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Get context and make sure it all good.
+        Context context = getContext();
+        assert context != null;
 
         ListView listView = view.findViewById(R.id.sleepListView);
-        assert getContext() != null;
-        listView.setAdapter(new SleepArrayAdapter(getContext(),
-                GlobalData.getInstance().getSleepEntries()
-        ));
+        List<SleepEntry> entryList = GlobalData.getInstance().getSleepEntries();
+        listView.setAdapter(new SleepArrayAdapter(context, entryList));
+        setListItemClickHandler(listView, context);
+    }
 
-        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
-            Intent inspection = new Intent(view.getContext(), SleepEntryInspectionActivity.class);
+    /**
+     * When list item is clicked, open SleepEntryInsepction Activity
+     * @param listView listView object.
+     * @param context context
+     */
+    private void setListItemClickHandler(ListView listView, Context context) { // TODO: context ??
+        listView.setOnItemClickListener((a, v, i, l) -> {
+            Intent inspection = new Intent(context, SleepEntryInspectionActivity.class);
             inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);
             startActivity(inspection);
         });

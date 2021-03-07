@@ -133,6 +133,9 @@ public class SleepEntry extends Model {
         return this.quality;
     }
 
+    /**
+     * @return Is the entry inclomplete.
+     */
     public boolean isIncomplete() {
         return this.endTimestamp < 0;
     }

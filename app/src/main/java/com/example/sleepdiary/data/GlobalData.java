@@ -170,6 +170,7 @@ public class GlobalData {
         isDirty = true;
     }
 
+
     public static void __DEV__populateDb(DbConnection db, String username,
                                          double goal, int startTime, int sleepEntryCount) {
         final int MIN_SLEEP = 25000;

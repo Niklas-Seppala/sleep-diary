@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * When user returns after sleeping to application, this
+ * DialogFragment is displayed.
+ */
 public class WakeUpEventFragment extends DialogFragment {
 
     @Nullable
@@ -27,13 +31,19 @@ public class WakeUpEventFragment extends DialogFragment {
         setButtonClicks(view);
     }
 
+    /**
+     * Set click eventhandlers to ok/cancel buttons.
+     * @param view WakeUpEventFragment
+     */
     private void setButtonClicks(View view) {
+        // Open QuestionnaireActivity
         view.findViewById(R.id.wake_up_event_ok_btn).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), QuetionnaireActivity.class);
             startActivity(intent);
             dismiss();
         });
 
+        // Close dialog
         view.findViewById(R.id.wake_up_event_cancel_btn).setOnClickListener(v -> {
             dismiss();
         });
