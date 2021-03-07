@@ -1,5 +1,6 @@
 package com.example.sleepdiary;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.Calendar;
 
 
 public class HomeFragment extends Fragment {
@@ -43,8 +46,8 @@ public class HomeFragment extends Fragment {
             Log.d("BTN", "Goal button clicked");
         });
         // Alarm Buttom Click
-        view.findViewById(R.id.btnAlarm).setOnClickListener(v -> {
-            Intent alarm = new Intent(getView().getContext(), AlarmActivity.class);
+        view.findViewById(R.id.btnAlarm).setOnClickListener(v ->  {
+            Intent alarm = new Intent(v.getContext(), AlarmActivity.class);
             startActivity(alarm);
         });
     }

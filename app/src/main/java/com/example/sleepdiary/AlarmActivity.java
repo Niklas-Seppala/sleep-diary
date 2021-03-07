@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,36 +53,38 @@ public class AlarmActivity extends AppCompatActivity implements TimePickerDialog
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        // Creating c variable
         Calendar c = Calendar.getInstance();
-        // ^ Creating c variable
+        // Referring to the hourOfDay variable
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        // ^ Referring to the hourOfDay variable
+        // Referring to the minute variable
         c.set(Calendar.MINUTE, minute);
-        // ^ Referring to the minute variable
-        c.set(Calendar.SECOND, 0);
-        // ^ When the alarm goes on the seconds will be 0.
         updateTimeText(c);
         startAlarm(c);
     }
 
     //  timeText string. When new alarm is set the time will appear in the main view.
     private void updateTimeText(Calendar c) {
-        String timeText = "Alarm set for: ";
+        String timeText = "Next alarm set at ";
         // Adding to the timeText string the time that user picks for the alarm time.
         timeText += DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
         newTextView.setText(timeText);
     }
 
-    // The new alarm setting. AlarmManager is activated and the alarm will goes off at the time and date when it is set by the user.
+    // The new alarm is activated for the phone's own alarm clock.
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void startAlarm(Calendar c) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, Alert.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-        if (c.before(Calendar.getInstance())) {
-            c.add(Calendar.DATE, 1);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        {
+            Intent alarm = new Intent(AlarmClock.ACTION_SET_ALARM);
+
+            alarm.putExtra(AlarmClock.EXTRA_HOUR, hour);
+            alarm.putExtra(AlarmClock.EXTRA_MINUTES, minute);
+            alarm.putExtra(AlarmClock.EXTRA_SKIP_UI, false);
+
+            startActivity(alarm);
         }
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
     // Method for cancelling the alarm.
@@ -90,6 +93,6 @@ public class AlarmActivity extends AppCompatActivity implements TimePickerDialog
         Intent intent = new Intent(this, Alert.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
         alarmManager.cancel(pendingIntent);
-        newTextView.setText("Set new alarm");
+        newTextView.setText("No alarms activated");
     }
 }

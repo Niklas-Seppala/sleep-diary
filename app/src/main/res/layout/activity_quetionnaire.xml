@@ -22,41 +22,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="sans-serif-light"
         >
 
         <TextView
             android:id="@+id/heading02_tv"
             android:layout_width="match_parent"
             android:layout_height="61dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif-light"
             android:rotationY="0"
             android:text="How was the sleep last night?"
             android:textAllCaps="true"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="15dp"/>
+            android:textSize="22sp"
+            android:layout_marginBottom="15dp"
+            />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:fontFamily="sans-serif-light">
                 <TextView
                     android:id="@+id/sleepDuration_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sleep duration: "
-                    android:textStyle="bold" />
+                    android:fontFamily="sans-serif-light" />
 
                 <TextView
                     android:id="@+id/duration_tv"
                     android:layout_width="137dp"
                     android:layout_height="39dp"
                     android:gravity="center_horizontal"
-                    android:text="TextView"
-                    android:textAlignment="center" />
+                    android:text=""
+                    android:textAlignment="center"
+                    android:fontFamily="sans-serif-light"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -67,14 +71,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Was it easy to fall asleep?"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-light" />
 
         <androidx.cardview.widget.CardView
             android:elevation="5dp"
             app:cardCornerRadius="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:fontFamily="sans-serif-light"
             >
 
             <RadioGroup
@@ -134,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Overall feelings?"
-            android:textStyle="bold" />
+            android:fontFamily="sans-serif-light" />
 
         <androidx.cardview.widget.CardView
             android:elevation="5dp"
@@ -207,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="How many times did you wake up?"
-                android:textStyle="bold"></TextView>
+                android:fontFamily="sans-serif-light"></TextView>
 
 
             <EditText
@@ -223,7 +227,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="times."></TextView>
+                android:text="times."
+                android:fontFamily="sans-serif-light"></TextView>
 
         </LinearLayout>
 
@@ -240,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Medications?"
-                android:textStyle="bold"></TextView>
+                android:fontFamily="sans-serif-light"></TextView>
 
             <RadioGroup
                 android:id="@+id/radioGroupQ4"
@@ -255,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:text="No"
                     android:padding="10dp"
-
+                    android:fontFamily="sans-serif-light"
                     />
                 <RadioButton
                     android:id="@+id/q4Yes"
@@ -263,7 +268,7 @@
                     android:layout_height="wrap_content"
                     android:text="Yes"
                     android:padding="10dp"
-
+                    android:fontFamily="sans-serif-light"
                     />
 
             </RadioGroup>
@@ -278,7 +283,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@string/submitButton" />
+            android:text="@string/submitButton"
+            android:fontFamily="sans-serif-light"/>
 
 
     </LinearLayout>
