@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         loadDataFromDB();
-        AppSettings.deserialize(getSharedPreferences(AppSettings.NAME, Context.MODE_PRIVATE));
+        AppSettings.read(getSharedPreferences(AppSettings.NAME, Context.MODE_PRIVATE));
 
         // Set bottom navigation bar click events
         initBottomNavBar();

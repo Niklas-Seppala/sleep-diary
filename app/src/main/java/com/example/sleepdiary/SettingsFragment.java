@@ -16,6 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
+/**
+ * Settings fragment, that controls the input views on fragment_settings.xml
+ * layout. User can interact with inputs, and only when apply-button is pressed,
+ * changes are saved to disc and runtime memory.
+ */
 @SuppressLint("UseSwitchCompatOrMaterialCode")
 public class SettingsFragment extends Fragment {
     private EditText usernameEditText;
@@ -29,11 +36,14 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         setButtonClickHandlers(view);
-
         setCurrentValues();
-        setAlarmSettingHandlers();
+        setSwitchHandlers();
     }
 
+    /**
+     * Find the user input views from Settings fragment.
+     * @param view Settings fragmen
+     */
     private void findViews(View view) {
         usernameEditText = view.findViewById(R.id.settings_edit_text_username);
         clockFormatSwitch = view.findViewById(R.id.settings_24h_format_switch);
@@ -42,6 +52,9 @@ public class SettingsFragment extends Fragment {
         trackOverallFealingSwitch = view.findViewById(R.id.settings_track_overall_fealing_switch);
     }
 
+    /**
+     * Set previous settings values to user inputs.
+     */
     private void setCurrentValues() {
         AppSettings settings = AppSettings.getInstance();
         String username = settings.getUsername();
@@ -51,20 +64,32 @@ public class SettingsFragment extends Fragment {
         clockFormatSwitch.setChecked(settings.getUse24HourClockFormat());
         nativeAlarmSwitch.setChecked(settings.getOpenNativeClock());
         trackCaffeineSwitch.setChecked(settings.getChartTrackCaffeine());
-        trackOverallFealingSwitch.setChecked(settings.getChartTrackOverallFeeling());
+        trackOverallFealingSwitch.setChecked(settings.getChartTrackQualityRating());
     }
 
+    /**
+     * Set click event handlers to apply and reset buttons.
+     * @param view Settings fragment
+     */
     private void setButtonClickHandlers(View view) {
         view.findViewById(R.id.settings_apply_button).setOnClickListener(v -> applyChanges());
         view.findViewById(R.id.settings_reset_button).setOnClickListener(v -> revertChanges());
     }
 
 
+    /**
+     * Abort editing AppSettings. Reset to user input views.
+     * to original values.
+     */
     private void revertChanges() {
         AppSettings.modify().revert();
         setCurrentValues();
     }
 
+    /**
+     * Apply user's changes to AppSettings. Show success message.
+     * Redirect user to home fragment.
+     */
     private void applyChanges() {
         SharedPreferences sharedPref = getContext().getSharedPreferences(AppSettings.NAME,
                 Context.MODE_PRIVATE);
@@ -73,18 +98,26 @@ public class SettingsFragment extends Fragment {
         AppSettings.modify()
                 .setValue(AppSettings.USERNAME, usernameEditText.getText().toString())
                 .commit()
-                .serialize(editor)
+                .write(editor)
                 .apply();
 
+        // Get the main activity
         MainActivity main = (MainActivity)getActivity();
+
+        // Display success message
         Toast toast = Toast.makeText(main, "Settings saved!", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
                 0, 190);
         toast.show();
-        main.setFragment(main.homeFrag);
+
+        // Redirect user to home fragment
+        Objects.requireNonNull(main).setFragment(main.homeFrag);
     }
 
-    private void setAlarmSettingHandlers() {
+    /**
+     * Sets value change eventhandlers to switch views.
+     */
+    private void setSwitchHandlers() {
         clockFormatSwitch.setOnCheckedChangeListener((v, checked) ->
                 AppSettings.modify().setValue(AppSettings.CLOCK_FORMAT, checked));
 
