@@ -54,6 +54,15 @@ public abstract class DateTime {
     public static class Unix {
 
         /**
+         *
+         * @return
+         */
+        public static int getTimestamp() {
+            long currenttUnixTime = System.currentTimeMillis() / 1000L;
+            return (int)currenttUnixTime;
+        }
+
+        /**
          * Converts Unix time timestamp to indexed weekday.
          * @param unix unix epoch timestamp
          * @return Indexed Weekday

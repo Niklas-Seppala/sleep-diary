@@ -35,8 +35,8 @@ public class HomeFragment extends Fragment {
         });
         // Sleep Button Click
         view.findViewById(R.id.btnSleep).setOnClickListener(v -> {
-            Log.d("BTN", "Sleep button clicked");
-
+            StartSleepEventFragment fragment = new StartSleepEventFragment();
+            fragment.show(getFragmentManager(), "gotosleep");
         });
         // Goal Button Click
         view.findViewById(R.id.btnGoal).setOnClickListener(v -> {
