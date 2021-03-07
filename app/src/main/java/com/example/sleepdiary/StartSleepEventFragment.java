@@ -17,6 +17,7 @@ import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.models.User;
+import com.example.sleepdiary.time.DateTime;
 
 import java.time.Instant;
 
@@ -31,14 +32,12 @@ public class StartSleepEventFragment extends DialogFragment {
                 false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setButtonClicks(view);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setButtonClicks(View view) {
         view.findViewById(R.id.start_sleep_event_ok_btn).setOnClickListener(v -> {
             savePartialEntryToDB();
@@ -52,11 +51,9 @@ public class StartSleepEventFragment extends DialogFragment {
         view.findViewById(R.id.start_sleep_event_cancel_btn).setOnClickListener(v -> dismiss());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void savePartialEntryToDB() {
         User user = GlobalData.getInstance().getCurrentUser();
-        SleepEntry entry = new SleepEntry(user.getId(),
-                (int)Instant.now().getEpochSecond());
+        SleepEntry entry = new SleepEntry(user.getId(), DateTime.Unix.getTimestamp());
         DbConnection db = new DbConnection(getContext());
         db.insert(entry);
         db.close();
