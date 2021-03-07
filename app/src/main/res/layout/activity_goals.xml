@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GoalsActivity">
+
+    <TextView
+        android:id="@+id/cups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="231dp"
+        android:layout_marginRight="231dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="Cups"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/caffeine"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <EditText
+        android:id="@+id/caffeine"
+        android:layout_width="92dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:ems="10"
+        android:textColor="#000000"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_horizontal"
+        android:inputType="time"
+        android:textSize="25sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/cups"
+        app:layout_constraintEnd_toStartOf="@+id/cups"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="DAILY CAFFEINE INTAKE"
+        android:textSize="32sp"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hours" />
+
+    <TextView
+        android:id="@+id/min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="74dp"
+        android:layout_marginRight="74dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="min"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/minutes"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.226" />
+
+    <EditText
+        android:id="@+id/minutes"
+        android:layout_width="92dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:textColor="#000000"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_horizontal"
+        android:inputType="time"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/min"
+        app:layout_constraintStart_toEndOf="@+id/h"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.217" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="TARGET SLEEP TIME"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toTopOf="@+id/minutes"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/hours"
+        android:layout_width="111dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:ems="10"
+        android:textColor="#000000"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_horizontal"
+        android:inputType="time"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/h"
+        app:layout_constraintEnd_toStartOf="@+id/h"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginRight="46dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="h"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/minutes"
+        app:layout_constraintStart_toEndOf="@+id/hours"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/submit_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="32dp"
+        android:background="#293241"
+        android:fontFamily="sans-serif-thin"
+        android:text="Submit"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        app:backgroundTint="#293241"
+        app:layout_constraintStart_toEndOf="@+id/caffeine"
+        app:layout_constraintTop_toBottomOf="@+id/caffeine" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
