@@ -7,7 +7,7 @@
     tools:context=".GoalsActivity">
 
     <TextView
-        android:id="@+id/cups"
+        android:id="@+id/goals_caffeine_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
@@ -33,8 +33,8 @@
         android:gravity="center_horizontal"
         android:inputType="time"
         android:textSize="25sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/cups"
-        app:layout_constraintEnd_toStartOf="@+id/cups"
+        app:layout_constraintBaseline_toBaselineOf="@+id/goals_caffeine_input"
+        app:layout_constraintEnd_toStartOf="@+id/goals_caffeine_input"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/hours" />
 
     <TextView
-        android:id="@+id/min"
+        android:id="@+id/goals_mins_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="74dp"
@@ -78,8 +78,8 @@
         android:inputType="time"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/min"
-        app:layout_constraintStart_toEndOf="@+id/h"
+        app:layout_constraintEnd_toStartOf="@+id/goals_mins_input"
+        app:layout_constraintStart_toEndOf="@+id/goals_hours_input"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.217" />
 
@@ -109,12 +109,12 @@
         android:gravity="center_horizontal"
         android:inputType="time"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/h"
-        app:layout_constraintEnd_toStartOf="@+id/h"
+        app:layout_constraintBaseline_toBaselineOf="@+id/goals_hours_input"
+        app:layout_constraintEnd_toStartOf="@+id/goals_hours_input"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/h"
+        android:id="@+id/goals_hours_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
@@ -129,7 +129,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <Button
-        android:id="@+id/submit_results"
+        android:id="@+id/goals_submit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"

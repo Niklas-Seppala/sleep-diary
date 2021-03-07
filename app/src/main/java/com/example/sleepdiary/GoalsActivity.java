@@ -7,20 +7,32 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class GoalsActivity extends AppCompatActivity {
+    private Button submitBtn;
+    private TextView hoursTextView;
+    private TextView minsTextView;
+    private TextView caffeineTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goals);
 
-        Button buttonResult = findViewById(R.id.submit_results);
-        buttonResult.setOnClickListener(v -> {
-            TextView hoursResult = findViewById(R.id.h);
-            String hours = hoursResult.getText().toString();
-            TextView minutesResult = findViewById(R.id.min);
-            String minutes = minutesResult.getText().toString();
-            TextView caffeineResult = findViewById(R.id.cups);
-            String cup = caffeineResult.getText().toString();
+        findViews();
+        setSubmitClickHander();
+    }
+
+    private void findViews() {
+        submitBtn = findViewById(R.id.goals_submit_btn);
+        hoursTextView = findViewById(R.id.goals_hours_input);
+        minsTextView = findViewById(R.id.goals_mins_input);
+        caffeineTextView = findViewById(R.id.goals_caffeine_input);
+    }
+
+    private void setSubmitClickHander() {
+        submitBtn.setOnClickListener(v -> {
+            String hours = hoursTextView.getText().toString();
+            String minutes = minsTextView.getText().toString();
+            String cup = caffeineTextView.getText().toString();
         });
     }
 }
