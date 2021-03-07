@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public final HomeFragment homeFrag = new HomeFragment();
     public final InfoFragment infoFrag = new InfoFragment();
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void handlePartialEntry() {
         List<SleepEntry> entries = GlobalData.getInstance().getSleepEntries();
         if (entries.isEmpty())
