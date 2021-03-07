@@ -37,9 +37,9 @@ public class GoalsActivity extends AppCompatActivity {
 
     private void setSubmitClickHander() {
         submitBtn.setOnClickListener(v -> {
-            String hours = hoursTextView.getText().toString();
-            String minutes = minsTextView.getText().toString();
-            String cup = caffeineTextView.getText().toString();
+            int hours = Integer.parseInt(hoursTextView.getText().toString()) * 60 * 60;
+            int minutes = Integer.parseInt(minsTextView.getText().toString()) * 60;
+            int cup = Integer.parseInt(caffeineTextView.getText().toString());
 
             User currentUser = GlobalData.getInstance().getCurrentUser();
             User newUser = new User(currentUser.getId(), currentUser.getName(), 2, 2);
