@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.util.Calendar;
 
-// This is SettingAlarm class. SettingAlarm has a super class called DialogFragment.
+/* This is SettingAlarm class. */
 public class SettingAlarm extends DialogFragment {
     @NonNull
     @Override
@@ -20,8 +20,8 @@ public class SettingAlarm extends DialogFragment {
         int minute = c.get(Calendar.MINUTE);
 
         return new TimePickerDialog(getActivity(),
-                (TimePickerDialog.OnTimeSetListener)getActivity(), // This picks the time we those to use.
+                (TimePickerDialog.OnTimeSetListener)getActivity(), /* This picks the time what the user those to use. */
                 hour, minute,
-                DateFormat.is24HourFormat(getActivity())); // Phone is set to use 24/7 clock.
+                DateFormat.is24HourFormat(getActivity())); /* Phone is set to use 24/7 clock.*/
     }
 }
