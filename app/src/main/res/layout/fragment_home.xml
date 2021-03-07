@@ -5,7 +5,8 @@
     android:id="@+id/homeFragmentConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".HomeFragment"
+    >
 
 
     <Button
@@ -13,6 +14,7 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:text="Sleep"
+        android:fontFamily="sans-serif-light"
         android:drawableTop="@drawable/ic_sleep"
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
@@ -29,6 +31,7 @@
         android:paddingTop="30dp"
         android:paddingBottom="30dp"
         android:text="Statistics"
+        android:fontFamily="sans-serif-light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnSleep"
@@ -40,6 +43,7 @@
         android:layout_height="160dp"
         android:layout_marginTop="16dp"
         android:text="Goal"
+        android:fontFamily="sans-serif-light"
         android:drawableTop="@drawable/ic_goals"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
@@ -58,7 +62,7 @@
         android:drawableTop="@drawable/ic_add_alarm"
         android:paddingBottom="30dp"
         android:paddingTop="30dp"
-
+        android:fontFamily="sans-serif-light"
         android:text="Set Alarm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

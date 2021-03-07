@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#505050"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     tools:context=".AlarmActivity">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="179dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/button_new_alarm"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="78dp"
         android:layout_marginBottom="17dp"
-        android:text="New alarm"
-        android:textSize="30sp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="78dp" />
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_horizontal"
+        android:includeFontPadding="false"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="22sp" />
 
     <Button
         android:id="@+id/button_new_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="68dp"
-        android:backgroundTint="#6A6A6A"
-        android:text="New Alarm"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="68dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="130dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginBottom="348dp"
+        android:background="#3D5A80"
+        android:backgroundTint="#6A6A6A"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_horizontal"
+        android:text="New alarm"
+        android:textColor="#FAFAFA"
+        android:textSize="17sp"
+        app:backgroundTint="#3D5A80" />
 
-    <Button
-        android:id="@+id/button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/button_new_alarm"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="-48dp"
-        android:layout_marginEnd="50dp"
-        android:backgroundTint="#7C7C7C"
-        android:text="Cancel"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="50dp" />
 </RelativeLayout>

@@ -13,7 +13,8 @@
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@+id/sleep_entry_inspect_date_tv"
         app:layout_constraintTop_toBottomOf="@+id/sleep_entry_inspect_date_tv"
-        tools:text="18:23 - 07:32" />
+        tools:text="18:23 - 07:32"
+        android:fontFamily="sans-serif-light"/>
 
     <TextView
         android:id="@+id/textView6"
@@ -24,7 +25,7 @@
         android:layout_marginTop="64dp"
         android:text="@string/sleep_inspection_quality_label"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:fontFamily="sans-serif-light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sleep_entry_inspect_dur_tv" />
 
@@ -36,7 +37,7 @@
         android:layout_marginRight="16dp"
         android:text="@string/sleep_inspection_caffeine_intake_label"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:fontFamily="sans-serif-light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
@@ -48,10 +49,10 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:textSize="36sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Wed, 20.12.2020" />
+        tools:text="Wed, 20.12.2020"
+        android:fontFamily="sans-serif-light"/>
 
     <TextView
         android:id="@+id/sleep_entry_inspect_dur_tv"
@@ -61,7 +62,8 @@
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@+id/sleep_entry_inspection_timerange_tv"
         app:layout_constraintTop_toBottomOf="@+id/sleep_entry_inspection_timerange_tv"
-        tools:text="8h 30min" />
+        tools:text="8h 30min"
+        android:fontFamily="sans-serif-light"/>
 
     <ImageView
         android:id="@+id/sleep_entry_inspection_success_icon_iv"
@@ -120,6 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
+        android:fontFamily="sans-serif-light"
         app:layout_constraintBottom_toBottomOf="@+id/sleep_entry_inspection_rating_iv"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -131,6 +134,7 @@
         android:layout_height="77dp"
         android:layout_marginBottom="32dp"
         android:text="@string/buttons_edit"
+        android:fontFamily="sans-serif-light"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
