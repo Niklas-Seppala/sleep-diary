@@ -8,8 +8,10 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.example.sleepdiary.R;
 import com.example.sleepdiary.data.models.Rating;
 
+/**
+ *
+ */
 public abstract class SleepRatingIconService {
-
     public static Drawable getIconFromRating(Context context, Rating userRating) {
         switch (userRating) {
             case VERY_BAD:

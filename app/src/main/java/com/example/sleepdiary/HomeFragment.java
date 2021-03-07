@@ -12,21 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
+/**
+ * Home view of the whole application.
+ * From here, user can view stats, start new alarm, start new sleep entry
+ * and set personal goals.
+ */
 public class HomeFragment extends Fragment {
-    // Use this :)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHomeViewButtonEvents(view);
     }
 
-    // Dont touch!
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
+    /**
+     * Set the click eventhandlers to main feature buttons
+     * @param view HomeFragment
+     */
     private void setHomeViewButtonEvents(View view) {
         // Statistics Button Click
         view.findViewById(R.id.btnStats).setOnClickListener(v -> {
@@ -47,5 +48,12 @@ public class HomeFragment extends Fragment {
             Intent alarm = new Intent(getView().getContext(), AlarmActivity.class);
             startActivity(alarm);
         });
+    }
+
+    // Dont touch!
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }

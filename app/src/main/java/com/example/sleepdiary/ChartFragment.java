@@ -1,6 +1,5 @@
 package com.example.sleepdiary;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,6 +19,7 @@ import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.SleepHabits;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.WeeklySleepHabit;
+import com.example.sleepdiary.data.models.User;
 import com.example.sleepdiary.time.DateTime;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -39,6 +39,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Displays weekly SleepEntries in a bar chart.
+ */
 public class ChartFragment extends Fragment {
     private static final float CHART_X_MAX = 6.5f;
     private static final float CHART_X_MIN = -0.5f;
@@ -64,23 +67,35 @@ public class ChartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initColors();
         getData();
-        initHeaderViews(view);
+        initViews(view);
         initChart(view);
         displayWeek(sleepHabits.getWeek());
     }
 
+    /**
+     * Get the colors for barchart from resources.
+     */
     private void initColors() {
         if (successColor > 0) return;
         successColor = getResources().getColor(R.color.accent_dark);
         failColor = getResources().getColor(R.color.accent_red);
     }
 
+    /**
+     * Get the data for the chart from GlobalData singleton;
+     */
     private void getData() {
         sleepHabits = new SleepHabits(GlobalData.getInstance().getWeeklySleepHabits(), savedIndex);
-        userGoal = GlobalData.getInstance().getCurrentUser().getGoal();
+        User user = GlobalData.getInstance().getCurrentUser();
+        assert user != null;
+        userGoal = user.getGoal();
     }
 
-    private void initHeaderViews(View view) {
+    /**
+     *  Find the textviews and buttons, add event handlers.
+     * @param view ChartFragment
+     */
+    private void initViews(View view) {
         weekHeader = view.findViewById(R.id.sleep_chart_item_week_header_tv);
         dateHeader = view.findViewById(R.id.sleep_chart_item_date_tv);
         updateHeaderText();
@@ -92,6 +107,10 @@ public class ChartFragment extends Fragment {
         nextBtn.setOnClickListener(this::changeWeek);
     }
 
+    /**
+     * Change week action
+     * @param view Button
+     */
     private void changeWeek(View view) {
         int currentWeek = sleepHabits.getIndex();
         if (view.getId() == R.id.sleep_chart_item_btn_next_week)
@@ -103,6 +122,10 @@ public class ChartFragment extends Fragment {
             displayWeek(sleepHabits.getWeek());
     }
 
+    /**
+     * Display chart and header info for specified week.
+     * @param week Week containing SleepEntries
+     */
     private void displayWeek(WeeklySleepHabit week) {
         if (week != null) {
             updateHeaderText();
@@ -114,6 +137,9 @@ public class ChartFragment extends Fragment {
         }
     }
 
+    /**
+     * Set week and year strings to view
+     */
     private void updateHeaderText() {
         int weekNum = sleepHabits.getWeek().getDate().getWeek();
         int year = sleepHabits.getWeek().getDate().getYear();
@@ -121,6 +147,11 @@ public class ChartFragment extends Fragment {
         dateHeader.setText(getString(R.string.time_year, year));
     }
 
+    /**
+     * Create data for specified week for CombinedChart.
+     * @param week week containing SleepEntries
+     * @return Data for the chart.
+     */
     private CombinedData createChartData(WeeklySleepHabit week) {
         CombinedData data = new CombinedData();
         data.setData(createBarData(week));
@@ -128,7 +159,14 @@ public class ChartFragment extends Fragment {
         return data;
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    /**
+     * Create bar data for specified week.
+     * SleepEntries are divided to two sets, based
+     * on user's goal.
+     *
+     * @param week Week to be displayed to user.
+     * @return BarData object for specified week.
+     */
     private BarData createBarData(WeeklySleepHabit week) {
         ArrayList<BarEntry> successSet = new ArrayList<>();
         ArrayList<BarEntry> failSet = new ArrayList<>();
@@ -153,13 +191,18 @@ public class ChartFragment extends Fragment {
         return resultData;
     }
 
-    private void styleBars(BarDataSet set, int color) {
-        set.setDrawValues(true);
-        set.setValueTextSize(16f);
-        set.setColor(color);
-        set.setHighLightAlpha(HIGHLIGHT_ALPHA);
+    /**
+     * Set styling for bar data set.
+     * @param barDataSet Bar data set
+     * @param color Color of the bars in this set
+     */
+    private void styleBars(BarDataSet barDataSet, int color) {
+        barDataSet.setDrawValues(true);
+        barDataSet.setValueTextSize(16f);
+        barDataSet.setColor(color);
+        barDataSet.setHighLightAlpha(HIGHLIGHT_ALPHA);
 
-        set.setValueFormatter(new ValueFormatter() {
+        barDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 int intVal = (int)value;
@@ -171,6 +214,11 @@ public class ChartFragment extends Fragment {
         });
     }
 
+    /**
+     * Create line data based on user goal.
+     * (Straight horizontal line)
+     * @return LineData object.
+     */
     private LineData createLineData() {
         LineDataSet set = new LineDataSet(null, "");
         set.addEntry(new Entry(CHART_X_MIN, userGoal));
@@ -181,15 +229,23 @@ public class ChartFragment extends Fragment {
         return data;
     }
 
-    private void styleLineData(LineDataSet set) {
-        set.setColor(Color.BLACK);
-        set.setCircleColor(Color.BLACK);
-        set.setLineWidth(3f);
-        set.setDrawValues(false);
-        set.setDrawCircleHole(false);
-        set.setCircleRadius(4f);
+    /**
+     * Set styling for line.
+     * @param lineDataSet set of line data.
+     */
+    private void styleLineData(LineDataSet lineDataSet) {
+        lineDataSet.setColor(Color.BLACK);
+        lineDataSet.setCircleColor(Color.BLACK);
+        lineDataSet.setLineWidth(3f);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawCircleHole(false);
+        lineDataSet.setCircleRadius(4f);
     }
 
+    /**
+     * Set basic chart styling and settings.
+     * @param view ChartFragment.
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initChart(View view) {
         chartView = view.findViewById(R.id.sleep_chart_item_combo_chart);
@@ -216,9 +272,15 @@ public class ChartFragment extends Fragment {
                 CombinedChart.DrawOrder.BAR,
                 CombinedChart.DrawOrder.LINE
         });
+
         setBarEntryClicks(view);
     }
 
+    /**
+     * Set click eventhandlers to bars. When user clicks one of the bars,
+     * SleepEntryInspection Activity is launched.
+     * @param view ChartFragment.
+     */
     private void setBarEntryClicks(View view) {
         chartView.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -228,8 +290,7 @@ public class ChartFragment extends Fragment {
                 List<SleepEntry> allEntries = GlobalData.getInstance().getSleepEntries();
                 for (int i = 0; i < allEntries.size(); i++) {
                     if (allEntries.get(i).getId() == id) {
-                        Intent inspection = new Intent(view.getContext(),
-                                SleepEntryInspectionActivity.class);
+                        Intent inspection = new Intent(view.getContext(), SleepEntryInspectionActivity.class);
                         inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);
                         startActivity(inspection);
                     }
@@ -247,6 +308,9 @@ public class ChartFragment extends Fragment {
         saveWeek();
     }
 
+    /**
+     * Save the current week index to static field.
+     */
     private void saveWeek() {
         savedIndex = sleepHabits.getIndex();
     }
