@@ -3,6 +3,7 @@ package com.example.sleepdiary;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
@@ -24,6 +26,7 @@ import java.util.Objects;
  * changes are saved to disc and runtime memory.
  */
 @SuppressLint("UseSwitchCompatOrMaterialCode")
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class SettingsFragment extends Fragment {
     private EditText usernameEditText;
     private Switch clockFormatSwitch;
@@ -31,6 +34,7 @@ public class SettingsFragment extends Fragment {
     private Switch trackCaffeineSwitch;
     private Switch trackOverallFealingSwitch;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -71,6 +75,7 @@ public class SettingsFragment extends Fragment {
      * Set click event handlers to apply and reset buttons.
      * @param view Settings fragment
      */
+
     private void setButtonClickHandlers(View view) {
         view.findViewById(R.id.settings_apply_button).setOnClickListener(v -> applyChanges());
         view.findViewById(R.id.settings_reset_button).setOnClickListener(v -> revertChanges());
