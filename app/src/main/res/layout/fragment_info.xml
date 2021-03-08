@@ -14,7 +14,6 @@
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:lineSpacingExtra="1.0dp"
-        android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#293241"
         android:textSize="34sp"

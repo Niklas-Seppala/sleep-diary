@@ -36,7 +36,7 @@
     <string name="sleep_inspection_quality_label">Sleep Quality</string>
     <string name="sleep_inspection_caffeine_amount">$d Cups</string>
 
-    <!-- Tips Button-->
+    <!-- Tips-->
     <string-array name="tips_array">
         <item>Relax and clean your mind in the evening! Relaxation techniques before bed, including hot baths and meditation, may help you fall asleep.</item>
         <item>Take a melatonin supplement, it`s an easy way to improve sleep quality and fall asleep faster.</item>
