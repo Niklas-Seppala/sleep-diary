@@ -1,10 +1,14 @@
 package com.example.sleepdiary;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.sleepdiary.adapters.SleepRatingIconService;
 import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.SleepHabits;
+import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.WeeklySleepHabit;
 import com.example.sleepdiary.data.models.User;
@@ -25,6 +31,7 @@ import com.example.sleepdiary.time.DateTime;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -45,6 +52,7 @@ import java.util.stream.Collectors;
 /**
  * Displays weekly SleepEntries in a bar chart.
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ChartFragment extends Fragment {
     private static final float CHART_X_MAX = 6.5f;
     private static final float CHART_X_MIN = -0.5f;
@@ -74,21 +82,6 @@ public class ChartFragment extends Fragment {
         initChart(view);
         displayWeek(sleepHabits.getWeek());
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void createCaffeineData() {
-        WeeklySleepHabit week =  sleepHabits.getWeek();
-
-        List<Integer> asd = Arrays.stream(week.getDays())
-                .mapToInt(SleepEntry::getCaffeineIntake)
-                .boxed()
-                .collect(Collectors.toList());
-
-        asd.forEach(integer -> Log.d("TAG", "createCaffeineData: " + integer));
-
-//        LineDataSet caffeineSet = new LineDataSet();
-    }
-
 
     /**
      * Get the colors for barchart from resources.
@@ -129,7 +122,6 @@ public class ChartFragment extends Fragment {
      * Change week action
      * @param view Button
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void changeWeek(View view) {
         int currentWeek = sleepHabits.getIndex();
         if (view.getId() == R.id.sleep_chart_item_btn_next_week)
@@ -174,8 +166,34 @@ public class ChartFragment extends Fragment {
     private CombinedData createChartData(WeeklySleepHabit week) {
         CombinedData data = new CombinedData();
         data.setData(createBarData(week));
-        data.setData(createLineData());
+        data.setData(createGoalLineData());
+
+        if (AppSettings.getInstance().getChartTrackCaffeine()) {
+            data.setData(createCaffeineData(week));
+        }
         return data;
+    }
+
+    /**
+     * Gets Sleep rating icon and resizes it to match
+     * bar entry.
+     * Resize is implemented using a workaround detailed in:
+     *      https://stackoverflow.com/questions/42395036/resize-vectordrawable-icon-programmatically
+     * @param rating user rating
+     * @return Drawable bitmap
+     */
+    private Drawable getResizedIcon(Rating rating) {
+        Drawable drawable = SleepRatingIconService.getIconFromRating(getContext(), rating);
+        if (drawable == null) return null;
+
+        VectorDrawable vectorDrawable = (VectorDrawable)drawable;
+        Bitmap bm = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        vectorDrawable.setBounds(20, 20,
+                canvas.getWidth() - 20, canvas.getHeight() -20);
+        vectorDrawable.draw(canvas);
+        return new BitmapDrawable(getResources(), bm);
     }
 
     /**
@@ -194,6 +212,14 @@ public class ChartFragment extends Fragment {
         for (int x = 0; x < weekDays.length; x++) {
             float y = weekDays[x].getEndTimestamp() - weekDays[x].getStartTimestamp();
             BarEntry entry = new BarEntry((float) x, y);
+
+            if (AppSettings.getInstance().getChartTrackQualityRating()) {
+                entry.setIcon(getResizedIcon(weekDays[x].getQuality()));
+                if (entry.getIcon() != null) {
+                    // Set icon location
+                    entry.getIcon().setBounds(0, 100, 0, 0);
+                }
+            }
             List<BarEntry> set = y < userGoal ? failSet : successSet;
             set.add(entry);
         }
@@ -234,15 +260,44 @@ public class ChartFragment extends Fragment {
     }
 
     /**
+     * Create the caffeine consumption line data of
+     * specified week.
+     * @param week week containing SleepEntries
+     * @return Caffeine linedata
+     */
+    private LineData createCaffeineData(WeeklySleepHabit week) {
+        List<Integer> caffeine = Arrays.stream(week.getDays())
+                .mapToInt(SleepEntry::getCaffeineIntake)
+                .boxed()
+                .collect(Collectors.toList());
+
+        List<Entry> caffeineEntries = new ArrayList<>();
+        for (int i = 0; i < caffeine.size(); i++) {
+            caffeineEntries.add(new Entry(i, caffeine.get(i)));
+        }
+
+        LineDataSet caffeineSet = new LineDataSet(caffeineEntries, "caffeine");
+        caffeineSet.setValueTextSize(20f);
+        caffeineSet.setCircleRadius(6f);
+        caffeineSet.setCircleColor(Color.BLACK);
+        caffeineSet.setDrawCircleHole(false);
+        caffeineSet.setLineWidth(3f);
+        caffeineSet.setColor(Color.BLACK);
+
+        caffeineSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        return new LineData(caffeineSet);
+    }
+
+    /**
      * Create line data based on user goal.
      * (Straight horizontal line)
      * @return LineData object.
      */
-    private LineData createLineData() {
+    private LineData createGoalLineData() {
         LineDataSet set = new LineDataSet(null, "");
         set.addEntry(new Entry(CHART_X_MIN, userGoal));
         set.addEntry(new Entry(CHART_X_MAX, userGoal));
-        styleLineData(set);
+        styleGoalLineData(set);
         LineData data = new LineData(set);
         data.setHighlightEnabled(false);
         return data;
@@ -252,7 +307,7 @@ public class ChartFragment extends Fragment {
      * Set styling for line.
      * @param lineDataSet set of line data.
      */
-    private void styleLineData(LineDataSet lineDataSet) {
+    private void styleGoalLineData(LineDataSet lineDataSet) {
         lineDataSet.setColor(Color.BLACK);
         lineDataSet.setCircleColor(Color.BLACK);
         lineDataSet.setLineWidth(3f);
@@ -265,7 +320,6 @@ public class ChartFragment extends Fragment {
      * Set basic chart styling and settings.
      * @param view ChartFragment.
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initChart(View view) {
         chartView = view.findViewById(R.id.sleep_chart_item_combo_chart);
         chartView.setDoubleTapToZoomEnabled(false);
@@ -274,6 +328,8 @@ public class ChartFragment extends Fragment {
         chartView.getLegend().setEnabled(false);
         chartView.getXAxis().setDrawGridLines(false);
         chartView.getAxisLeft().setEnabled(false);
+
+        chartView.getAxisRight().setAxisMaximum(10);
 
         // Chart axis range
         chartView.getXAxis().setAxisMaximum(CHART_X_MAX);

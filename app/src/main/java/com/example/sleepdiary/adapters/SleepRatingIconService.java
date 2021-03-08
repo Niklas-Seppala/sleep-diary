@@ -13,6 +13,9 @@ import com.example.sleepdiary.data.models.Rating;
  */
 public abstract class SleepRatingIconService {
     public static Drawable getIconFromRating(Context context, Rating userRating) {
+        if (userRating == null)
+            return null;
+
         switch (userRating) {
             case VERY_BAD:
                 return AppCompatResources.getDrawable(context,
