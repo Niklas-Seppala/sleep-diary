@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
 
             android:button="@drawable/ic_baseline_sentiment_neutral_64"
+            android:checked="true"
             android:text="" />
 
         <RadioButton
