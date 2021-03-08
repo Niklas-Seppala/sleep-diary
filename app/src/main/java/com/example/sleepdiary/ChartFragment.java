@@ -164,6 +164,9 @@ public class ChartFragment extends Fragment {
             if (AppSettings.getInstance().getChartTrackCaffeine()) {
                 setChartAxisMinMaxCaffeine();
             }
+        } else {
+            chartView.setData(createChartData(week));
+            chartView.notifyDataSetChanged();
         }
     }
 
@@ -186,6 +189,7 @@ public class ChartFragment extends Fragment {
      * @return Data for the chart.
      */
     private CombinedData createChartData(WeeklySleepHabit week) {
+        if (week == null) return null;
         CombinedData data = new CombinedData();
         data.setData(createBarData(week));
         data.setData(createGoalLineData());
@@ -363,17 +367,6 @@ public class ChartFragment extends Fragment {
         chartView.getXAxis().setAxisMinimum(CHART_X_MIN);
         chartView.getAxisLeft().setAxisMinimum(CHART_Y_MIN);
 
-
-//        SleepEntry[] entries = sleepHabits.getWeek().getDays();
-//        int max = Arrays.stream(entries)
-//                .mapToInt(SleepEntry::getCaffeineIntake)
-//                .max()
-//                .orElseThrow(NoSuchElementException::new);
-//        Log.d("TAG", "initChart: " + max);
-
-//        chartView.getAxisRight().setAxisMaximum(max);
-//        chartView.getAxisRight().setAxisMaximum(-2);
-
         // Text styling on bar entries
         chartView.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         chartView.getXAxis().setTextColor(Color.BLACK);
@@ -412,14 +405,16 @@ public class ChartFragment extends Fragment {
         chartView.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                SleepEntry[] week = sleepHabits.getWeek().getDays();
-                int id = week[(int)e.getX()].getId();
-                List<SleepEntry> allEntries = GlobalData.getInstance().getSleepEntries();
-                for (int i = 0; i < allEntries.size(); i++) {
-                    if (allEntries.get(i).getId() == id) {
-                        Intent inspection = new Intent(view.getContext(), SleepEntryInspectionActivity.class);
-                        inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);
-                        startActivity(inspection);
+                if (sleepHabits.getWeek() != null) {
+                    SleepEntry[] week = sleepHabits.getWeek().getDays();
+                    int id = week[(int)e.getX()].getId();
+                    List<SleepEntry> allEntries = GlobalData.getInstance().getSleepEntries();
+                    for (int i = 0; i < allEntries.size(); i++) {
+                        if (allEntries.get(i).getId() == id) {
+                            Intent inspection = new Intent(view.getContext(), SleepEntryInspectionActivity.class);
+                            inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);
+                            startActivity(inspection);
+                        }
                     }
                 }
             }
