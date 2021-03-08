@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-light"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@+id/sleep_entry_inspect_date_tv"
         app:layout_constraintTop_toBottomOf="@+id/sleep_entry_inspect_date_tv"
@@ -22,9 +23,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="64dp"
+        android:fontFamily="sans-serif-light"
         android:text="@string/sleep_inspection_quality_label"
         android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sleep_entry_inspect_dur_tv" />
 
@@ -34,9 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:fontFamily="sans-serif-light"
         android:text="@string/sleep_inspection_caffeine_intake_label"
         android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView6" />
 
@@ -47,8 +48,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-light"
         android:textSize="36sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Wed, 20.12.2020" />
@@ -58,6 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-light"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="@+id/sleep_entry_inspection_timerange_tv"
         app:layout_constraintTop_toBottomOf="@+id/sleep_entry_inspection_timerange_tv"
@@ -78,59 +80,61 @@
         android:id="@+id/sleep_etnry_inspection_duration_increase_icon_iv"
         android:layout_width="51dp"
         android:layout_height="43dp"
+        android:contentDescription="@string/img_desc_trending_down"
         android:src="@drawable/ic_baseline_expand_less_48"
         app:layout_constraintBottom_toBottomOf="@+id/sleep_entry_inspect_dur_tv"
         app:layout_constraintStart_toEndOf="@+id/sleep_entry_inspect_dur_tv"
         app:layout_constraintTop_toTopOf="@+id/sleep_entry_inspect_dur_tv"
-        app:layout_constraintVertical_bias="0.333"
-        android:contentDescription="@string/img_desc_trending_down" />
+        app:layout_constraintVertical_bias="0.333" />
 
     <ImageView
         android:id="@+id/sleep_entry_inspection_rating_growth_iv"
         android:layout_width="71dp"
         android:layout_height="63dp"
+        android:contentDescription="@string/img_desc_trending_down"
         android:src="@drawable/ic_baseline_expand_less_48"
         app:layout_constraintBottom_toBottomOf="@+id/sleep_entry_inspection_rating_iv"
         app:layout_constraintStart_toEndOf="@+id/sleep_entry_inspection_rating_iv"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        android:contentDescription="@string/img_desc_trending_down" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <ImageView
         android:id="@+id/sleep_entry_inspection_caffeine_growth_iv"
         android:layout_width="71dp"
         android:layout_height="63dp"
+        android:contentDescription="@string/img_desc_trending_down"
         android:src="@drawable/ic_baseline_expand_less_48"
         app:layout_constraintBottom_toBottomOf="@+id/sleep_entry_inspection_rating_iv"
         app:layout_constraintStart_toEndOf="@+id/sleep_entry_inspection_caffeine_tv"
         app:layout_constraintTop_toTopOf="@+id/sleep_entry_inspection_rating_growth_iv"
-        app:layout_constraintVertical_bias="1.0"
-        android:contentDescription="@string/img_desc_trending_down" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/sleep_entry_inspection_rating_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/img_desc_trending_down"
         android:src="@drawable/ic_baseline_sentiment_very_dissatisfied_64"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        android:contentDescription="@string/img_desc_trending_down" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/sleep_entry_inspection_caffeine_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/sleep_entry_inspection_rating_iv"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:text="3 Cups"/>
+        tools:text="3 Cups" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="154dp"
-        android:layout_height="77dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/buttons_edit"
+        android:id="@+id/sleep_entry_inspection_delete_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/buttons_delete"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,5 @@
 package com.example.sleepdiary.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import java.util.List;
  * Custom ArrayAdapter for SleepModels.
  */
 public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
-    @SuppressLint("SimpleDateFormat")
     public SleepArrayAdapter(@NonNull Context context, @NonNull List<SleepEntry> models) {
         super(context, 0, models);
     }
@@ -63,12 +61,17 @@ public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
         return itemView;
     }
 
+    /**
+     *
+     * @param imageView
+     * @param entry
+     */
     private void setSuccessIcon(ImageView imageView, SleepEntry entry) {
         int duration = entry.getEndTimestamp() - entry.getStartTimestamp();
         User user = GlobalData.getInstance().getCurrentUser();
         if (user != null) {
             int iconId;
-            if (duration >= user.getGoal()) {
+            if (duration >= user.getSleepGoal()) {
                 iconId = R.drawable.ic_check_48;
             } else {
                 iconId = R.drawable.ic_fail_48;

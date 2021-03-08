@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/questionnaire_header_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/q_header"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/questionnaire_sleep_duration_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/questionnaire_header_tv"
+        app:layout_constraintStart_toStartOf="@+id/questionnaire_header_tv"
+        app:layout_constraintTop_toBottomOf="@+id/questionnaire_header_tv"
+        tools:text="8 hours, 44 minutes" />
+
+    <RadioGroup
+        android:id="@+id/quality_rb_grp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/questionnaire_quality_label"
+        app:layout_constraintStart_toStartOf="@+id/questionnaire_quality_label"
+        app:layout_constraintTop_toBottomOf="@+id/questionnaire_quality_label">
+
+        <RadioButton
+            android:id="@+id/q_very_bad_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_baseline_sentiment_very_dissatisfied_64"
+            android:text="" />
+
+        <RadioButton
+            android:id="@+id/q_bad_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:button="@drawable/ic_baseline_sentiment_dissatisfied_64"
+            android:text="" />
+
+        <RadioButton
+            android:id="@+id/q_ok_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:button="@drawable/ic_baseline_sentiment_neutral_64"
+            android:checked="true"
+            android:text="" />
+
+        <RadioButton
+            android:id="@+id/q_good_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:button="@drawable/ic_baseline_sentiment_satisfied_64"
+            android:text="" />
+
+        <RadioButton
+            android:id="@+id/q_very_good_rb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:button="@drawable/ic_baseline_sentiment_very_satisfied_64"
+            android:text="" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/questionnaire_quality_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/q_auality_query"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/questionnaire_sleep_duration_tv"
+        app:layout_constraintStart_toStartOf="@+id/questionnaire_sleep_duration_tv"
+        app:layout_constraintTop_toBottomOf="@+id/questionnaire_sleep_duration_tv" />
+
+    <TextView
+        android:id="@+id/questionnaire_caffeine_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/q_caffeine_query"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/quality_rb_grp"
+        app:layout_constraintStart_toStartOf="@+id/quality_rb_grp"
+        app:layout_constraintTop_toBottomOf="@+id/quality_rb_grp" />
+
+    <EditText
+        android:id="@+id/questionnaire_caffeine_input"
+        android:layout_width="70dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:importantForAutofill="no"
+        android:inputType="number"
+        app:layout_constraintEnd_toStartOf="@+id/questionnaire_caffeine_units_tv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/questionnaire_caffeine_label"
+        app:layout_constraintTop_toBottomOf="@+id/questionnaire_caffeine_label"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/questionnaire_caffeine_units_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="@string/q_caffeine_unit"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/questionnaire_caffeine_input"
+        app:layout_constraintStart_toEndOf="@+id/questionnaire_caffeine_input" />
+
+    <Button
+        android:id="@+id/questionnaire_submit_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:text="@string/button_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionnaire_caffeine_units_tv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

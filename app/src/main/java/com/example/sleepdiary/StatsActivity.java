@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.GlobalData;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class StatsActivity extends AppCompatActivity {
     private final ChartFragment chartFrag = new ChartFragment();
     private final ListFragment listFrag = new ListFragment();
@@ -29,20 +30,18 @@ public class StatsActivity extends AppCompatActivity {
         if (GlobalData.isDirty()) {
             DbConnection db = new DbConnection(this);
             GlobalData.update(db);
-
-            // TODO: DEV
-            if (GlobalData.getInstance().getUserModels().size() == 0) {
-                GlobalData.__DEV__populateDb(db, "nikke",
-                        7.5, 1613757955, 60);
-            }
-            db.close();
         }
+
         setToggleClicks();
     }
 
+    /**
+     * Set click eventhandler to list/chart toggle button.
+     */
     private void setToggleClicks() {
         ToggleButton toggle = findViewById(R.id.statsToggleBtn);
         toggle.setChecked(true);
+
         toggle.setOnClickListener(view -> {
             if (toggle.isChecked())
                 setFragment(this.listFrag);
@@ -51,6 +50,10 @@ public class StatsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set currently displayed fragment.
+     * @param fragment Displayed fragment (ListFragment / ChartFragment)
+     */
     private void setFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.statsFrameLayout, fragment)

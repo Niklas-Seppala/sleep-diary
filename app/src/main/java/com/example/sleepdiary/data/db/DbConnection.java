@@ -107,7 +107,7 @@ public class DbConnection extends SQLiteOpenHelper {
      * @param args Arguments for WHERE caluse.
      * @return true if deletion was succesful.
      */
-    public boolean delete(@NonNull String tableName, // TODO: test this method
+    public boolean delete(@NonNull String tableName,
                           @NonNull String where,
                           @NonNull String[] args) {
         SQLiteDatabase SQLiteDB = this.getWritableDatabase();
@@ -125,7 +125,7 @@ public class DbConnection extends SQLiteOpenHelper {
      * @param args Arguments for WHERE clause.
      * @return true if update was successful.
      */
-    public boolean update(@NonNull String tableName, //TODO: test this method
+    public boolean update(@NonNull String tableName,
                           @NonNull Model model,
                           @NonNull String where,
                           @NonNull String[] args) {

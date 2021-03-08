@@ -1,114 +1,117 @@
 package com.example.sleepdiary;
 
+
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.sleepdiary.data.db.DbConnection;
+import com.example.sleepdiary.data.db.DbTables;
 import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.sleepdiary.data.GlobalData;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
-import android.view.View;
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
+import com.example.sleepdiary.time.DateTime;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Question form view that opens when user starts the app
+ * after starting sleep session.
+ *
+ * @author Niklas Seppälä
+ */
 public class QuetionnaireActivity extends AppCompatActivity {
+    int startTimeStamp;
+    int endTimeStamp;
+    SleepEntry partialEntry;
 
-    Date startTime = new Date();
-    Date endTime = new Date();
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quetionnaire);
+        setContentView(R.layout.activity_questionnaire_fix);
 
-        getDifference();
+        partialEntry = GlobalData.getInstance().getPartialSleepEntries().get(0);
+        endTimeStamp = DateTime.Unix.getTimestamp();
+        startTimeStamp = partialEntry.getStartTimestamp();
+        setDuration();
+        findViewById(R.id.questionnaire_submit_btn).setOnClickListener(v -> submitClicked());
     }
 
-    public void getDifference(){
-        SimpleDateFormat format = new SimpleDateFormat("dd hh:mm a");
-        Calendar calendar = Calendar.getInstance();
+    /**
+     * Take the data from the form and update database.
+     * Close the form
+     */
+    private void submitClicked() {
+        String caffeineIntakeStr = ((EditText)findViewById(R.id.questionnaire_caffeine_input))
+                .getText().toString();
 
-        try {
-            startTime = format.parse("08:00 PM");
-        } catch (ParseException e) {
-            e.printStackTrace();
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(caffeineIntakeStr);
+
+        int caffeineIntake;
+        if (matcher.matches()) {
+            caffeineIntake = Integer.parseInt(caffeineIntakeStr);
+        } else {
+            displayMessage("Caffeine invalid!");
+            return;
         }
-        try {
-            endTime = format.parse("04:00 AM");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-
-        long difference = startTime.getTime() - endTime.getTime();
-        int days = (int) (difference / (1000*60*60*24));
-        int hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
-        int min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
-
-        Log.i("log_tag","Hours: "+hours+", Mins: "+min);
-
-        String setDurationTv = "Hours: "+hours+", Mins: "+min;
-        TextView duration_tv = (TextView)findViewById(R.id.duration_tv);
-        duration_tv.setText(setDurationTv);
+        Rating quality = getRating();
+        saveEntry(caffeineIntake, quality);
+        displayMessage("New entry saved!");
+        finish();
     }
 
-
-    public void onEmoSelected(View view){
-        RadioGroup radioGroup = findViewById(R.id.radioGroupQ1);
-        switch (radioGroup.getCheckedRadioButtonId()){
-            case R.id.emoSatisfied_q1:
-                break;
-            case R.id.emoSmile_q1:
-                break;
-            case R.id.emoNull_q1:
-                break;
-            case R.id.emoGrimacing_q1:
-                break;
-            case R.id.emoDead_q1:
-                break;
-        }
+    private void displayMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                0, 190);
+        toast.show();
     }
 
-    public void saveEntry() {
+    /**
+     * Get the rating from the form
+     * @return Sleep rating
+     */
+    private Rating getRating() {
+        RadioGroup radioGroup = findViewById(R.id.quality_rb_grp);
+        int checkedId = radioGroup.getCheckedRadioButtonId();
+        int checkedIndex = radioGroup.indexOfChild(findViewById(checkedId));
+        return Rating.fromInt(checkedIndex+1);
+    }
+
+    /**
+     * Sets duration as a string to the view.
+     */
+    public void setDuration() {
+        int duration = endTimeStamp - startTimeStamp;
+        int hours = DateTime.getHoursFromSeconds(duration);
+        int minutes = DateTime.getMinutesFromSeconds(duration);
+        ((TextView)findViewById(R.id.questionnaire_sleep_duration_tv))
+                .setText(getString(R.string.time_h_min_dur_long, hours, minutes));
+    }
+
+    /**
+     * Closes open sleep entry and updates database
+     * @param caffeinIntake Caffeine intake in coffee cups
+     * @param rating User sleep quality rating
+     */
+    public void saveEntry(int caffeinIntake, Rating rating) {
+        SleepEntry completeEntry = new SleepEntry(partialEntry, endTimeStamp, rating, caffeinIntake);
         DbConnection db = new DbConnection(this);
-
-        SleepEntry entry = new SleepEntry(1, Rating.UNDEFINED, 123135,
-                -1, 5);
-        db.insert(entry);
-
+        String[] SQL_Parameters = new String[] {Integer.toString(completeEntry.getId())};
+        db.update(DbTables.sleep.TABLE_NAME, completeEntry, "id=?", SQL_Parameters);
         db.close();
     }
-
-    public void onEmoSelected2(View view){
-        RadioGroup radioGroup = findViewById(R.id.radioGroupQ2);
-        switch (radioGroup.getCheckedRadioButtonId()){
-            case R.id.emoSatisfied_q2:
-                break;
-            case R.id.emoSmile_q2:
-                break;
-            case R.id.emoNull_q2:
-                break;
-            case R.id.emoGrimacing_q2:
-                break;
-            case R.id.emoDead_q2:
-                break;
-        }
-    }
-
-    public void q3(View view) {
-
-        EditText editText1 = (EditText) findViewById(R.id.editNumber);
-        int awakenings = Integer.parseInt(editText1.getText().toString());
-    }
-}
+ }

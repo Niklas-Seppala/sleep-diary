@@ -19,8 +19,10 @@ import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.models.User;
 import com.example.sleepdiary.time.DateTime;
 
-import java.time.Instant;
-
+/**
+ * When user presses Sleep button from HomeFragment, this dialog
+ * is displayed.
+ */
 public class StartSleepEventFragment extends DialogFragment {
 
     @Nullable
@@ -38,10 +40,16 @@ public class StartSleepEventFragment extends DialogFragment {
         setButtonClicks(view);
     }
 
+    /**
+     * Set click eventhandlers took/cancel buttons.
+     * @param view StartSleepEventFragment
+     */
     private void setButtonClicks(View view) {
         view.findViewById(R.id.start_sleep_event_ok_btn).setOnClickListener(v -> {
-            savePartialEntryToDB();
+            savePartialEntry();
             dismiss();
+
+            // Display "Good night" - message
             Toast toast = Toast.makeText(getContext(), "Good night", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
                     0, 190);
@@ -51,7 +59,10 @@ public class StartSleepEventFragment extends DialogFragment {
         view.findViewById(R.id.start_sleep_event_cancel_btn).setOnClickListener(v -> dismiss());
     }
 
-    private void savePartialEntryToDB() {
+    /**
+     * Creates and inserts to database an incomplete SleepEntry.
+     */
+    private void savePartialEntry() {
         User user = GlobalData.getInstance().getCurrentUser();
         SleepEntry entry = new SleepEntry(user.getId(), DateTime.Unix.getTimestamp());
         DbConnection db = new DbConnection(getContext());

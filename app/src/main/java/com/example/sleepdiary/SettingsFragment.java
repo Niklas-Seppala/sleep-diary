@@ -3,6 +3,7 @@ package com.example.sleepdiary;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,9 +15,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
+/**
+ * Settings fragment, that controls the input views on fragment_settings.xml
+ * layout. User can interact with inputs, and only when apply-button is pressed,
+ * changes are saved to disc and runtime memory.
+ */
 @SuppressLint("UseSwitchCompatOrMaterialCode")
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class SettingsFragment extends Fragment {
     private EditText usernameEditText;
     private Switch clockFormatSwitch;
@@ -24,16 +34,20 @@ public class SettingsFragment extends Fragment {
     private Switch trackCaffeineSwitch;
     private Switch trackOverallFealingSwitch;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         setButtonClickHandlers(view);
-
         setCurrentValues();
-        setAlarmSettingHandlers();
+        setSwitchHandlers();
     }
 
+    /**
+     * Find the user input views from Settings fragment.
+     * @param view Settings fragmen
+     */
     private void findViews(View view) {
         usernameEditText = view.findViewById(R.id.settings_edit_text_username);
         clockFormatSwitch = view.findViewById(R.id.settings_24h_format_switch);
@@ -42,6 +56,9 @@ public class SettingsFragment extends Fragment {
         trackOverallFealingSwitch = view.findViewById(R.id.settings_track_overall_fealing_switch);
     }
 
+    /**
+     * Set previous settings values to user inputs.
+     */
     private void setCurrentValues() {
         AppSettings settings = AppSettings.getInstance();
         String username = settings.getUsername();
@@ -51,8 +68,13 @@ public class SettingsFragment extends Fragment {
         clockFormatSwitch.setChecked(settings.getUse24HourClockFormat());
         nativeAlarmSwitch.setChecked(settings.getOpenNativeClock());
         trackCaffeineSwitch.setChecked(settings.getChartTrackCaffeine());
-        trackOverallFealingSwitch.setChecked(settings.getChartTrackOverallFeeling());
+        trackOverallFealingSwitch.setChecked(settings.getChartTrackQualityRating());
     }
+
+    /**
+     * Set click event handlers to apply and reset buttons.
+     * @param view Settings fragment
+     */
 
     private void setButtonClickHandlers(View view) {
         view.findViewById(R.id.settings_apply_button).setOnClickListener(v -> applyChanges());
@@ -60,11 +82,19 @@ public class SettingsFragment extends Fragment {
     }
 
 
+    /**
+     * Abort editing AppSettings. Reset to user input views.
+     * to original values.
+     */
     private void revertChanges() {
         AppSettings.modify().revert();
         setCurrentValues();
     }
 
+    /**
+     * Apply user's changes to AppSettings. Show success message.
+     * Redirect user to home fragment.
+     */
     private void applyChanges() {
         SharedPreferences sharedPref = getContext().getSharedPreferences(AppSettings.NAME,
                 Context.MODE_PRIVATE);
@@ -73,18 +103,26 @@ public class SettingsFragment extends Fragment {
         AppSettings.modify()
                 .setValue(AppSettings.USERNAME, usernameEditText.getText().toString())
                 .commit()
-                .serialize(editor)
+                .write(editor)
                 .apply();
 
+        // Get the main activity
         MainActivity main = (MainActivity)getActivity();
+
+        // Display success message
         Toast toast = Toast.makeText(main, "Settings saved!", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
                 0, 190);
         toast.show();
-        main.setFragment(main.homeFrag);
+
+        // Redirect user to home fragment
+        Objects.requireNonNull(main).setFragment(main.homeFrag);
     }
 
-    private void setAlarmSettingHandlers() {
+    /**
+     * Sets value change eventhandlers to switch views.
+     */
+    private void setSwitchHandlers() {
         clockFormatSwitch.setOnCheckedChangeListener((v, checked) ->
                 AppSettings.modify().setValue(AppSettings.CLOCK_FORMAT, checked));
 

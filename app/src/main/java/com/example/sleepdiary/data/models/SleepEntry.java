@@ -17,13 +17,6 @@ public class SleepEntry extends Model {
     private int caffeineIntake;
 
     public SleepEntry() { }
-
-    public SleepEntry(SleepEntry partialEntry) {
-        this.id = partialEntry.getId();
-        this.user_id = partialEntry.getUserId();
-        this.startTimestamp = partialEntry.getStartTimestamp();
-    }
-
     public SleepEntry(int user_id, int startTimestamp) {
         this.user_id = user_id;
         this.startTimestamp = startTimestamp;
@@ -32,24 +25,15 @@ public class SleepEntry extends Model {
         this.caffeineIntake = -1;
         this.quality = Rating.UNDEFINED;
     }
-
-    public SleepEntry(int user_id, Rating quality, int startTimestamp,
-                      int endTimestamp, int caffeineIntake) {
-        this.id = -1;
-        this.user_id = user_id;
+    public SleepEntry(SleepEntry partialEntry, int endTimestamp, Rating quality, int caffeineIntake) {
+        this.id = partialEntry.getId();
+        this.user_id = partialEntry.getUserId();
+        this.startTimestamp = partialEntry.getStartTimestamp();
         this.quality = quality;
-        this.startTimestamp = startTimestamp;
-        this.endTimestamp = endTimestamp;
         this.caffeineIntake = caffeineIntake;
+        this.endTimestamp = endTimestamp;
     }
 
-    public SleepEntry(int id, int user_id, Rating quality, int startTimestamp, // FIXME: DEV
-                      int endTimestamp, int caffeineIntake) {
-        this(user_id, quality, startTimestamp,
-                endTimestamp, caffeineIntake);
-
-        this.id = id;
-    }
 
     @Override
     public SleepEntry serialize(ContentValues toRow) {
@@ -133,6 +117,9 @@ public class SleepEntry extends Model {
         return this.quality;
     }
 
+    /**
+     * @return Is the entry inclomplete.
+     */
     public boolean isIncomplete() {
         return this.endTimestamp < 0;
     }
