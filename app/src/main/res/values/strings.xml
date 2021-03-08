@@ -19,8 +19,8 @@
         <item>Sat</item>
         <item>Sun</item>
     </string-array>
-
-    <!--    Buttons-->
+    
+<!--    Buttons-->
     <string name="buttons_edit">Edit</string>
     <string name="buttons_delete">Delete</string>
     <string name="buttons_stats_toggle_on">Chart</string>
@@ -42,8 +42,8 @@
     <string name="img_desc_user_rating_ok">OK</string>
     <string name="img_desc_user_rating_good">Good</string>
     <string name="img_desc_user_rating_very_good">Very Good</string>
-
-    <!--    Sleep Entry Inspection-->
+    
+<!--    Sleep Entry Inspection-->
     <string name="sleep_inspection_caffeine_intake_label">Caffeine intake</string>
     <string name="sleep_inspection_quality_label">Sleep Quality</string>
     <string name="sleep_inspection_caffeine_amount">%d Cups</string>
@@ -59,6 +59,20 @@
     <string name="editNumber">Enter a number</string>
     <string name="submitButton">Submit</string>
     <string name="title_activity_sleep">Sleep</string>
+
+    <!-- Tips-->
+    <string-array name="tips_array">
+        <item>Relax and clean your mind in the evening! Relaxation techniques before bed, including hot baths and meditation, may help you fall asleep.</item>
+        <item>Take a melatonin supplement, it`s an easy way to improve sleep quality and fall asleep faster.</item>
+        <item>Avoid alcohol before bed, as it can reduce nighttime melatonin production and lead to disrupted sleep patterns.</item>
+        <item>Make your bedroom comfortable, dark, quiet, and not too warm or cold.</item>
+        <item>Try to get into a regular sleep/wake cycle — especially on the weekends. If possible, try to wake up naturally at a similar time every day.</item>
+        <item>Optimize your bedroom environment by eliminating external light and noise to get better sleep.</item>
+        <item>Optimize your bedroom environment by eliminating external light and noise to get better sleep.</item>
+        <item>Relaxation techniques before bed, including hot baths and meditation, may help you fall asleep.</item>
+        <item>Regular exercise during daylight hours is one of the best ways to ensure a good night’s sleep.</item>
+        <item>Reduce blue light exposure in the evening. It tricks your body into thinking it’s daytime.</item>
+    </string-array>
 
 <!--    Wake up event dialog -->
     <string name="wake_up_event_greeting">Good morning!</string>
