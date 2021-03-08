@@ -1,5 +1,7 @@
 package com.example.sleepdiary;
 
+
+import android.os.Build;
 import android.os.Bundle;
 
 import com.example.sleepdiary.data.db.DbConnection;
@@ -8,6 +10,7 @@ import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.GlobalData;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Gravity;
@@ -18,45 +21,69 @@ import android.widget.Toast;
 
 import com.example.sleepdiary.time.DateTime;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Question form view that opens when user starts the app
+ * after starting sleep session.
+ *
+ * @author Niklas Seppälä
+ */
 public class QuetionnaireActivity extends AppCompatActivity {
     int startTimeStamp;
     int endTimeStamp;
     SleepEntry partialEntry;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire_fix);
 
-        partialEntry = GlobalData.getInstance().getSleepEntries().get(0); // TODO fix
+        partialEntry = GlobalData.getInstance().getPartialSleepEntries().get(0);
         endTimeStamp = DateTime.Unix.getTimestamp();
         startTimeStamp = partialEntry.getStartTimestamp();
         setDuration();
-
-        findViewById(R.id.questionnaire_submit_btn).setOnClickListener(v -> {
-
-            String caffeineIntakeStr = ((EditText)findViewById(R.id.questionnaire_caffeine_input))
-                    .getText().toString();
-
-            int caffeineIntake;
-            if (caffeineIntakeStr.isEmpty()) {
-                caffeineIntake = 0;
-            } else  {
-                caffeineIntake = Integer.parseInt(caffeineIntakeStr);
-            }
-
-            Rating quality = getRating();
-            saveEntry(caffeineIntake, quality);
-            finish();
-
-            // Display success message
-            Toast toast = Toast.makeText(this, "New entry saved!", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
-                    0, 190);
-            toast.show();
-        });
+        findViewById(R.id.questionnaire_submit_btn).setOnClickListener(v -> submitClicked());
     }
 
+    /**
+     * Take the data from the form and update database.
+     * Close the form
+     */
+    private void submitClicked() {
+        String caffeineIntakeStr = ((EditText)findViewById(R.id.questionnaire_caffeine_input))
+                .getText().toString();
+
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(caffeineIntakeStr);
+
+        int caffeineIntake;
+        if (matcher.matches()) {
+            caffeineIntake = Integer.parseInt(caffeineIntakeStr);
+        } else {
+            displayMessage("Caffeine invalid!");
+            return;
+        }
+
+        Rating quality = getRating();
+        saveEntry(caffeineIntake, quality);
+        displayMessage("New entry saved!");
+        finish();
+    }
+
+    private void displayMessage(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                0, 190);
+        toast.show();
+    }
+
+    /**
+     * Get the rating from the form
+     * @return Sleep rating
+     */
     private Rating getRating() {
         RadioGroup radioGroup = findViewById(R.id.quality_rb_grp);
         int checkedId = radioGroup.getCheckedRadioButtonId();
@@ -64,7 +91,9 @@ public class QuetionnaireActivity extends AppCompatActivity {
         return Rating.fromInt(checkedIndex+1);
     }
 
-    /*Get the duration of sleep by timestamps*/
+    /**
+     * Sets duration as a string to the view.
+     */
     public void setDuration() {
         int duration = endTimeStamp - startTimeStamp;
         int hours = DateTime.getHoursFromSeconds(duration);
@@ -73,21 +102,16 @@ public class QuetionnaireActivity extends AppCompatActivity {
                 .setText(getString(R.string.time_h_min_dur_long, hours, minutes));
     }
 
-    /*Save entry to app's DB*/
+    /**
+     * Closes open sleep entry and updates database
+     * @param caffeinIntake Caffeine intake in coffee cups
+     * @param rating User sleep quality rating
+     */
     public void saveEntry(int caffeinIntake, Rating rating) {
-
-        // Create new Entry based on partial entry (the one we are finishing)
-        // and fill the missing data
         SleepEntry completeEntry = new SleepEntry(partialEntry, endTimeStamp, rating, caffeinIntake);
-
         DbConnection db = new DbConnection(this);
-
-        // Parameters for UPDATE query, in this case the sleepEntry id, as a String
         String[] SQL_Parameters = new String[] {Integer.toString(completeEntry.getId())};
-
-        // pass the completed entry to update function, with the WHERE clause and parameters for that clause
         db.update(DbTables.sleep.TABLE_NAME, completeEntry, "id=?", SQL_Parameters);
-
         db.close();
     }
  }
