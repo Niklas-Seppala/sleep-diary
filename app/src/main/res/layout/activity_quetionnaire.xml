@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".QuetionnaireActivity"
+    android:background="@color/darker_gray_blue"
   >
 
     <LinearLayout
@@ -22,6 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/dark_gray_blue"
         >
 
         <TextView
@@ -30,24 +32,27 @@
             android:layout_height="61dp"
             android:fontFamily="casual"
             android:rotationY="0"
-            android:text="How was the sleep last night?"
+            android:text="@string/quetionnaire_heading"
             android:textAllCaps="true"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:layout_marginLeft="10dp"
             android:layout_marginBottom="15dp"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/light_blue">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/light_blue">
                 <TextView
                     android:id="@+id/sleepDuration_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sleep duration: "
+                    android:text="@string/quetionnaire_sleepDuration"
                     android:textStyle="bold" />
 
                 <TextView
@@ -55,7 +60,6 @@
                     android:layout_width="137dp"
                     android:layout_height="39dp"
                     android:gravity="center_horizontal"
-                    android:text="TextView"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -66,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Was it easy to fall asleep?"
+            android:text="@string/quetionnaire_q1"
             android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
@@ -81,115 +85,44 @@
                 android:id="@+id/radioGroupQ1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@color/light_blue">
 
+                <RadioButton
+                    android:id="@+id/emoVerySatisfied_q1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:background="@drawable/emo_selector"
+                    android:button="@drawable/ic_baseline_sentiment_very_satisfied_64"/>
                 <RadioButton
                     android:id="@+id/emoSatisfied_q1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:onClick="onEmoSelected"
                     android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_satisfied"/>
+                    android:button="@drawable/ic_baseline_sentiment_satisfied_64"/>
                 <RadioButton
-                    android:id="@+id/emoSmile_q1"
+                    android:id="@+id/emoNeutral_q1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:onClick="onEmoSelected"
                     android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_smile"/>
+                    android:button="@drawable/ic_baseline_sentiment_neutral_64"/>
                 <RadioButton
-                    android:id="@+id/emoNull_q1"
+                    android:id="@+id/emoDissatisfied_q1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:onClick="onEmoSelected"
                     android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_null"/>
+                    android:button="@drawable/ic_baseline_sentiment_dissatisfied_64"/>
                 <RadioButton
-                    android:id="@+id/emoGrimacing_q1"
+                    android:id="@+id/emoVeryDissatisfied_q1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:onClick="onEmoSelected"
                     android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_grimacing"/>
-                <RadioButton
-                    android:id="@+id/emoDead_q1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onEmoSelected"
-                    android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_dead"/>
-
-
-            </RadioGroup>
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:id="@+id/q2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Overall feelings?"
-            android:textStyle="bold" />
-
-        <androidx.cardview.widget.CardView
-            android:elevation="5dp"
-            app:cardCornerRadius="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            >
-
-            <RadioGroup
-                android:id="@+id/radioGroupQ2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/emoSatisfied_q2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onEmoSelected2"
-                    android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_satisfied"/>
-                <RadioButton
-                    android:id="@+id/emoSmile_q2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onEmoSelected2"
-                    android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_smile"/>
-                <RadioButton
-                    android:id="@+id/emoNull_q2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onEmoSelected2"
-                    android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_null"/>
-                <RadioButton
-                    android:id="@+id/emoGrimacing_q2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onEmoSelected2"
-                    android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_grimacing"/>
-                <RadioButton
-                    android:id="@+id/emoDead_q2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:onClick="onEmoSelected2"
-                    android:background="@drawable/emo_selector"
-                    android:button="@drawable/ic_emo_dead"/>
+                    android:button="@drawable/ic_baseline_sentiment_very_satisfied_64"/>
 
 
             </RadioGroup>
@@ -206,7 +139,7 @@
                 android:id="@+id/q3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="How many times did you wake up?"
+                android:text="@string/quetionnaire_q3"
                 android:textStyle="bold"></TextView>
 
 
@@ -217,68 +150,25 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="number"
+                android:text="@string/quetionnaire_editNumber"
                 android:textSize="10dp" />
 
             <TextView
+                android:id="@+id/q3_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="times."></TextView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/q4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Medications?"
-                android:textStyle="bold"></TextView>
-
-            <RadioGroup
-                android:id="@+id/radioGroupQ4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                >
-                <RadioButton
-                    android:id="@+id/q4No"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No"
-                    android:padding="10dp"
-
-                    />
-                <RadioButton
-                    android:id="@+id/q4Yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Yes"
-                    android:padding="10dp"
-
-                    />
-
-            </RadioGroup>
-
-
-
+                android:text="@string/quetionnaire_q3_2"></TextView>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/submitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@string/submitButton" />
+            android:background="@color/white"
+            android:text="@string/quetionnaire_submitBtn" />
 
 
     </LinearLayout>
