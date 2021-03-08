@@ -22,6 +22,6 @@ public class SettingAlarm extends DialogFragment {
         return new TimePickerDialog(getActivity(),
                 (TimePickerDialog.OnTimeSetListener)getActivity(), /* This picks the time what the user those to use. */
                 hour, minute,
-                DateFormat.is24HourFormat(getActivity())); /* Phone is set to use 24/7 clock.*/
+                AppSettings.getInstance().getUse24HourClockFormat()); /* Phone is set to use 24/7 clock.*/
     }
 }
