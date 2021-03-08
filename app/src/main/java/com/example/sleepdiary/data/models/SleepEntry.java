@@ -18,10 +18,13 @@ public class SleepEntry extends Model {
 
     public SleepEntry() { }
 
-    public SleepEntry(SleepEntry partialEntry) {
+    public SleepEntry(SleepEntry partialEntry, int endTimestamp, Rating quality, int caffeineIntake) {
         this.id = partialEntry.getId();
         this.user_id = partialEntry.getUserId();
         this.startTimestamp = partialEntry.getStartTimestamp();
+        this.quality = quality;
+        this.caffeineIntake = caffeineIntake;
+        this.endTimestamp = endTimestamp;
     }
 
     public SleepEntry(int user_id, int startTimestamp) {
