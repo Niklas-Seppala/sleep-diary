@@ -38,7 +38,7 @@ public class GoalsActivity extends AppCompatActivity {
     }
 
     /**
-     * Ini
+     * Initialize current goal values to inputs
      */
     @SuppressLint("SetTextI18n")
     private void initInputValues() {
