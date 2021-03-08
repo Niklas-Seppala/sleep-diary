@@ -232,11 +232,13 @@ public class ChartFragment extends Fragment {
             float y = weekDays[x].getEndTimestamp() - weekDays[x].getStartTimestamp();
             BarEntry entry = new BarEntry((float) x, y);
 
-            if (AppSettings.getInstance().getChartTrackQualityRating()) {
+            if (entry.getY() > 0 && AppSettings.getInstance().getChartTrackQualityRating()) {
                 entry.setIcon(getResizedIcon(weekDays[x].getQuality()));
                 if (entry.getIcon() != null) {
                     // Set icon location
                     entry.getIcon().setBounds(0, 100, 0, 0);
+                    if (entry.getY() < 2000)
+                        entry.getIcon().setBounds(0, -100, 0, 0);
                 }
             }
             List<BarEntry> set = y < userGoal ? failSet : successSet;

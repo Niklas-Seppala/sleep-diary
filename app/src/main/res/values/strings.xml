@@ -102,4 +102,16 @@
     <string name="goals_label_mins">min</string>
     <string name="goals_header_sleep">TARGET SLEEP TIME</string>
     <string name="goals_label_hour">h</string>
+
+    <!-- Quetionnaire-->
+    <string name="quetionnaire_heading">How was the sleep last night?</string>
+    <string name="quetionnaire_sleepDuration">Sleep duration:</string>
+    <string name="quetionnaire_q1">Overall feelings?</string>
+    <string name="quetionnaire_q3">Caffein intake yesterday?</string>
+    <string name="quetionnaire_q3_2">Cups</string>
+    <string name="quetionnaire_submitBtn">Submit</string>
+    <string name="q_header">How was your sleep last night?</string>
+    <string name="q_caffeine_query">How much caffeine you had last day?</string>
+    <string name="q_auality_query">Sleep Quality?</string>
+    <string name="q_caffeine_unit">Coffee cups</string>
 </resources>

@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.example.sleepdiary.Sleep;
 import com.example.sleepdiary.data.db.DbTables;
 import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.models.Rating;
