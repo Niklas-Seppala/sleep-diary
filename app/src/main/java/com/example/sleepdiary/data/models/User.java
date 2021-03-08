@@ -15,13 +15,14 @@ public class User extends Model {
     private int id;
 
     public User() {} // NEEDED!
-    public User(String name, int sleepGoal) {
+    public User(String name, int sleepGoal, int caffeineGoal) {
         this.id = -1;
         this.name = name;
         this.sleepGoal = sleepGoal;
+        this.caffeineGoal = caffeineGoal;
     }
     public User(int id, String name, int sleepGoal, int caffeineGoal) {
-        this(name, sleepGoal);
+        this(name, sleepGoal, caffeineGoal);
         this.id = id;
         this.caffeineGoal = caffeineGoal;
     }

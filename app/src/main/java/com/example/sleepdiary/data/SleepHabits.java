@@ -1,6 +1,7 @@
 package com.example.sleepdiary.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
@@ -74,8 +75,12 @@ public class SleepHabits {
     /**
      * @return Get the current week sleep habits.
      */
+    @Nullable
     public WeeklySleepHabit getWeek() {
-        return weeks.get(index);
+        if (weekCount == 0) {
+            return null;
+        }
+        return weeks.get(Math.max(index, 0));
     }
 
     /**

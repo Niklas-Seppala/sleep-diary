@@ -171,6 +171,9 @@ public class ChartFragment extends Fragment {
      * Set week and year strings to view
      */
     private void updateHeaderText() {
+        if (sleepHabits.getWeek() == null)
+            return;
+
         int weekNum = sleepHabits.getWeek().getDate().getWeek();
         int year = sleepHabits.getWeek().getDate().getYear();
         weekHeader.setText(getString(R.string.time_week_number, weekNum));

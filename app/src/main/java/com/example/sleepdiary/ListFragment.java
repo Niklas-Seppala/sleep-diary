@@ -65,7 +65,7 @@ public class ListFragment extends Fragment {
      * @param listView listView object.
      * @param context context
      */
-    private void setListItemClickHandler(ListView listView, Context context) { // TODO: context ??
+    private void setListItemClickHandler(ListView listView, Context context) {
         listView.setOnItemClickListener((a, v, i, l) -> {
             Intent inspection = new Intent(context, SleepEntryInspectionActivity.class);
             inspection.putExtra(SleepEntryInspectionActivity.EXTRA_ENTRY_INDEX, i);

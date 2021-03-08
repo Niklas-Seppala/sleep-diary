@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
  * After that, keep in sync with database changes with
  * GlobalData.update(DbConnection db).
  */
-
 public class GlobalData {
     private static final GlobalData instance = new GlobalData();
     private static boolean isDirty = true;
@@ -95,7 +94,7 @@ public class GlobalData {
     @Nullable
     public User getCurrentUser() {
         return userModels.get(0);
-    } // FIXME ????
+    }
 
     /**
      * Get the Singleton instance
@@ -112,14 +111,30 @@ public class GlobalData {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void update(DbConnection db) {
+        // Get the user, if doesn't exist, create default
         instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class, null, null);
+        if (instance.userModels.size() == 0) {
+            User user = new User("your name", 7 * DateTime.SECONDS_IN_HOUR,4);
+            db.insert(user);
+            instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class, null, null);
+        }
+
+        // Get the sleep entries
         instance.sleepEntries = db.select(DbTables.sleep.TABLE_NAME, SleepEntry.class,
                 null, null);
+
         Collections.reverse(instance.sleepEntries);
         instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.getCompletedSleepEntries());
         setClean();
     }
 
+    /**
+     * This handy function allows to use distinct with 2+ fields
+     * https://howtodoinjava.com/java8/stream-distinct-by-multiple-fields/
+     * @param extractors extractor field extractors
+     * @param <T> type
+     * @return true if item is distinct
+     */
     @SafeVarargs
     @RequiresApi(api = Build.VERSION_CODES.N)
     private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... extractors) {
@@ -132,11 +147,15 @@ public class GlobalData {
         };
     }
 
+    /**
+     * Split sleep entries to weeks
+     * @param entries all entries
+     * @return List of weekly sleep habits
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepEntry> models) {
-        Calendar calendar = Calendar.getInstance(Locale.GERMAN);
-//        Collections.reverse(models);
-        List<WeeklySleepHabit> results = models.stream()
+    private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepEntry> entries) {
+        Calendar calendar = Calendar.getInstance(Locale.GERMAN); // for the EU weekdays
+        List<WeeklySleepHabit> results = entries.stream()
                 .map(entry -> {
                     calendar.setTimeInMillis(DateTime.Unix.getMillis(entry.getStartTimestamp()));
                     int week = calendar.get(Calendar.WEEK_OF_YEAR);
@@ -148,7 +167,7 @@ public class GlobalData {
                 .map(date -> new WeeklySleepHabit(date, new SleepEntry[7]))
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        models.forEach(sleep -> {
+        entries.forEach(sleep -> {
             calendar.setTimeInMillis(DateTime.Unix.getMillis(sleep.getStartTimestamp()));
             results.forEach(weeklyEntries -> {
                 int year = weeklyEntries.getDate().getYear();
@@ -171,7 +190,7 @@ public class GlobalData {
         return results;
     }
 
-    private GlobalData() { }
+    private GlobalData() {}
 
     /**
      * @return Is the GlobalData Singleton behind the database.
@@ -192,34 +211,5 @@ public class GlobalData {
      */
     public static void setDirty() {
         isDirty = true;
-    }
-
-
-    public static void __DEV__populateDb(DbConnection db, String username,
-                                         double goal, int startTime, int sleepEntryCount) {
-        final int MIN_SLEEP = 25000;
-        final int MAX_SLEEP = 33000;
-        final int MAX_DAYTIME = 70000;
-        final int MIN_DAYTIME = 50000;
-
-        User mockUser = new User(-1, username, (int)(goal * DateTime.SECONDS_IN_HOUR), 2);
-        db.insert(mockUser);
-        mockUser = db.select(DbTables.user.TABLE_NAME, User.class, null, null).get(0);
-
-        int nextTime = startTime;
-        for (int i = 0; i < sleepEntryCount; i++) {
-            int sleepTime = nextTime;
-            int nightTime = (int)((Math.random() * (MAX_SLEEP - MIN_SLEEP)) + MIN_SLEEP);
-            nextTime += nightTime;
-            int wakeTime = nextTime;
-            int dayTime = (int)((Math.random() * (MAX_DAYTIME - MIN_DAYTIME)) + MIN_DAYTIME);
-            nextTime += dayTime;
-            SleepEntry entry = new SleepEntry(mockUser.getId(),
-                    Rating.fromInt((int)(Math.random() * 4) + 1),
-                    sleepTime,
-                    wakeTime,
-                    (int) (Math.random() * 6));
-            db.insert(entry);
-        }
     }
 }

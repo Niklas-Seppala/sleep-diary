@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
 
 /**
- *
+ * Default activity that opens at the start of the app
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity {
@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        deleteDatabase("sleep.db"); // TODO: DEV
-
         loadDataFromDB();
         AppSettings.read(getSharedPreferences(AppSettings.NAME, Context.MODE_PRIVATE));
         initBottomNavBar();
@@ -66,13 +63,6 @@ public class MainActivity extends AppCompatActivity {
         if (GlobalData.isDirty()) {
             DbConnection db = new DbConnection(this);
             GlobalData.update(db);
-
-            // TODO: DEV ---------------------------------------------//
-            if (GlobalData.getInstance().getUserModels().size() == 0)
-                GlobalData.__DEV__populateDb(db, "nikke",
-                        7.5, 1613757955, 60);
-            // TODO: DEV ---------------------------------------------//
-
             db.close();
         }
     }
