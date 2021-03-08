@@ -22,6 +22,7 @@
 
     <!--    Buttons-->
     <string name="buttons_edit">Edit</string>
+    <string name="buttons_delete">Delete</string>
     <string name="buttons_stats_toggle_on">Chart</string>
     <string name="buttons_stats_toggle_off">List</string>
     <string name="button_OK">OK</string>
