@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.example.sleepdiary.Sleep;
 import com.example.sleepdiary.data.db.DbTables;
 import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.models.Rating;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
  * After that, keep in sync with database changes with
  * GlobalData.update(DbConnection db).
  */
+
 public class GlobalData {
     private static final GlobalData instance = new GlobalData();
     private static boolean isDirty = true;
@@ -43,11 +45,33 @@ public class GlobalData {
     private List<WeeklySleepHabit> sleepModelsByWeeks;
 
     /**
-     * @return Gets the global sleep models
+     * @return Get all of the sleep entries.
      */
     @NonNull
     public ArrayList<SleepEntry> getSleepEntries() {
         return sleepEntries;
+    }
+
+    /**
+     * @return List of completed sleepEntries.
+     */
+    @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<SleepEntry> getCompletedSleepEntries() {
+        return sleepEntries.stream()
+                .filter(entry -> !entry.isIncomplete())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * @return List of partial sleep entries.
+     */
+    @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<SleepEntry> getPartialSleepEntries() {
+        return sleepEntries.stream()
+                .filter(SleepEntry::isIncomplete)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -92,7 +116,8 @@ public class GlobalData {
         instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class, null, null);
         instance.sleepEntries = db.select(DbTables.sleep.TABLE_NAME, SleepEntry.class,
                 null, null);
-        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.sleepEntries);
+        Collections.reverse(instance.sleepEntries);
+        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.getCompletedSleepEntries());
         setClean();
     }
 
@@ -111,7 +136,7 @@ public class GlobalData {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepEntry> models) {
         Calendar calendar = Calendar.getInstance(Locale.GERMAN);
-        Collections.reverse(models);
+//        Collections.reverse(models);
         List<WeeklySleepHabit> results = models.stream()
                 .map(entry -> {
                     calendar.setTimeInMillis(DateTime.Unix.getMillis(entry.getStartTimestamp()));

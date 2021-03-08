@@ -1,9 +1,7 @@
 package com.example.sleepdiary;
 
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import java.util.Calendar;
-
 
 /**
  * Home view of the whole application.
@@ -54,7 +49,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    // Dont touch!
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -32,7 +32,7 @@ public class SleepHabits {
      */
     public SleepHabits(@NonNull List<WeeklySleepHabit> weeklySleepHabits, int savedIndex) {
         this(weeklySleepHabits);
-        index = savedIndex;
+        index = Math.min(savedIndex, weekCount-1);
     }
 
     /**
