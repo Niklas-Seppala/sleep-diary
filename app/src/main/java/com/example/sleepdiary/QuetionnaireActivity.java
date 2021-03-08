@@ -122,7 +122,8 @@ public class QuetionnaireActivity extends AppCompatActivity {
         User user = GlobalData.getInstance().getCurrentUser();
         DbConnection db = new DbConnection(this);
 
-        SleepEntry entry = new SleepEntry(1, Rating.UNDEFINED, 123135, -1);
+        SleepEntry entry = new SleepEntry(1, Rating.UNDEFINED, 123135,
+                -1, 5);
         db.insert(entry);
 
         db.close();

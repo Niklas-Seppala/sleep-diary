@@ -14,15 +14,41 @@ public class SleepEntry extends Model {
     private Rating quality;
     private int startTimestamp;
     private int endTimestamp;
+    private int caffeineIntake;
 
     public SleepEntry() { }
+
+    public SleepEntry(SleepEntry partialEntry) {
+        this.id = partialEntry.getId();
+        this.user_id = partialEntry.getUserId();
+        this.startTimestamp = partialEntry.getStartTimestamp();
+    }
+
+    public SleepEntry(int user_id, int startTimestamp) {
+        this.user_id = user_id;
+        this.startTimestamp = startTimestamp;
+
+        this.endTimestamp = -1;
+        this.caffeineIntake = -1;
+        this.quality = Rating.UNDEFINED;
+    }
+
     public SleepEntry(int user_id, Rating quality, int startTimestamp,
-                      int endTimestamp) {
+                      int endTimestamp, int caffeineIntake) {
         this.id = -1;
         this.user_id = user_id;
         this.quality = quality;
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
+        this.caffeineIntake = caffeineIntake;
+    }
+
+    public SleepEntry(int id, int user_id, Rating quality, int startTimestamp, // FIXME: DEV
+                      int endTimestamp, int caffeineIntake) {
+        this(user_id, quality, startTimestamp,
+                endTimestamp, caffeineIntake);
+
+        this.id = id;
     }
 
     @Override
@@ -31,6 +57,7 @@ public class SleepEntry extends Model {
         toRow.put(DbTables.sleep.COLUMN_START_TIME, this.startTimestamp);
         toRow.put(DbTables.sleep.COLUMN_END_TIME, this.endTimestamp);
         toRow.put(DbTables.sleep.COLUMN_QUALITY, this.quality.toInt());
+        toRow.put(DbTables.sleep.COLUMN_CAFFEINE, this.caffeineIntake);
         return this;
     }
 
@@ -39,19 +66,23 @@ public class SleepEntry extends Model {
         for (int i = 0; i < fromRow.getColumnCount(); i++) {
             switch (fromRow.getColumnName(i)) {
                 case DbTables.sleep.COLUMN_ID:
-                    this.id = fromRow.getInt(i);
+                    id = fromRow.getInt(i);
                     break;
                 case DbTables.sleep.COLUMN_USER_ID:
-                    this.user_id = fromRow.getInt(i);
+                    user_id = fromRow.getInt(i);
                     break;
                 case DbTables.sleep.COLUMN_END_TIME:
-                    this.endTimestamp = fromRow.getInt(i);
+                    endTimestamp = fromRow.getInt(i);
                     break;
                 case DbTables.sleep.COLUMN_START_TIME:
-                    this.startTimestamp = fromRow.getInt(i);
+                    startTimestamp = fromRow.getInt(i);
                     break;
                 case DbTables.sleep.COLUMN_QUALITY:
-                    this.quality = Rating.fromInt(fromRow.getInt(i));
+                    quality = Rating.fromInt(fromRow.getInt(i));
+                    break;
+                case DbTables.sleep.COLUMN_CAFFEINE:
+                    caffeineIntake = fromRow.getInt(i);
+                    break;
             }
         }
         return this;
@@ -82,6 +113,13 @@ public class SleepEntry extends Model {
     }
 
     /**
+     * @return caffeine intake in coffee cups
+     */
+    public int getCaffeineIntake() {
+        return caffeineIntake;
+    }
+
+    /**
      * @return Sleep instance user id.
      */
     public int getUserId() {
@@ -93,6 +131,13 @@ public class SleepEntry extends Model {
      */
     public Rating getQuality() {
         return this.quality;
+    }
+
+    /**
+     * @return Is the entry inclomplete.
+     */
+    public boolean isIncomplete() {
+        return this.endTimestamp < 0;
     }
 
     /**

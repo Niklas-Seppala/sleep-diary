@@ -13,6 +13,7 @@ public abstract class DbTables {
         public static final String COLUMN_ID   = "id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_GOAL = "goal";
+        public static final String COLUMN_CAFFEINE_GOAL = "caffeine_goal";
 
         /**
          * Creates SQL string for table creation, resets
@@ -24,7 +25,8 @@ public abstract class DbTables {
             sb.append("CREATE TABLE ").append(TABLE_NAME).append(" (")
                     .append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
                     .append(COLUMN_NAME).append(" TEXT NOT NULL,")
-                    .append(COLUMN_GOAL).append(" REAL")
+                    .append(COLUMN_GOAL).append(" INTEGER,")
+                    .append(COLUMN_CAFFEINE_GOAL).append(" INTEGER")
                     .append(");");
             String SQL_Statement = sb.toString();
             sb.delete(0, sb.length());
@@ -42,6 +44,7 @@ public abstract class DbTables {
         public static final String COLUMN_END_TIME   = "end_timestamp";
         public static final String COLUMN_START_TIME = "start_timestamp";
         public static final String COLUMN_QUALITY    = "quality";
+        public static final String COLUMN_CAFFEINE   = "caffeine";
 
         /**
          * Creates SQL string for table creation, resets StringBuidler
@@ -55,6 +58,7 @@ public abstract class DbTables {
                     .append(COLUMN_QUALITY).append(" INTEGER NOT NULL,")
                     .append(COLUMN_START_TIME).append(" INTEGER NOT NULL,")
                     .append(COLUMN_END_TIME).append(" INTEGER NOT NULL,")
+                    .append(COLUMN_CAFFEINE).append(" INTEGER NOT NULL,")
                     .append("FOREIGN KEY (").append(COLUMN_USER_ID).append(") REFERENCES ")
                     .append(DbTables.user.TABLE_NAME).append("(").append(DbTables.user.COLUMN_ID).append(")")
                     .append(");");
