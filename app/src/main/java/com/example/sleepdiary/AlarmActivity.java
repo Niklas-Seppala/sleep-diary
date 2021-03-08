@@ -65,8 +65,8 @@ public class AlarmActivity extends AppCompatActivity implements TimePickerDialog
 
             alarm.putExtra(AlarmClock.EXTRA_HOUR, hour);
             alarm.putExtra(AlarmClock.EXTRA_MINUTES, minute);
-            alarm.putExtra(AlarmClock.EXTRA_SKIP_UI, false);
 
+            alarm.putExtra(AlarmClock.EXTRA_SKIP_UI, !AppSettings.getInstance().getOpenNativeClock());
             startActivity(alarm);
         }
     }
