@@ -56,9 +56,9 @@ public class GoalsActivity extends AppCompatActivity {
         String mins = minsInput.getText().toString();
         String cups = caffeineInput.getText().toString();
 
-        return validateField(hours, pattern, "Hours") &&
-               validateField(mins,  pattern, "Mins")  &&
-               validateField(cups,  pattern, "Cups");
+        return validateField(hours, pattern, "Hours value is invalid!") &&
+               validateField(mins,  pattern, "Minutes value is invalid!")  &&
+               validateField(cups,  pattern, "Caffeine value is invalid!");
     }
 
 
