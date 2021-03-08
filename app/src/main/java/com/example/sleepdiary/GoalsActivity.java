@@ -2,6 +2,7 @@ package com.example.sleepdiary;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.Button;
@@ -39,6 +40,7 @@ public class GoalsActivity extends AppCompatActivity {
     /**
      * Ini
      */
+    @SuppressLint("SetTextI18n")
     private void initInputValues() {
         User user = GlobalData.getInstance().getCurrentUser();
         int caffeineGoal = user.getCaffeineGoal();
