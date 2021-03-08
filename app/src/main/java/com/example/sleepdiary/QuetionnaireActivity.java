@@ -7,7 +7,6 @@ import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.GlobalData;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -28,7 +27,7 @@ public class QuetionnaireActivity extends AppCompatActivity {
     TextView q1;
     RadioGroup radioGroupQ1;
     TextView q3;
-    EditText editNumber = (EditText) findViewById(R.id.editNumber);
+    EditText editNumber;
     TextView q3_2;
     Button submitBtn;
     Rating rating;
@@ -54,9 +53,9 @@ public class QuetionnaireActivity extends AppCompatActivity {
         submitBtn = (Button) findViewById(R.id.submitBtn);
         submitBtn.setOnClickListener(submit);
         radioGroupQ1 = findViewById(R.id.radioGroupQ1);
+        editNumber = (EditText) findViewById(R.id.editNumber);
 
         getDuration();
-
     }
 
     /*Get the duration of sleep by timestamps*/
