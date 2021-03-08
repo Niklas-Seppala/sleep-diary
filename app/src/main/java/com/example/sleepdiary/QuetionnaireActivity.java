@@ -10,9 +10,11 @@ import com.example.sleepdiary.data.GlobalData;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sleepdiary.time.DateTime;
 
@@ -33,12 +35,25 @@ public class QuetionnaireActivity extends AppCompatActivity {
 
         findViewById(R.id.questionnaire_submit_btn).setOnClickListener(v -> {
 
-            String caffeineIntake = ((EditText)findViewById(R.id.questionnaire_caffeine_input))
+            String caffeineIntakeStr = ((EditText)findViewById(R.id.questionnaire_caffeine_input))
                     .getText().toString();
-            int caffeineInt = Integer.parseInt(caffeineIntake);
+
+            int caffeineIntake;
+            if (caffeineIntakeStr.isEmpty()) {
+                caffeineIntake = 0;
+            } else  {
+                caffeineIntake = Integer.parseInt(caffeineIntakeStr);
+            }
+
             Rating quality = getRating();
-            saveEntry(caffeineInt, quality);
+            saveEntry(caffeineIntake, quality);
             finish();
+
+            // Display success message
+            Toast toast = Toast.makeText(this, "New entry saved!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                    0, 190);
+            toast.show();
         });
     }
 
@@ -46,7 +61,7 @@ public class QuetionnaireActivity extends AppCompatActivity {
         RadioGroup radioGroup = findViewById(R.id.quality_rb_grp);
         int checkedId = radioGroup.getCheckedRadioButtonId();
         int checkedIndex = radioGroup.indexOfChild(findViewById(checkedId));
-        return Rating.fromInt(checkedIndex);
+        return Rating.fromInt(checkedIndex+1);
     }
 
     /*Get the duration of sleep by timestamps*/
