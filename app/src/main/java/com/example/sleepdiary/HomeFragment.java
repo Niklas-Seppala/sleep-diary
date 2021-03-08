@@ -44,7 +44,8 @@ public class HomeFragment extends Fragment {
         });
         // Goal Button Click
         view.findViewById(R.id.btnGoal).setOnClickListener(v -> {
-            Log.d("BTN", "Goal button clicked");
+            Intent goal = new Intent(v.getContext(), GoalsActivity.class);
+            startActivity(goal);
         });
         // Alarm Buttom Click
         view.findViewById(R.id.btnAlarm).setOnClickListener(v ->  {

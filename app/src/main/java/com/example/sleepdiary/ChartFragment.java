@@ -88,7 +88,7 @@ public class ChartFragment extends Fragment {
         sleepHabits = new SleepHabits(GlobalData.getInstance().getWeeklySleepHabits(), savedIndex);
         User user = GlobalData.getInstance().getCurrentUser();
         assert user != null;
-        userGoal = user.getGoal();
+        userGoal = user.getSleepGoal();
     }
 
     /**

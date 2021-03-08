@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SleepDiary</string>
-<!--    Time-->
+    <!--    Time-->
     <string name="time_clock_24h">%tR</string>
     <string name="time_date_time_cal">%1$ta, %1$td.%1$tm.%1$tY</string>
     <string name="time_h_min_dur_long">%1$d hours, %2$d minutes</string>
@@ -18,8 +18,8 @@
         <item>Sat</item>
         <item>Sun</item>
     </string-array>
-    
-<!--    Buttons-->
+
+    <!--    Buttons-->
     <string name="buttons_edit">Edit</string>
     <string name="buttons_stats_toggle_on">Chart</string>
     <string name="buttons_stats_toggle_off">List</string>
@@ -31,7 +31,7 @@
     <string name="button_aply">Apply</string>
     <string name="button_reset">Reset</string>
 
-<!--    Image descriptions-->
+    <!--    Image descriptions-->
     <string name="img_desc_trending_up">Increased</string>
     <string name="img_desc_trending_down">Decreased</string>
     <string name="img_desc_user_rating_very_bad">Very bad</string>
@@ -40,7 +40,7 @@
     <string name="img_desc_user_rating_good">Good</string>
     <string name="img_desc_user_rating_very_good">Very Good</string>
 
-<!--    Sleep Entry Inspection-->
+    <!--    Sleep Entry Inspection-->
     <string name="sleep_inspection_caffeine_intake_label">Caffeine intake</string>
     <string name="sleep_inspection_quality_label">Sleep Quality</string>
     <string name="sleep_inspection_caffeine_amount">%d Cups</string>

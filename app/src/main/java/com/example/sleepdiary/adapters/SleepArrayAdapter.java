@@ -71,7 +71,7 @@ public class SleepArrayAdapter extends ArrayAdapter<SleepEntry> {
         User user = GlobalData.getInstance().getCurrentUser();
         if (user != null) {
             int iconId;
-            if (duration >= user.getGoal()) {
+            if (duration >= user.getSleepGoal()) {
                 iconId = R.drawable.ic_check_48;
             } else {
                 iconId = R.drawable.ic_fail_48;
