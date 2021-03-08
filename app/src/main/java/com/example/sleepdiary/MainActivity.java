@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        deleteDatabase("sleep.db"); // TODO: DEV
+//        deleteDatabase("sleep.db"); // TODO: DEV
 
         loadDataFromDB();
         AppSettings.read(getSharedPreferences(AppSettings.NAME, Context.MODE_PRIVATE));

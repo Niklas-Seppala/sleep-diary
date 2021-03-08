@@ -38,7 +38,6 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
     private ImageView ratingGrowthImageView;
     private ImageView durationIncreaseImageView;
     private ImageView caffeineGrowthImageView;
-    private Button editButton;
     private Button deleteButton;
 
     private SleepEntry inspectedEntry;
@@ -96,7 +95,6 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
         successIconImageView = findViewById(R.id.sleep_entry_inspection_success_icon_iv);
         durationIncreaseImageView = findViewById(R.id.sleep_etnry_inspection_duration_increase_icon_iv);
         caffeineGrowthImageView = findViewById(R.id.sleep_entry_inspection_caffeine_growth_iv);
-        editButton = findViewById(R.id.sleep_entry_inspection_edit_btn);
         deleteButton = findViewById(R.id.sleep_entry_inspection_delete_btn);
     }
 
@@ -159,9 +157,9 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
     }
 
     /**
-     * Set caffe
-     * @param entry
-     * @param entryIndex
+     * Set caffeine intake to view as a String.
+     * @param entry inspected sleep entry.
+     * @param entryIndex index of the inspected entry.
      */
     private void setCaffeineIntake(SleepEntry entry, int entryIndex) {
         caffeineTextView.setText(getString(R.string.sleep_inspection_caffeine_amount,
