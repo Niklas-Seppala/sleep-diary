@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
      * to finish the entry.
      */
     private void handlePartialEntry() {
-        List<SleepEntry> entries = GlobalData.getInstance().getSleepEntries();
-        if (entries.isEmpty())
+        List<SleepEntry> partialEntries = GlobalData.getInstance().getPartialSleepEntries();
+        if (partialEntries.isEmpty())
             return;
 
-        SleepEntry latest = entries.get(0);
+        SleepEntry latest = partialEntries.get(0);
         if (latest.isIncomplete()) {
             WakeUpEventFragment fragment = new WakeUpEventFragment();
             fragment.show(getSupportFragmentManager(), "wakeup");

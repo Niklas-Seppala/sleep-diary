@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * After that, keep in sync with database changes with
  * GlobalData.update(DbConnection db).
  */
-@RequiresApi(api = Build.VERSION_CODES.N)
+
 public class GlobalData {
     private static final GlobalData instance = new GlobalData();
     private static boolean isDirty = true;
@@ -56,6 +56,7 @@ public class GlobalData {
      * @return List of completed sleepEntries.
      */
     @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<SleepEntry> getCompletedSleepEntries() {
         return sleepEntries.stream()
                 .filter(entry -> !entry.isIncomplete())
@@ -66,6 +67,7 @@ public class GlobalData {
      * @return List of partial sleep entries.
      */
     @NonNull
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<SleepEntry> getPartialSleepEntries() {
         return sleepEntries.stream()
                 .filter(SleepEntry::isIncomplete)
@@ -114,11 +116,12 @@ public class GlobalData {
         instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class, null, null);
         instance.sleepEntries = db.select(DbTables.sleep.TABLE_NAME, SleepEntry.class,
                 null, null);
-        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.sleepEntries);
+        instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.getCompletedSleepEntries());
         setClean();
     }
 
     @SafeVarargs
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... extractors) {
         final Map<List<?>, Boolean> saved = new HashMap<>();
         return t -> {
@@ -129,6 +132,7 @@ public class GlobalData {
         };
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepEntry> models) {
         Calendar calendar = Calendar.getInstance(Locale.GERMAN);
         Collections.reverse(models);
