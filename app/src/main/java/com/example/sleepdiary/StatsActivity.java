@@ -30,11 +30,6 @@ public class StatsActivity extends AppCompatActivity {
         if (GlobalData.isDirty()) {
             DbConnection db = new DbConnection(this);
             GlobalData.update(db);
-//
-//            // TODO: DEV
-//            if (GlobalData.getInstance().getUserModels().size() == 0)
-//                GlobalData.__DEV__populateDb(db, "nikke", 7.5, 1613757955, 60);
-//            db.close();
         }
 
         setToggleClicks();

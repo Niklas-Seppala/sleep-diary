@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.sleepdiary.adapters.SleepArrayAdapter;
 import com.example.sleepdiary.adapters.SleepRatingIconService;
 import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.SleepHabits;
@@ -49,6 +49,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -159,6 +160,10 @@ public class ChartFragment extends Fragment {
             chartView.animateY(ANIM_DUR_MILLIS, Easing.EaseOutCubic);
             nextBtn.setAlpha(sleepHabits.hasNextWeek() ? 1f : DISABLED_BTN_ALPHA);
             prevBtn.setAlpha(sleepHabits.hasPrevWeek() ? 1f : DISABLED_BTN_ALPHA);
+
+            if (AppSettings.getInstance().getChartTrackCaffeine()) {
+                setChartAxisMinMaxCaffeine();
+            }
         }
     }
 
@@ -238,8 +243,8 @@ public class ChartFragment extends Fragment {
             set.add(entry);
         }
 
-        BarDataSet successEntries = new BarDataSet(successSet, "");
-        BarDataSet failedEntries = new BarDataSet(failSet, "");
+        BarDataSet successEntries = new BarDataSet(successSet, "Passed");
+        BarDataSet failedEntries = new BarDataSet(failSet, "Failed");
 
         styleBars(successEntries, successColor);
         styleBars(failedEntries, failColor);
@@ -296,7 +301,8 @@ public class ChartFragment extends Fragment {
         caffeineSet.setCircleColor(Color.BLACK);
         caffeineSet.setDrawCircleHole(false);
         caffeineSet.setLineWidth(3f);
-        caffeineSet.setColor(Color.BLACK);
+        caffeineSet.setColor(Color.BLACK, 0xa0);
+
 
         caffeineSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
         return new LineData(caffeineSet);
@@ -308,7 +314,7 @@ public class ChartFragment extends Fragment {
      * @return LineData object.
      */
     private LineData createGoalLineData() {
-        LineDataSet set = new LineDataSet(null, "");
+        LineDataSet set = new LineDataSet(null, "Goal");
         set.addEntry(new Entry(CHART_X_MIN, userGoal));
         set.addEntry(new Entry(CHART_X_MAX, userGoal));
         styleGoalLineData(set);
@@ -339,7 +345,9 @@ public class ChartFragment extends Fragment {
         chartView.setDoubleTapToZoomEnabled(false);
         chartView.getAxisRight().setEnabled(false);
         chartView.getDescription().setEnabled(false);
-        chartView.getLegend().setEnabled(false);
+        chartView.getLegend().setEnabled(true);
+        chartView.getLegend().setTextSize(16f);
+        chartView.getLegend().setFormSize(16f);
         chartView.getXAxis().setDrawGridLines(false);
         chartView.getAxisLeft().setEnabled(false);
 
@@ -349,6 +357,17 @@ public class ChartFragment extends Fragment {
         chartView.getXAxis().setAxisMaximum(CHART_X_MAX);
         chartView.getXAxis().setAxisMinimum(CHART_X_MIN);
         chartView.getAxisLeft().setAxisMinimum(CHART_Y_MIN);
+
+
+//        SleepEntry[] entries = sleepHabits.getWeek().getDays();
+//        int max = Arrays.stream(entries)
+//                .mapToInt(SleepEntry::getCaffeineIntake)
+//                .max()
+//                .orElseThrow(NoSuchElementException::new);
+//        Log.d("TAG", "initChart: " + max);
+
+//        chartView.getAxisRight().setAxisMaximum(max);
+//        chartView.getAxisRight().setAxisMaximum(-2);
 
         // Text styling on bar entries
         chartView.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
@@ -363,6 +382,20 @@ public class ChartFragment extends Fragment {
         });
 
         setBarEntryClicks(view);
+    }
+
+    /**
+     * Set axis max/min for caffeine line data.
+     */
+    private void setChartAxisMinMaxCaffeine() {
+        SleepEntry[] entries = sleepHabits.getWeek().getDays();
+        int max = Arrays.stream(entries)
+                .mapToInt(SleepEntry::getCaffeineIntake)
+                .max()
+                .orElse(0);
+        final int PADDING = 6;
+        chartView.getAxisRight().setAxisMaximum(max + PADDING);
+        chartView.getAxisRight().setAxisMinimum(-1);
     }
 
     /**
