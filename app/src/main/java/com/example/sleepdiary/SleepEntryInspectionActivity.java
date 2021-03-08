@@ -2,14 +2,19 @@ package com.example.sleepdiary;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sleepdiary.adapters.SleepRatingIconService;
 import com.example.sleepdiary.data.GlobalData;
+import com.example.sleepdiary.data.db.DbConnection;
+import com.example.sleepdiary.data.db.DbTables;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.models.User;
 import com.example.sleepdiary.time.DateTime;
@@ -33,6 +38,10 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
     private ImageView ratingGrowthImageView;
     private ImageView durationIncreaseImageView;
     private ImageView caffeineGrowthImageView;
+    private Button editButton;
+    private Button deleteButton;
+
+    private SleepEntry inspectedEntry;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,13 +51,15 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
         int entryIndex = getIntent().getExtras().getInt(EXTRA_ENTRY_INDEX);
 
         findViews();
-        SleepEntry entry = getEntry(entryIndex);
-        setDate(entry);
-        setTimeRange(entry);
-        setDuration(entry, entryIndex);
-        setRating(entry, entryIndex);
-        setCaffeineIntake(entry, entryIndex);
-        setSuccessIcon(entry);
+        inspectedEntry = getEntry(entryIndex);
+        setDate(inspectedEntry);
+        setTimeRange(inspectedEntry);
+        setDuration(inspectedEntry, entryIndex);
+        setRating(inspectedEntry, entryIndex);
+        setCaffeineIntake(inspectedEntry, entryIndex);
+        setSuccessIcon(inspectedEntry);
+
+        setBtnClicks();
     }
 
     /**
@@ -85,6 +96,26 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
         successIconImageView = findViewById(R.id.sleep_entry_inspection_success_icon_iv);
         durationIncreaseImageView = findViewById(R.id.sleep_etnry_inspection_duration_increase_icon_iv);
         caffeineGrowthImageView = findViewById(R.id.sleep_entry_inspection_caffeine_growth_iv);
+        editButton = findViewById(R.id.sleep_entry_inspection_edit_btn);
+        deleteButton = findViewById(R.id.sleep_entry_inspection_delete_btn);
+    }
+
+    private void setBtnClicks() {
+        deleteButton.setOnClickListener(view -> {
+            DbConnection db = new DbConnection(this);
+
+            String[] params = {Integer.toString(inspectedEntry.getId())};
+            db.delete(DbTables.sleep.TABLE_NAME, "id=?", params);
+            db.close();
+
+            // Display success message
+            Toast toast = Toast.makeText(this, "Entry deleted!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                    0, 190);
+            toast.show();
+
+            finish();
+        });
     }
 
     /**

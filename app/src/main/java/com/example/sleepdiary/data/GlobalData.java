@@ -116,6 +116,7 @@ public class GlobalData {
         instance.userModels = db.select(DbTables.user.TABLE_NAME, User.class, null, null);
         instance.sleepEntries = db.select(DbTables.sleep.TABLE_NAME, SleepEntry.class,
                 null, null);
+        Collections.reverse(instance.sleepEntries);
         instance.sleepModelsByWeeks = splitSleepEntriesToWeeks(instance.getCompletedSleepEntries());
         setClean();
     }
@@ -135,7 +136,7 @@ public class GlobalData {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private static List<WeeklySleepHabit> splitSleepEntriesToWeeks(List<SleepEntry> models) {
         Calendar calendar = Calendar.getInstance(Locale.GERMAN);
-        Collections.reverse(models);
+//        Collections.reverse(models);
         List<WeeklySleepHabit> results = models.stream()
                 .map(entry -> {
                     calendar.setTimeInMillis(DateTime.Unix.getMillis(entry.getStartTimestamp()));

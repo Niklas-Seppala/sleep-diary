@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.sleepdiary.adapters.SleepArrayAdapter;
 import com.example.sleepdiary.data.GlobalData;
+import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.models.SleepEntry;
 
 import java.util.List;
@@ -26,6 +28,10 @@ import java.util.stream.Collectors;
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ListFragment extends Fragment {
+
+    private ListView lv;
+    private List<SleepEntry> entries;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -33,10 +39,25 @@ public class ListFragment extends Fragment {
         Context context = getContext();
         assert context != null;
 
-        ListView listView = view.findViewById(R.id.sleepListView);
-        List<SleepEntry> entryList = GlobalData.getInstance().getCompletedSleepEntries();
-        listView.setAdapter(new SleepArrayAdapter(context, entryList));
-        setListItemClickHandler(listView, context);
+        lv = view.findViewById(R.id.sleepListView);
+        entries = GlobalData.getInstance().getCompletedSleepEntries();
+        lv.setAdapter(new SleepArrayAdapter(context, entries));
+        setListItemClickHandler(lv, context);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (GlobalData.isDirty()) {
+            DbConnection db = new DbConnection(getContext());
+            GlobalData.update(db);
+            db.close();
+
+            entries = GlobalData.getInstance().getCompletedSleepEntries();
+            lv.setAdapter(new SleepArrayAdapter(getContext(), entries));
+        }
+
+        Log.d("TAG", "onResume: " );
     }
 
     /**

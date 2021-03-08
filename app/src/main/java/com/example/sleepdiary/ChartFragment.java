@@ -20,9 +20,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.sleepdiary.adapters.SleepArrayAdapter;
 import com.example.sleepdiary.adapters.SleepRatingIconService;
 import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.SleepHabits;
+import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.models.Rating;
 import com.example.sleepdiary.data.models.SleepEntry;
 import com.example.sleepdiary.data.WeeklySleepHabit;
@@ -80,6 +82,18 @@ public class ChartFragment extends Fragment {
         getData();
         initViews(view);
         initChart(view);
+        displayWeek(sleepHabits.getWeek());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (GlobalData.isDirty()) {
+            DbConnection db = new DbConnection(getContext());
+            GlobalData.update(db);
+            db.close();
+            getData();
+        }
         displayWeek(sleepHabits.getWeek());
     }
 
