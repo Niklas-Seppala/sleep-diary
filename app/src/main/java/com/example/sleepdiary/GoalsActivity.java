@@ -13,11 +13,14 @@ import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.db.DbTables;
 import com.example.sleepdiary.data.models.User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class GoalsActivity extends AppCompatActivity {
     private Button submitBtn;
-    private TextView hoursTextView;
-    private TextView minsTextView;
-    private TextView caffeineTextView;
+    private TextView hoursInput;
+    private TextView minsInput;
+    private TextView caffeineInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +33,43 @@ public class GoalsActivity extends AppCompatActivity {
 
     private void findViews() {
         submitBtn = findViewById(R.id.goals_submit_btn);
-        hoursTextView = findViewById(R.id.goals_hours_input);
-        minsTextView = findViewById(R.id.goals_mins_input);
-        caffeineTextView = findViewById(R.id.goals_caffeine_input);
+        hoursInput = findViewById(R.id.goals_hours_input);
+        minsInput = findViewById(R.id.goals_mins_input);
+        caffeineInput = findViewById(R.id.goals_caffeine_input);
     }
+
+    private boolean validateField(String field, Pattern pattern, String errMsg) {
+        Matcher matcher = pattern.matcher(field);
+        if (!matcher.matches()) {
+            Toast toast = Toast.makeText(this, errMsg, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
+                    0, 190);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validate() {
+        Pattern pattern = Pattern.compile("[0-9]");
+        String hours = hoursInput.getText().toString();
+        String mins = minsInput.getText().toString();
+        String cups = caffeineInput.getText().toString();
+
+        return validateField(hours, pattern, "Hours") &&
+               validateField(mins,  pattern, "Mins")  &&
+               validateField(cups,  pattern, "Cups");
+    }
+
 
     private void setSubmitClickHander() {
         submitBtn.setOnClickListener(v -> {
-            int hoursInSeconds = Integer.parseInt(hoursTextView.getText().toString()) * 60 * 60;
-            int minsInSeconds = Integer.parseInt(minsTextView.getText().toString()) * 60;
+            if (!validate()) return;
+
+            int hoursInSeconds = Integer.parseInt(hoursInput.getText().toString()) * 60 * 60;
+            int minsInSeconds = Integer.parseInt(minsInput.getText().toString()) * 60;
             int totalSeconds = hoursInSeconds + minsInSeconds;
-            int cup = Integer.parseInt(caffeineTextView.getText().toString());
+            int cup = Integer.parseInt(caffeineInput.getText().toString());
 
             User currentUser = GlobalData.getInstance().getCurrentUser();
             User newUser = new User(currentUser.getId(), currentUser.getName(), totalSeconds, cup);
