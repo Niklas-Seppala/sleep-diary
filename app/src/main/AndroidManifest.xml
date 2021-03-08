@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sleepdiary">
+
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -9,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SleepDiary">
-        <activity android:name=".InfoFragment2"></activity>
+        <activity android:name=".GoalsActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +23,7 @@
         <activity android:name=".StatsActivity" />
         <activity android:name=".SleepEntryInspectionActivity" />
         <activity android:name=".AlarmActivity" />
+        <activity android:name=".QuetionnaireActivity" />
     </application>
 
 </manifest>

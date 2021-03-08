@@ -1,11 +1,5 @@
 package com.example.sleepdiary.time;
 
-import android.annotation.SuppressLint;
-
-import androidx.annotation.Nullable;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -14,9 +8,7 @@ import java.util.Locale;
  * Static utility class for dealing with time and dates.
  */
 public abstract class DateTime {
-    @SuppressLint("SimpleDateFormat")
     private static final Calendar calendar = Calendar.getInstance(Locale.GERMANY);
-
     public static final int SECONDS_IN_HOUR = 3600;
 
     /**
@@ -40,10 +32,20 @@ public abstract class DateTime {
         }
     }
 
+    /**
+     * Get minute count from second count.
+     * @param seconds second count
+     * @return minute count in provided seconds
+     */
     public static int getMinutesFromSeconds(int seconds) {
         return (seconds % SECONDS_IN_HOUR) / 60;
     }
 
+    /**
+     * Get hour count from second count.
+     * @param seconds second count.
+     * @return hour count from provided secound count.
+     */
     public static int getHoursFromSeconds(int seconds) {
         return seconds / SECONDS_IN_HOUR;
     }
@@ -52,6 +54,14 @@ public abstract class DateTime {
      * Utility functions related to Unix time
      */
     public static class Unix {
+
+        /**
+         * @return Current unix timestamp
+         */
+        public static int getTimestamp() {
+            long currenttUnixTime = System.currentTimeMillis() / 1000L;
+            return (int)currenttUnixTime;
+        }
 
         /**
          * Converts Unix time timestamp to indexed weekday.
