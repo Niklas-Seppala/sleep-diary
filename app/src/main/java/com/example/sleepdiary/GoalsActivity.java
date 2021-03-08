@@ -12,6 +12,7 @@ import com.example.sleepdiary.data.GlobalData;
 import com.example.sleepdiary.data.db.DbConnection;
 import com.example.sleepdiary.data.db.DbTables;
 import com.example.sleepdiary.data.models.User;
+import com.example.sleepdiary.time.DateTime;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,24 @@ public class GoalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_goals);
 
         findViews();
+        initInputValues();
         submitBtn.setOnClickListener(v -> trySubmitChanges());
+    }
+
+    /**
+     * Ini
+     */
+    private void initInputValues() {
+        User user = GlobalData.getInstance().getCurrentUser();
+        int caffeineGoal = user.getCaffeineGoal();
+        int sleepGoal = user.getSleepGoal();
+
+        int hours = DateTime.getHoursFromSeconds(sleepGoal);
+        int mins = DateTime.getMinutesFromSeconds(sleepGoal);
+
+        hoursInput.setText(Integer.toString(hours));
+        minsInput.setText(Integer.toString(mins));
+        caffeineInput.setText(Integer.toString(caffeineGoal));
     }
 
     /**
@@ -44,6 +62,10 @@ public class GoalsActivity extends AppCompatActivity {
         caffeineInput = findViewById(R.id.goals_caffeine_input);
     }
 
+    /**
+     * Validates inputs and updates database.
+     * Closes activity if success.
+     */
     private void trySubmitChanges() {
         if (!validate()) return;
 
@@ -98,7 +120,7 @@ public class GoalsActivity extends AppCompatActivity {
      * @return true if all fields are valid
      */
     private boolean validate() {
-        Pattern pattern = Pattern.compile("[0-9]"); // only match numeric values
+        Pattern pattern = Pattern.compile("[0-9]+"); // only match numeric values
         String hours = hoursInput.getText().toString();
         String mins = minsInput.getText().toString();
         String cups = caffeineInput.getText().toString();

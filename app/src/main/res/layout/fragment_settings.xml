@@ -63,7 +63,7 @@
         android:layout_marginEnd="7dp"
         android:layout_marginRight="7dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/button_aply"
+        android:text="@string/button_apply"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/settings_reset_button" />
