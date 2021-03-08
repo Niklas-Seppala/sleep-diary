@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,9 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Displays weekly SleepEntries in a bar chart.
@@ -72,12 +75,27 @@ public class ChartFragment extends Fragment {
         displayWeek(sleepHabits.getWeek());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void createCaffeineData() {
+        WeeklySleepHabit week =  sleepHabits.getWeek();
+
+        List<Integer> asd = Arrays.stream(week.getDays())
+                .mapToInt(SleepEntry::getCaffeineIntake)
+                .boxed()
+                .collect(Collectors.toList());
+
+        asd.forEach(integer -> Log.d("TAG", "createCaffeineData: " + integer));
+
+//        LineDataSet caffeineSet = new LineDataSet();
+    }
+
+
     /**
      * Get the colors for barchart from resources.
      */
     private void initColors() {
         if (successColor > 0) return;
-        successColor = getResources().getColor(R.color.accent_dark);
+        successColor = getResources().getColor(R.color.dark_gray_blue);
         failColor = getResources().getColor(R.color.accent_red);
     }
 
@@ -111,6 +129,7 @@ public class ChartFragment extends Fragment {
      * Change week action
      * @param view Button
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void changeWeek(View view) {
         int currentWeek = sleepHabits.getIndex();
         if (view.getId() == R.id.sleep_chart_item_btn_next_week)
