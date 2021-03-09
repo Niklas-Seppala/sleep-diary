@@ -180,8 +180,8 @@ public class SleepEntryInspectionActivity extends AppCompatActivity {
      * @param entry Inspected SleepEntry object.
      */
     private void setTimeRange(SleepEntry entry) {
-        Date start = new Date(entry.getStartTimestamp());
-        Date end = new Date(entry.getEndTimestamp());
+        Date start = DateTime.Unix.createDate(entry.getStartTimestamp());
+        Date end = DateTime.Unix.createDate(entry.getEndTimestamp());
         timeRangeTextView.setText(getString(R.string.time_timerange, start, end));
     }
 
